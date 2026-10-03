@@ -54,17 +54,6 @@ export default function HomeHero() {
           <div className="hh-fade mono hh-kicker">
             New-gen digital studio
           </div>
-          <ul className="hh-fade hh-index mono">
-            <li>
-              <b>01</b> Tech Studio
-            </li>
-            <li>
-              <b className="is-g">02</b> Creative Studio
-            </li>
-            <li>
-              <b className="is-w">03</b> NMYT Originals
-            </li>
-          </ul>
         </Reveal>
       </div>
 
@@ -80,11 +69,6 @@ export default function HomeHero() {
         <div className="hh-row">
           <Reveal trigger="intro" delay={1.1} className="lede hh-lede">
             A new-generation studio that builds the tech and shoots the story — websites, systems, films and content for brands, founders and independents.
-          </Reveal>
-          <Reveal trigger="intro" delay={1.3} className="hh-meta mono" childSelector=".hh-m">
-            <span className="hh-m hh-scroll">
-              Scroll <em />
-            </span>
           </Reveal>
         </div>
       </div>

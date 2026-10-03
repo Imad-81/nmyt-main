@@ -82,9 +82,6 @@ export default function Nav() {
           </nav>
 
           <div className="nv-right">
-            <span className="nv-status mono">
-              <i /> Taking new projects
-            </span>
             <MagneticButton to="/contact" variant="light" small>
               Start a project
             </MagneticButton>

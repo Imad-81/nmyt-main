@@ -7,7 +7,7 @@
 }
 .hh-top {
   position: absolute;
-  top: calc(var(--nav-h) + 28px);
+  top: calc(var(--nav-h) - 10px);
   left: 0;
   right: 0;
   z-index: 3;
@@ -19,27 +19,6 @@
 }
 .hh-kicker {
   color: var(--fg-2);
-}
-.hh-index {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  color: var(--fg-2);
-  text-align: right;
-}
-.hh-index b {
-  font-weight: 500;
-  color: var(--sky);
-  margin-right: 10px;
-}
-.hh-index b.is-g {
-  color: var(--acid);
-}
-.hh-index b.is-w {
-  color: var(--fg);
 }
 
 /* copy */
@@ -54,7 +33,6 @@
   margin: 0;
   font-size: clamp(56px, min(11.2vw, 20vh), 220px);
   line-height: 0.84;
-  text-shadow: 0 10px 60px rgba(3, 4, 8, 0.6);
 }
 .hh-line {
   display: block;
@@ -85,39 +63,6 @@
   max-width: 44ch;
   color: var(--fg-2);
 }
-.hh-meta {
-  display: flex;
-  gap: 36px;
-  color: var(--fg-3);
-  align-items: center;
-}
-.hh-scroll {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-.hh-scroll em {
-  position: relative;
-  width: 44px;
-  height: 1px;
-  background: var(--line-strong);
-  overflow: hidden;
-}
-.hh-scroll em::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--fg);
-  animation: hh-scroll 2.2s var(--ease-io) infinite;
-}
-@keyframes hh-scroll {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
 .hh-fadeout {
   position: absolute;
   left: 0;
@@ -130,9 +75,6 @@
 }
 
 @media (max-width: 767px) {
-  .hh-index {
-    display: none;
-  }
   .hh-row {
     flex-direction: column;
     align-items: flex-start;
