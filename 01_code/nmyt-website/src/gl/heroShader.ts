@@ -125,12 +125,6 @@ void main(){
   float cross = exp(-abs(bA - bB)*16.0) * exp(-dA*dA*140.0);
   col += ice * cross * 0.9;
 
-  // sparse sparkles riding the light
-  vec2 gp = floor(gl_FragCoord.xy / 3.0);
-  float s = hash(gp + floor(uTime*6.0));
-  float near = exp(-min(abs(dA), abs(dB))*14.0);
-  col += vec3(0.8, 0.95, 1.0) * step(0.9965, s) * near * 0.8;
-
   col *= reveal;
 
   // ambient atmosphere (very low) + vignette
