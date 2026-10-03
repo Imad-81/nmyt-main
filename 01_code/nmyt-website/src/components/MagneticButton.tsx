@@ -8,6 +8,8 @@ type Props = {
   to?: string
   href?: string
   onClick?: () => void
+  onPointerEnter?: () => void
+  onFocus?: () => void
   variant?: 'light' | 'ghost' | 'sky' | 'acid' | 'dark'
   small?: boolean
   arrow?: boolean
@@ -16,7 +18,7 @@ type Props = {
 }
 
 /** Pill button with magnetic pull and a text roll on hover. */
-export function MagneticButton({ children, to, href, onClick, variant = 'light', small, arrow = true, className = '', type }: Props) {
+export function MagneticButton({ children, to, href, onClick, onPointerEnter, onFocus, variant = 'light', small, arrow = true, className = '', type }: Props) {
   const ref = useRef<HTMLElement>(null)
 
   const move = (e: React.PointerEvent) => {
@@ -46,7 +48,7 @@ export function MagneticButton({ children, to, href, onClick, variant = 'light',
     </>
   )
   const cls = `mb mb--${variant} ${small ? 'mb--sm' : ''} ${className}`
-  const common = { className: cls, onPointerMove: move, onPointerLeave: leave, 'data-cursor-hover': true }
+  const common = { className: cls, onPointerMove: move, onPointerLeave: leave, onPointerEnter, onFocus, 'data-cursor-hover': true }
 
   if (to)
     return (

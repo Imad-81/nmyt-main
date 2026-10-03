@@ -1,0 +1,47 @@
+/* Home page continuous lighting spine integration */
+
+.home-page {
+  position: relative;
+  background: var(--void);
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
+/* Allow fixed living light spine to shine through home sections */
+.home-page .hh {
+  background: transparent !important;
+}
+
+.home-page .hh-fadeout {
+  display: none !important;
+}
+
+.home-page .mf {
+  background: transparent !important;
+}
+
+.home-page .sw {
+  background: transparent !important;
+}
+
+.home-page .ap {
+  background: transparent !important;
+}
+
+.home-page .ft {
+  background: transparent !important;
+}
+
+/* Ensure no card or text drop shadows collide with the background */
+.home-page .mf-pillar,
+.home-page .mf-stage,
+.home-page .sw-media,
+.home-page .sw-card,
+.home-page .ap-canvas-stage,
+.home-page .ap-step-vert,
+.home-page .sc-browser,
+.home-page .sc-frame,
+.home-page .sc-card {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}

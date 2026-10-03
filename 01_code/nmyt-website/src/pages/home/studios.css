@@ -187,7 +187,6 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(6, 12, 30, 0.7);
   overflow: hidden;
-  box-shadow: 0 30px 60px -20px rgba(22, 180, 255, 0.35);
 }
 .sc-browser-bar {
   display: flex;
@@ -265,7 +264,6 @@
   border-radius: 14px;
   overflow: hidden;
   background: linear-gradient(160deg, #04123f, #062a1a);
-  box-shadow: 0 30px 60px -20px rgba(124, 255, 58, 0.3);
 }
 .sc-frame-img {
   position: absolute;
@@ -346,11 +344,9 @@
 }
 .sc-seam.is-tech {
   left: 60.5%;
-  box-shadow: 0 0 40px rgba(22, 180, 255, 0.45);
 }
 .sc-seam.is-creative {
   left: 39.5%;
-  box-shadow: 0 0 40px rgba(124, 255, 58, 0.35);
 }
 
 @media (max-width: 900px) {

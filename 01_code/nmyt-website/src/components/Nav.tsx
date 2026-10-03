@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { gsap, getLenis } from '@/lib/smooth'
+import { gsap, getLenis, scrollToTop } from '@/lib/smooth'
 import { MagneticButton } from './MagneticButton'
 import { SITE } from '@/data/site'
+import { prefetchRoute } from '@/App'
 import './nav.css'
 
 export const NAV_LINKS = [
+  { to: '/', label: 'Home', tag: '00' },
   { to: '/tech', label: 'Tech Studio', tag: '01' },
   { to: '/creative', label: 'Creative Studio', tag: '02' },
   { to: '/originals', label: 'Originals', tag: '03' },
@@ -72,8 +74,20 @@ export default function Nav() {
           </Link>
 
           <nav className="nv-links glass" aria-label="Primary">
-            {NAV_LINKS.slice(0, 4).map((l) => (
-              <NavLink key={l.to} to={l.to} className={({ isActive }) => `nv-link ${isActive ? 'is-active' : ''}`}>
+            {NAV_LINKS.filter((l) => l.to !== '/contact').map((l) => (
+              <NavLink
+                key={l.to}
+                to={l.to}
+                end={l.to === '/'}
+                onPointerEnter={() => prefetchRoute(l.to)}
+                onFocus={() => prefetchRoute(l.to)}
+                onClick={() => {
+                  if (l.to === '/' && loc.pathname === '/') {
+                    scrollToTop(false)
+                  }
+                }}
+                className={({ isActive }) => `nv-link ${isActive ? 'is-active' : ''}`}
+              >
                 <span className="nv-link-roll" data-text={l.label}>
                   {l.label}
                 </span>
@@ -82,7 +96,13 @@ export default function Nav() {
           </nav>
 
           <div className="nv-right">
-            <MagneticButton to="/contact" variant="light" small>
+            <MagneticButton
+              to="/contact"
+              variant="light"
+              small
+              onPointerEnter={() => prefetchRoute('/contact')}
+              onFocus={() => prefetchRoute('/contact')}
+            >
               Start a project
             </MagneticButton>
             <button className={`nv-burger ${open ? 'is-open' : ''}`} aria-label="Menu" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
@@ -97,7 +117,13 @@ export default function Nav() {
         <div className="mm-glow" />
         <nav className="mm-nav wrap">
           {NAV_LINKS.map((l) => (
-            <Link key={l.to} to={l.to} className="mm-row">
+            <Link
+              key={l.to}
+              to={l.to}
+              className="mm-row"
+              onPointerEnter={() => prefetchRoute(l.to)}
+              onFocus={() => prefetchRoute(l.to)}
+            >
               <span className="mono mm-tag">{l.tag}</span>
               <span className="mask-line">
                 <span className="mm-link display">{l.label}</span>

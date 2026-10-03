@@ -5,15 +5,17 @@ import { gsap, prefersReducedMotion, refreshScroll } from '@/lib/smooth'
 import { PROJECTS, STUDIO_META } from '@/data/work'
 import { media } from '@/data/media'
 import { MonoLabel } from '@/components/ui'
+import { useIsMobile } from '@/lib/hooks'
 import './selected.css'
 
 interface WorkCardProps {
   project: (typeof PROJECTS)[0]
+  isMobile: boolean
   onHover: (el: HTMLElement, studio: string) => void
   onLeave: () => void
 }
 
-function WorkCard({ project, onHover, onLeave }: WorkCardProps) {
+function WorkCard({ project, isMobile, onHover, onLeave }: WorkCardProps) {
   const cardRef = useRef<HTMLAnchorElement>(null)
   const mediaRef = useRef<HTMLDivElement>(null)
   const glareRef = useRef<HTMLDivElement>(null)
@@ -85,7 +87,7 @@ function WorkCard({ project, onHover, onLeave }: WorkCardProps) {
       <div ref={mediaRef} className="sw-media">
         <div
           className="sw-img"
-          style={{ backgroundImage: `url(${media(project.image, 'lg')})` }}
+          style={{ backgroundImage: `url(${media(project.image, isMobile ? 'sm' : 'lg')})` }}
           aria-hidden="true"
         />
         <div className="sw-shade" aria-hidden="true" />
@@ -123,6 +125,7 @@ function WorkCard({ project, onHover, onLeave }: WorkCardProps) {
 
 export default function SelectedWork() {
   const root = useRef<HTMLElement>(null)
+  const isMobile = useIsMobile()
   const [aura, setAura] = useState<{ x: number; y: number; active: boolean; tone: string }>({
     x: 0,
     y: 0,
@@ -272,6 +275,7 @@ export default function SelectedWork() {
             <WorkCard
               key={p.slug}
               project={p}
+              isMobile={isMobile}
               onHover={handleCardHover}
               onLeave={handleCardLeave}
             />
@@ -282,6 +286,7 @@ export default function SelectedWork() {
             <WorkCard
               key={p.slug}
               project={p}
+              isMobile={isMobile}
               onHover={handleCardHover}
               onLeave={handleCardLeave}
             />

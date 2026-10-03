@@ -4,6 +4,7 @@ import { useGSAP } from '@gsap/react'
 import { gsap } from '@/lib/smooth'
 import { MonoLabel } from '@/components/ui'
 import { media, type MediaKey } from '@/data/media'
+import { useIsMobile } from '@/lib/hooks'
 import './manifesto.css'
 
 interface Pillar {
@@ -60,6 +61,7 @@ const PILLARS: Pillar[] = [
 
 export default function Manifesto() {
   const root = useRef<HTMLElement>(null)
+  const isMobile = useIsMobile()
   const [hoveredPillar, setHoveredPillar] = useState<number | null>(null)
 
   useGSAP(
@@ -144,7 +146,7 @@ export default function Manifesto() {
                 <div className="mf-pillar-media" aria-hidden="true">
                   <div
                     className="mf-pillar-bg"
-                    style={{ backgroundImage: `url(${media(p.image, 'lg')})` }}
+                    style={{ backgroundImage: `url(${media(p.image, isMobile ? 'sm' : 'lg')})` }}
                   />
                   <div className="mf-pillar-shade" />
                   <div className="mf-pillar-glow" />

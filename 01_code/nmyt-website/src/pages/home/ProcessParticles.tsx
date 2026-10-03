@@ -21,7 +21,7 @@ export default function ProcessParticles({ progress, className }: ProcessParticl
     let disposed = false
 
     const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' })
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobile ? 1.5 : 2))
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobile ? 1.2 : 1.5))
     renderer.setClearColor(0x000000, 0)
     el.appendChild(renderer.domElement)
     Object.assign(renderer.domElement.style, { width: '100%', height: '100%', display: 'block' })
@@ -301,18 +301,43 @@ export default function ProcessParticles({ progress, className }: ProcessParticl
     ro.observe(el)
 
     let visible = false
-    const io = new IntersectionObserver(([entry]) => (visible = entry.isIntersecting))
-    io.observe(el)
-
+    let running = false
     const clock = new THREE.Clock()
     const ray = new THREE.Vector3()
     let raf = 0
     let rotX = 0
     let rotY = 0
 
-    const loop = () => {
+    const startLoop = () => {
+      if (disposed || running || !visible || document.hidden) return
+      running = true
+      clock.getDelta()
       raf = requestAnimationFrame(loop)
-      if (disposed || !visible || document.hidden) return
+    }
+
+    const stopLoop = () => {
+      running = false
+      if (raf) {
+        cancelAnimationFrame(raf)
+        raf = 0
+      }
+    }
+
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting
+      if (visible) startLoop()
+      else stopLoop()
+    })
+    io.observe(el)
+
+    const onVisibility = () => {
+      if (document.hidden) stopLoop()
+      else if (visible) startLoop()
+    }
+    document.addEventListener('visibilitychange', onVisibility)
+
+    const loop = () => {
+      if (!running || disposed) return
       const dt = Math.min(clock.getDelta(), 0.05)
       uniforms.uTime.value += dt
       uniforms.uMorph.value += (progress.current - uniforms.uMorph.value) * 0.08
@@ -341,12 +366,13 @@ export default function ProcessParticles({ progress, className }: ProcessParticl
       )
 
       renderer.render(scene, camera)
+      raf = requestAnimationFrame(loop)
     }
-    loop()
 
     return () => {
       disposed = true
-      cancelAnimationFrame(raf)
+      stopLoop()
+      document.removeEventListener('visibilitychange', onVisibility)
       ro.disconnect()
       io.disconnect()
       geo.dispose()

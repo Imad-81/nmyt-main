@@ -302,7 +302,6 @@
   margin: 0;
   font-size: clamp(56px, min(10.4vw, 18vh), 200px);
   line-height: 0.84;
-  text-shadow: 0 12px 60px rgba(0, 0, 0, 0.55);
 }
 .oh-line {
   display: block;
@@ -336,7 +335,6 @@
 /* clapper slate */
 .os-slate {
   width: 300px;
-  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.6));
   user-select: none;
 }
 .os-sticks {

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Route, Routes, useLocation, type Location } from 'react-router-dom'
 import { gsap, initSmoothScroll, scrollToTop, refreshScroll, getLenis } from '@/lib/smooth'
 import Nav from '@/components/Nav'
@@ -6,12 +6,34 @@ import Cursor from '@/components/Cursor'
 import Grain from '@/components/Grain'
 import Loader from '@/components/Loader'
 import Home from '@/pages/Home'
-import Tech from '@/pages/Tech'
-import Creative from '@/pages/Creative'
-import Originals from '@/pages/Originals'
-import Work from '@/pages/Work'
-import Contact from '@/pages/Contact'
-import NotFound from '@/pages/NotFound'
+
+const Tech = lazy(() => import('@/pages/Tech'))
+const Creative = lazy(() => import('@/pages/Creative'))
+const Originals = lazy(() => import('@/pages/Originals'))
+const Work = lazy(() => import('@/pages/Work'))
+const Contact = lazy(() => import('@/pages/Contact'))
+const NotFound = lazy(() => import('@/pages/NotFound'))
+
+/** Prefetches page chunks on link hover/focus so navigation is instant */
+export const prefetchRoute = (path: string) => {
+  switch (path) {
+    case '/tech':
+      import('@/pages/Tech')
+      break
+    case '/creative':
+      import('@/pages/Creative')
+      break
+    case '/originals':
+      import('@/pages/Originals')
+      break
+    case '/work':
+      import('@/pages/Work')
+      break
+    case '/contact':
+      import('@/pages/Contact')
+      break
+  }
+}
 
 const skipLoader = () => typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('noloader')
 
@@ -86,15 +108,17 @@ export default function App() {
       {loading && <Loader onDone={onLoaded} />}
       <Nav />
       <main key={shown.pathname}>
-        <Routes location={shown}>
-          <Route path="/" element={<Home />} />
-          <Route path="/tech" element={<Tech />} />
-          <Route path="/creative" element={<Creative />} />
-          <Route path="/originals" element={<Originals />} />
-          <Route path="/work" element={<Work />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={null}>
+          <Routes location={shown}>
+            <Route path="/" element={<Home />} />
+            <Route path="/tech" element={<Tech />} />
+            <Route path="/creative" element={<Creative />} />
+            <Route path="/originals" element={<Originals />} />
+            <Route path="/work" element={<Work />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </main>
       <div ref={cover} className="pt" style={{ display: 'none' }} aria-hidden>
         <style>{`
