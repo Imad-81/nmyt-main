@@ -193,10 +193,6 @@ export default function Approach() {
                     className={`ap-step-vert ${isActive ? 'is-active' : ''}`}
                     onClick={() => handleStepClick(i)}
                   >
-                    <div className={`ap-node ${isActive ? 'is-active' : ''}`} aria-hidden="true">
-                      <span className="ap-node-pulse" />
-                    </div>
-
                     <div className="ap-step-meta mono">
                       <span className="ap-step-tag" style={{ color: s.tone }}>
                         {s.tag}
