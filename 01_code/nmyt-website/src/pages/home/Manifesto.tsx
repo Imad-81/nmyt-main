@@ -125,7 +125,7 @@ export default function Manifesto() {
             <MonoLabel index="01">About NMYT</MonoLabel>
           </div>
           <h2 className="display mf-headline mf-copy-in">
-            <span className="mf-headline-main">Two teams. One roof.</span>
+            <span className="mf-headline-main">Two studios. One vision.</span>
             <em className="serif text-grad mf-headline-sub">One standard.</em>
           </h2>
 
