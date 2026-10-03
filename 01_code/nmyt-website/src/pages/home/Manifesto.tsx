@@ -58,13 +58,6 @@ const PILLARS: Pillar[] = [
   },
 ]
 
-const FACTS = [
-  { n: '2', l: 'Studios' },
-  { n: '11', l: 'Disciplines' },
-  { n: '1', l: 'Team, start to finish' },
-  { n: '0', l: 'Templates' },
-]
-
 export default function Manifesto() {
   const root = useRef<HTMLElement>(null)
   const [hoveredPillar, setHoveredPillar] = useState<number | null>(null)
@@ -96,20 +89,6 @@ export default function Manifesto() {
           stagger: 0.12,
           ease: 'expo.out',
           scrollTrigger: { trigger: '.mf-triptych', start: 'top 82%', once: true },
-        },
-      )
-
-      // Facts reveal
-      gsap.fromTo(
-        '.mf-fact',
-        { autoAlpha: 0, y: 24 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          stagger: 0.08,
-          duration: 1,
-          ease: 'expo.out',
-          scrollTrigger: { trigger: '.mf-facts', start: 'top 92%', once: true },
         },
       )
     },
@@ -200,16 +179,6 @@ export default function Manifesto() {
               </Link>
             )
           })}
-        </div>
-
-        {/* Stats Strip */}
-        <div className="mf-facts">
-          {FACTS.map((f) => (
-            <div key={f.l} className="mf-fact">
-              <span className="display mf-n">{f.n}</span>
-              <span className="mono mf-l">{f.l}</span>
-            </div>
-          ))}
         </div>
       </div>
     </section>
