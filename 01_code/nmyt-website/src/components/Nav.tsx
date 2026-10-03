@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import { gsap, getLenis, scrollToTop } from '@/lib/smooth'
 import { MagneticButton } from './MagneticButton'
 import { SITE } from '@/data/site'
+import { prefetchRoute } from '@/App'
 import './nav.css'
 
 export const NAV_LINKS = [
@@ -78,6 +79,8 @@ export default function Nav() {
                 key={l.to}
                 to={l.to}
                 end={l.to === '/'}
+                onPointerEnter={() => prefetchRoute(l.to)}
+                onFocus={() => prefetchRoute(l.to)}
                 onClick={() => {
                   if (l.to === '/' && loc.pathname === '/') {
                     scrollToTop(false)
@@ -93,7 +96,13 @@ export default function Nav() {
           </nav>
 
           <div className="nv-right">
-            <MagneticButton to="/contact" variant="light" small>
+            <MagneticButton
+              to="/contact"
+              variant="light"
+              small
+              onPointerEnter={() => prefetchRoute('/contact')}
+              onFocus={() => prefetchRoute('/contact')}
+            >
               Start a project
             </MagneticButton>
             <button className={`nv-burger ${open ? 'is-open' : ''}`} aria-label="Menu" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
@@ -108,7 +117,13 @@ export default function Nav() {
         <div className="mm-glow" />
         <nav className="mm-nav wrap">
           {NAV_LINKS.map((l) => (
-            <Link key={l.to} to={l.to} className="mm-row">
+            <Link
+              key={l.to}
+              to={l.to}
+              className="mm-row"
+              onPointerEnter={() => prefetchRoute(l.to)}
+              onFocus={() => prefetchRoute(l.to)}
+            >
               <span className="mono mm-tag">{l.tag}</span>
               <span className="mask-line">
                 <span className="mm-link display">{l.label}</span>

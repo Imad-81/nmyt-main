@@ -32,12 +32,16 @@ export function initSmoothScroll() {
   lenis.on('scroll', ScrollTrigger.update)
   if (import.meta.env.DEV) (window as unknown as { __lenis: Lenis }).__lenis = lenis
   gsap.ticker.add((time) => lenis?.raf(time * 1000))
-  gsap.ticker.lagSmoothing(0)
+  gsap.ticker.lagSmoothing(500, 33)
 
   if (typeof window !== 'undefined') {
+    let resizeTimer: number | undefined
     window.addEventListener('resize', () => {
-      lenis?.resize()
-      ScrollTrigger.refresh()
+      window.clearTimeout(resizeTimer)
+      resizeTimer = window.setTimeout(() => {
+        lenis?.resize()
+        ScrollTrigger.refresh()
+      }, 150)
     })
   }
 

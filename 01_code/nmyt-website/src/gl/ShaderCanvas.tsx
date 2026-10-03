@@ -41,7 +41,7 @@ export default function ShaderCanvas({ fragment, uniforms = {}, onFrame, classNa
     const el = host.current!
     const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: transparent, powerPreference: 'high-performance', premultipliedAlpha: false })
     const isMobile = window.matchMedia('(max-width: 767px)').matches
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? Math.min(dpr, 1.25) : dpr))
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.2 : Math.min(dpr, 1.5)))
     renderer.setClearColor(0x030408, transparent ? 0 : 1)
     el.appendChild(renderer.domElement)
     Object.assign(renderer.domElement.style, { width: '100%', height: '100%', display: 'block' })
@@ -71,17 +71,16 @@ export default function ShaderCanvas({ fragment, uniforms = {}, onFrame, classNa
     const ro = new ResizeObserver(resize)
     ro.observe(el)
 
-    let visible = true
-    const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting), { rootMargin: '80px' })
-    io.observe(el)
-
     const clock = new THREE.Clock()
     let raf = 0
+    let isRunning = false
+    let visible = true
     const m = u.uMouse.value as THREE.Vector2
+
     const loop = () => {
+      if (!isRunning) return
       raf = requestAnimationFrame(loop)
       const dt = Math.min(clock.getDelta(), 0.05)
-      if (!visible || document.hidden) return
       u.uTime.value += dt
       // pointer relative to this element
       const r = el.getBoundingClientRect()
@@ -94,10 +93,40 @@ export default function ShaderCanvas({ fragment, uniforms = {}, onFrame, classNa
       cb.current?.({ time: u.uTime.value, dt, mouse: m, uniforms: u, size })
       renderer.render(scene, camera)
     }
-    loop()
+
+    const startLoop = () => {
+      if (isRunning || !visible || document.hidden) return
+      isRunning = true
+      clock.start()
+      loop()
+    }
+
+    const stopLoop = () => {
+      isRunning = false
+      if (raf) cancelAnimationFrame(raf)
+    }
+
+    const io = new IntersectionObserver(
+      ([e]) => {
+        visible = e.isIntersecting
+        if (visible) startLoop()
+        else stopLoop()
+      },
+      { rootMargin: '80px' },
+    )
+    io.observe(el)
+
+    const onVisibilityChange = () => {
+      if (document.hidden) stopLoop()
+      else if (visible) startLoop()
+    }
+    document.addEventListener('visibilitychange', onVisibilityChange)
+
+    startLoop()
 
     return () => {
-      cancelAnimationFrame(raf)
+      stopLoop()
+      document.removeEventListener('visibilitychange', onVisibilityChange)
       ro.disconnect()
       io.disconnect()
       mat.dispose()
