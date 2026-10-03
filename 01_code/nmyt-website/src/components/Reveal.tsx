@@ -58,8 +58,9 @@ export function SplitReveal({
         autoSplit: true,
         onSplit(self) {
           tween?.kill()
-          gsap.set(el, { autoAlpha: 1 })
           const targets = type === 'chars' ? self.chars : type === 'words' ? self.words : self.lines
+          if (!targets || targets.length === 0) return
+          gsap.set(el, { autoAlpha: 1 })
           const vars: gsap.TweenVars = {
             yPercent: 115,
             rotate: type === 'lines' && !reduce ? 2.5 : 0,
@@ -115,8 +116,8 @@ export function Reveal({ children, as: Tag = 'div', className, style, y = 40, de
   useGSAP(
     () => {
       const el = ref.current
-      if (!el) return
       const targets = childSelector ? el.querySelectorAll(childSelector) : el
+      if (!targets || (targets instanceof NodeList && targets.length === 0)) return
       const reduce = prefersReducedMotion()
       const from = { autoAlpha: 0, y: reduce ? Math.min(y, 16) : y }
       const to = { autoAlpha: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger, delay }

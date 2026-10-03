@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
-import { gsap } from '@/lib/smooth'
+import { gsap, refreshScroll } from '@/lib/smooth'
 import { PROJECTS, STUDIO_META } from '@/data/work'
 import { media } from '@/data/media'
 import { MonoLabel } from '@/components/ui'
@@ -37,6 +37,8 @@ export default function SelectedWork() {
           scrollTrigger: { trigger: '.sw-grid', start: 'top 84%', once: true },
         },
       )
+
+      refreshScroll()
     },
     { scope: root },
   )

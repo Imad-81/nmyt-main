@@ -33,14 +33,31 @@ export function initSmoothScroll() {
   if (import.meta.env.DEV) (window as unknown as { __lenis: Lenis }).__lenis = lenis
   gsap.ticker.add((time) => lenis?.raf(time * 1000))
   gsap.ticker.lagSmoothing(0)
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('resize', () => {
+      lenis?.resize()
+      ScrollTrigger.refresh()
+    })
+  }
+
   return lenis
 }
 
 export const getLenis = () => lenis
 
+export function refreshScroll() {
+  if (lenis) lenis.resize()
+  ScrollTrigger.refresh()
+}
+
 export function scrollToTop(immediate = true) {
-  if (lenis) lenis.scrollTo(0, { immediate, force: true })
-  else window.scrollTo(0, 0)
+  if (lenis) {
+    lenis.scrollTo(0, { immediate, force: true })
+    lenis.resize()
+  } else {
+    window.scrollTo(0, 0)
+  }
 }
 
 export function stopScroll() {
@@ -51,3 +68,4 @@ export function startScroll() {
 }
 
 export { gsap, ScrollTrigger, SplitText }
+

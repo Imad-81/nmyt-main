@@ -1,18 +1,17 @@
-import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Route, Routes, useLocation, type Location } from 'react-router-dom'
-import { gsap, initSmoothScroll, scrollToTop, ScrollTrigger } from '@/lib/smooth'
+import { gsap, initSmoothScroll, scrollToTop, refreshScroll, getLenis } from '@/lib/smooth'
 import Nav from '@/components/Nav'
 import Cursor from '@/components/Cursor'
 import Grain from '@/components/Grain'
 import Loader from '@/components/Loader'
 import Home from '@/pages/Home'
-
-const Tech = lazy(() => import('@/pages/Tech'))
-const Creative = lazy(() => import('@/pages/Creative'))
-const Originals = lazy(() => import('@/pages/Originals'))
-const Work = lazy(() => import('@/pages/Work'))
-const Contact = lazy(() => import('@/pages/Contact'))
-const NotFound = lazy(() => import('@/pages/NotFound'))
+import Tech from '@/pages/Tech'
+import Creative from '@/pages/Creative'
+import Originals from '@/pages/Originals'
+import Work from '@/pages/Work'
+import Contact from '@/pages/Contact'
+import NotFound from '@/pages/NotFound'
 
 const skipLoader = () => typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('noloader')
 
@@ -50,17 +49,21 @@ export default function App() {
     const q = gsap.utils.selector(el)
     const tl = gsap.timeline()
     tl.set(el, { display: 'block' })
-      .fromTo(el, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.7, ease: 'expo.inOut' })
-      .fromTo(q('.pt-logo'), { autoAlpha: 0, scale: 0.9 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: 'power2.out' }, 0.3)
+      .fromTo(el, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.6, ease: 'expo.inOut' })
+      .fromTo(q('.pt-logo'), { autoAlpha: 0, scale: 0.9 }, { autoAlpha: 1, scale: 1, duration: 0.45, ease: 'power2.out' }, 0.25)
       .add(() => {
         setShown(location)
         scrollToTop(true)
       })
       .add(() => {
-        ScrollTrigger.refresh()
-      }, '+=0.12')
-      .to(q('.pt-logo'), { autoAlpha: 0, duration: 0.3 }, '+=0.1')
-      .to(el, { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.8, ease: 'expo.inOut' }, '<')
+        refreshScroll()
+      }, '+=0.1')
+      .to(q('.pt-logo'), { autoAlpha: 0, duration: 0.25 }, '+=0.05')
+      .to(el, { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.65, ease: 'expo.inOut' }, '<')
+      .add(() => {
+        getLenis()?.start()
+        refreshScroll()
+      })
       .set(el, { display: 'none' })
     return () => {
       tl.progress(1)
@@ -72,23 +75,27 @@ export default function App() {
     document.documentElement.dataset.route = shown.pathname.split('/')[1] || 'home'
   }, [shown])
 
+  useLayoutEffect(() => {
+    refreshScroll()
+    const t = setTimeout(refreshScroll, 120)
+    return () => clearTimeout(t)
+  }, [shown.pathname])
+
   return (
     <>
       {loading && <Loader onDone={onLoaded} />}
       <Nav />
-      <Suspense fallback={<div style={{ height: '100vh' }} />}>
-        <main key={shown.pathname}>
-          <Routes location={shown}>
-            <Route path="/" element={<Home />} />
-            <Route path="/tech" element={<Tech />} />
-            <Route path="/creative" element={<Creative />} />
-            <Route path="/originals" element={<Originals />} />
-            <Route path="/work" element={<Work />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-      </Suspense>
+      <main key={shown.pathname}>
+        <Routes location={shown}>
+          <Route path="/" element={<Home />} />
+          <Route path="/tech" element={<Tech />} />
+          <Route path="/creative" element={<Creative />} />
+          <Route path="/originals" element={<Originals />} />
+          <Route path="/work" element={<Work />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
       <div ref={cover} className="pt" style={{ display: 'none' }} aria-hidden>
         <style>{`
           .pt{position:fixed;inset:0;z-index:500;background:var(--void)}

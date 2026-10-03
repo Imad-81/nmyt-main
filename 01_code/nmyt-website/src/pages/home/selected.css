@@ -1,8 +1,8 @@
 .sw {
   position: relative;
   background: var(--void);
-  padding-block: clamp(72px, 9vw, 140px);
-  overflow: hidden;
+  padding-top: clamp(60px, 7vw, 100px);
+  padding-bottom: clamp(40px, 5vw, 64px);
 }
 
 /* ---------- Bento 4-Column Grid (User's Layout) ---------- */

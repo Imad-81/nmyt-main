@@ -35,12 +35,18 @@ export default function CreativeServices() {
       const reduce = prefersReducedMotion()
       const rows = gsap.utils.toArray<HTMLElement>('.sv-row')
       rows.forEach((row) => {
-        gsap.fromTo(row.querySelector('.sv-rule'), { scaleX: 0 }, { scaleX: 1, duration: 1.4, ease: 'expo.inOut', scrollTrigger: { trigger: row, start: 'top 92%', once: true } })
-        gsap.fromTo(
-          row.querySelectorAll('.sv-in'),
-          { yPercent: reduce ? 0 : 110, autoAlpha: reduce ? 0 : 1 },
-          { yPercent: 0, autoAlpha: 1, duration: 1.2, ease: 'expo.out', stagger: 0.06, scrollTrigger: { trigger: row, start: 'top 90%', once: true } },
-        )
+        const rule = row.querySelector('.sv-rule')
+        if (rule) {
+          gsap.fromTo(rule, { scaleX: 0 }, { scaleX: 1, duration: 1.4, ease: 'expo.inOut', scrollTrigger: { trigger: row, start: 'top 92%', once: true } })
+        }
+        const ins = row.querySelectorAll('.sv-in')
+        if (ins.length > 0) {
+          gsap.fromTo(
+            ins,
+            { yPercent: reduce ? 0 : 110, autoAlpha: reduce ? 0 : 1 },
+            { yPercent: 0, autoAlpha: 1, duration: 1.2, ease: 'expo.out', stagger: 0.06, scrollTrigger: { trigger: row, start: 'top 90%', once: true } },
+          )
+        }
       })
       if (!hover) {
         // touch: the acid fill wipes in as each row crosses the middle of the screen
