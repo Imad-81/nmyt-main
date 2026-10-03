@@ -1,0 +1,128 @@
+.ft {
+  position: relative;
+  overflow: hidden;
+  background: var(--void);
+  border-top: 1px solid var(--line);
+  padding-top: clamp(96px, 12vw, 180px);
+}
+.ft-glow {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: -30%;
+  height: 90%;
+  background: var(--glow-master);
+  filter: blur(40px);
+  opacity: 0.32;
+  pointer-events: none;
+}
+.ft--tech .ft-glow {
+  background: var(--glow-tech);
+}
+.ft--creative .ft-glow {
+  background: var(--glow-creative);
+}
+.ft-kicker {
+  color: var(--fg-3);
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.ft-kicker span {
+  color: var(--sky);
+}
+.ft--creative .ft-kicker span {
+  color: var(--acid);
+}
+.ft-title {
+  font-size: clamp(56px, min(12vw, 24vh), 224px);
+}
+.ft-title em {
+  font-size: 1.05em;
+  line-height: 0.8;
+  background: var(--grad-master);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.08em;
+}
+.ft-cta-row {
+  margin-top: clamp(32px, 4vw, 56px);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.ft-grid {
+  margin-top: clamp(80px, 10vw, 160px);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+.ft-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 15px;
+}
+.ft-grid a {
+  color: var(--fg-2);
+  width: fit-content;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: color 0.3s, background-size 0.5s var(--ease-out);
+}
+.ft-grid a:hover {
+  color: var(--fg);
+  background-size: 100% 1px;
+}
+.ft-h {
+  color: var(--fg-3);
+  margin-bottom: 8px;
+}
+.ft-muted {
+  color: var(--fg-3);
+}
+.ft-mark-wrap {
+  position: relative;
+  margin-top: clamp(64px, 8vw, 120px);
+  padding-inline: var(--gutter);
+}
+.ft-mark {
+  width: 100%;
+  height: auto;
+  max-height: 44vw;
+  display: block;
+  margin: 0 auto;
+  overflow: visible;
+}
+.ft-bar {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 28px 32px;
+  color: var(--fg-3);
+  flex-wrap: wrap;
+}
+.ft-top:hover {
+  color: var(--fg);
+}
+@media (max-width: 767px) {
+  .ft-grid {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 40px;
+  }
+  .ft-bar-mid {
+    display: none;
+  }
+}
+.ft-title em > div,
+.ft-title em .char {
+  background: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

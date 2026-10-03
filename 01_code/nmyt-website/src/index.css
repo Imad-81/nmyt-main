@@ -1,0 +1,205 @@
+@import '@fontsource-variable/archivo/wdth.css';
+@import '@fontsource-variable/geist/wght.css';
+@import '@fontsource-variable/geist-mono/wght.css';
+@import '@fontsource/instrument-serif/400.css';
+@import '@fontsource/instrument-serif/400-italic.css';
+@import './styles/tokens.css';
+@import 'tailwindcss';
+
+@theme {
+  --color-void: #030408;
+  --color-ink-900: #07090f;
+  --color-ink-800: #0c0f18;
+  --color-ink-700: #141826;
+  --color-fg: #f4f6fb;
+  --color-royal: #1638ff;
+  --color-royal-deep: #0a1a8c;
+  --color-sky: #16b4ff;
+  --color-ice: #cfefff;
+  --color-acid: #7cff3a;
+  --color-emerald: #00e08a;
+  --color-navy: #04123f;
+  --color-paper: #f6f9ff;
+  --color-paper-ink: #050a18;
+  --font-display: 'Archivo Variable', 'Arial Narrow', sans-serif;
+  --font-serif: 'Instrument Serif', serif;
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  background: var(--void);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  background: var(--void);
+  overflow-x: clip;
+}
+::selection {
+  background: var(--sky);
+  color: var(--void);
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+img,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  html.has-cursor,
+  html.has-cursor * {
+    cursor: none !important;
+  }
+}
+
+/* ---------- type ---------- */
+.display {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 78%;
+  font-variation-settings: 'wdth' 78;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.86;
+}
+.display-wide {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 112%;
+  font-variation-settings: 'wdth' 112;
+  text-transform: uppercase;
+  letter-spacing: -0.035em;
+  line-height: 0.88;
+}
+.serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+.mono {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 450;
+}
+.lede {
+  font-size: clamp(18px, 1.55vw, 24px);
+  line-height: 1.38;
+  letter-spacing: -0.02em;
+  color: var(--fg-2);
+  font-weight: 400;
+}
+.h-section {
+  font-size: clamp(52px, min(9.2vw, 17vh), 168px);
+}
+.h-sub {
+  font-size: clamp(40px, 5.6vw, 96px);
+}
+.text-grad {
+  background: var(--grad-master);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- layout ---------- */
+.wrap {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.hairline {
+  height: 1px;
+  background: var(--line);
+  width: 100%;
+}
+.section {
+  position: relative;
+  padding-block: clamp(96px, 14vw, 220px);
+}
+
+/* ---------- utilities ---------- */
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+.glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  white-space: nowrap;
+}
+.crosshair::before,
+.crosshair::after {
+  content: '';
+  position: absolute;
+  background: var(--fg-3);
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
