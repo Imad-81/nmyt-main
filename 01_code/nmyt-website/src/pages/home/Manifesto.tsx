@@ -1,17 +1,10 @@
-import { useRef, useState, useCallback } from 'react'
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '@/lib/smooth'
-import ParticleMorph from '@/gl/ParticleMorph'
 import { MonoLabel } from '@/components/ui'
 import { media, type MediaKey } from '@/data/media'
 import './manifesto.css'
-
-const STAGES = [
-  { k: 'Tech Studio', v: 'A website, wireframed.', c: 'var(--sky)', target: 0 },
-  { k: 'Creative Studio', v: 'A lens, wide open.', c: 'var(--acid)', target: 1 },
-  { k: 'NMYT Mark', v: 'One mark. Both crafts.', c: 'var(--fg)', target: 2 },
-]
 
 interface Pillar {
   key: string
@@ -24,7 +17,6 @@ interface Pillar {
   tone: string
   badge: string
   link: string
-  stageTarget: number
 }
 
 const PILLARS: Pillar[] = [
@@ -39,7 +31,6 @@ const PILLARS: Pillar[] = [
     tone: 'var(--sky)',
     badge: 'Code & Architecture',
     link: '/tech',
-    stageTarget: 0,
   },
   {
     key: 'creative',
@@ -52,7 +43,6 @@ const PILLARS: Pillar[] = [
     tone: 'var(--acid)',
     badge: 'Cinema & Motion',
     link: '/creative',
-    stageTarget: 1,
   },
   {
     key: 'originals',
@@ -65,7 +55,6 @@ const PILLARS: Pillar[] = [
     tone: 'var(--ice)',
     badge: 'Original Productions',
     link: '/originals',
-    stageTarget: 2,
   },
 ]
 
@@ -78,41 +67,21 @@ const FACTS = [
 
 export default function Manifesto() {
   const root = useRef<HTMLElement>(null)
-  const progress = useRef(0)
-  const [activeStage, setActiveStage] = useState(0)
   const [hoveredPillar, setHoveredPillar] = useState<number | null>(null)
-
-  const setStage = useCallback((target: number) => {
-    progress.current = target
-    setActiveStage(target)
-  }, [])
 
   useGSAP(
     () => {
-      // Intro copy entrance
+      // Centered Intro copy entrance
       gsap.fromTo(
         '.mf-copy-in',
-        { autoAlpha: 0, y: 36 },
+        { autoAlpha: 0, y: 32 },
         {
           autoAlpha: 1,
           y: 0,
           duration: 1.1,
           stagger: 0.1,
           ease: 'expo.out',
-          scrollTrigger: { trigger: '.mf-grid', start: 'top 82%', once: true },
-        },
-      )
-
-      // 3D stage box entrance
-      gsap.fromTo(
-        '.mf-stage',
-        { autoAlpha: 0, scale: 0.94 },
-        {
-          autoAlpha: 1,
-          scale: 1,
-          duration: 1.2,
-          ease: 'expo.out',
-          scrollTrigger: { trigger: '.mf-grid', start: 'top 80%', once: true },
+          scrollTrigger: { trigger: '.mf-header', start: 'top 85%', once: true },
         },
       )
 
@@ -147,82 +116,27 @@ export default function Manifesto() {
     { scope: root },
   )
 
-  const handlePillarEnter = (idx: number, stageTarget: number) => {
-    setHoveredPillar(idx)
-    setStage(stageTarget)
-  }
-
-  const handlePillarLeave = () => {
-    setHoveredPillar(null)
-  }
-
   return (
-    <section ref={root} className="mf section" aria-label="About NMYT and What We Do">
+    <section ref={root} className="mf section" aria-label="About NMYT and Our Disciplines">
       <div className="wrap">
-        {/* Top Editorial Row: Statement + 3D Discipline Morph */}
-        <div className="mf-grid">
-          <div className="mf-copy">
-            <div className="mf-copy-in">
-              <MonoLabel index="01">About NMYT</MonoLabel>
-            </div>
-            <h2 className="display mf-headline mf-copy-in">
-              Two teams. One roof.
-              <br />
-              <em className="serif text-grad">One standard.</em>
-            </h2>
-            <p className="mf-text mf-copy-in">
-              NMYT is a small studio with big standards. A Tech Studio that builds websites, landing pages and simple
-              systems — and a Creative Studio that shoots films, products and content. Most businesses juggle five vendors
-              to get there. You get one team, one standard, one story.
-            </p>
-
-            <ol className="mf-stages mf-copy-in" role="tablist" aria-label="Discipline preview switcher">
-              {STAGES.map((s, i) => (
-                <li
-                  key={s.k}
-                  role="tab"
-                  tabIndex={0}
-                  aria-selected={i === activeStage}
-                  className={`mf-stage-item ${i === activeStage ? 'is-on' : ''}`}
-                  style={{ ['--c' as string]: s.c }}
-                  onMouseEnter={() => setStage(s.target)}
-                  onClick={() => setStage(s.target)}
-                  onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setStage(s.target)}
-                >
-                  <span className="mono mf-si">0{i + 1}</span>
-                  <span className="mf-sk">{s.k}</span>
-                  <span className="mf-sv serif">{s.v}</span>
-                </li>
-              ))}
-            </ol>
+        {/* Centered Editorial Statement */}
+        <header className="mf-header">
+          <div className="mf-copy-in flex justify-center">
+            <MonoLabel index="01">About NMYT</MonoLabel>
           </div>
+          <h2 className="display mf-headline mf-copy-in">
+            Two teams. One roof.
+            <br />
+            <em className="serif text-grad">One standard.</em>
+          </h2>
+          <p className="mf-text mf-copy-in">
+            NMYT is a small studio with big standards. A Tech Studio that builds websites, landing pages and simple
+            systems — and a Creative Studio that shoots films, products and content. Most businesses juggle five vendors
+            to get there. You get one team, one standard, one story.
+          </p>
+        </header>
 
-          <div className="mf-stage" aria-hidden="true">
-            <ParticleMorph progress={progress} />
-            <div className="mf-stage-cap mono">
-              <span className="flex items-center gap-2">
-                <i className="mf-stage-dot" style={{ background: STAGES[activeStage].c }} />
-                <span>Interactive Discipline Morph</span>
-              </span>
-              <span>{STAGES[activeStage].k}</span>
-            </div>
-            <div className="mf-stage-hint mono">
-              <span>Interactive 3D / Hover or Drag</span>
-            </div>
-          </div>
-        </div>
-
-        {/* The 3 Pillars Spread: We build. We shoot. We tell stories. */}
-        <div className="mf-pillars-header">
-          <div className="mf-pillars-title-wrap">
-            <span className="mono text-[var(--fg-3)]">Disciplines in Action</span>
-            <h3 className="display mf-pillars-title">
-              What we <em className="serif text-grad">do.</em>
-            </h3>
-          </div>
-          <p className="mono mf-pillars-note">Click or hover to explore</p>
-        </div>
-
+        {/* The 3 Pillars Spread (Moved up directly under the statement) */}
         <div className="mf-triptych" role="region" aria-label="Our Three Pillars">
           {PILLARS.map((p, i) => {
             const isHovered = hoveredPillar === i
@@ -235,8 +149,8 @@ export default function Manifesto() {
                 to={p.link}
                 className={`mf-pillar mf-pillar--${p.key} ${cardState}`}
                 style={{ ['--tone' as string]: p.tone }}
-                onMouseEnter={() => handlePillarEnter(i, p.stageTarget)}
-                onMouseLeave={handlePillarLeave}
+                onMouseEnter={() => setHoveredPillar(i)}
+                onMouseLeave={() => setHoveredPillar(null)}
                 data-cursor="Explore"
                 aria-label={`${p.kicker} — ${p.title} ${p.em}`}
               >

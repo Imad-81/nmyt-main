@@ -1,34 +1,31 @@
 .mf {
   position: relative;
   background:
-    radial-gradient(70% 50% at 80% 25%, rgba(22, 56, 255, 0.08), transparent 70%),
-    radial-gradient(60% 40% at 20% 75%, rgba(124, 255, 58, 0.04), transparent 70%),
+    radial-gradient(80% 50% at 50% 15%, rgba(22, 56, 255, 0.08), transparent 70%),
+    radial-gradient(70% 40% at 50% 65%, rgba(124, 255, 58, 0.035), transparent 70%),
     var(--void);
-  padding-block: clamp(80px, 11vw, 160px);
+  padding-block: clamp(80px, 10vw, 150px);
   overflow: hidden;
 }
 
-/* ---------- Top Editorial Row ---------- */
-.mf-grid {
-  display: grid;
-  grid-template-columns: 1.05fr 1fr;
-  gap: clamp(32px, 5vw, 84px);
-  align-items: center;
-  margin-bottom: clamp(64px, 9vw, 120px);
-}
-
-.mf-copy {
+/* ---------- Centered Editorial Header ---------- */
+.mf-header {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  align-items: center;
+  text-align: center;
+  gap: clamp(20px, 2.5vw, 32px);
+  margin-bottom: clamp(48px, 6vw, 84px);
 }
 
 .mf-headline {
   margin: 0;
-  font-size: clamp(40px, 4.8vw, 76px);
+  font-size: clamp(44px, 5.4vw, 86px);
   line-height: 0.92;
   letter-spacing: -0.025em;
   color: var(--fg);
+  text-align: center;
+  max-width: 18ch;
 }
 
 .mf-headline em {
@@ -37,151 +34,13 @@
 }
 
 .mf-text {
-  margin: 0;
-  font-size: clamp(17px, 1.4vw, 21px);
-  line-height: 1.5;
+  margin: 0 auto;
+  font-size: clamp(17px, 1.45vw, 22px);
+  line-height: 1.52;
   letter-spacing: -0.015em;
   color: var(--fg-2);
-  max-width: 58ch;
-}
-
-/* ---------- Stage Tabs ---------- */
-.mf-stages {
-  list-style: none;
-  margin: 8px 0 0;
-  padding: 0;
-  border-top: 1px solid var(--line);
-}
-
-.mf-stage-item {
-  display: grid;
-  grid-template-columns: 40px 170px 1fr;
-  align-items: baseline;
-  gap: 12px;
-  padding: 16px 8px;
-  border-bottom: 1px solid var(--line);
-  color: var(--fg-3);
-  cursor: pointer;
-  border-radius: 8px;
-  transition: color 0.3s ease, background 0.3s ease;
-  user-select: none;
-}
-
-.mf-stage-item:hover {
-  color: var(--fg);
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.mf-stage-item.is-on {
-  color: var(--fg);
-  background: rgba(255, 255, 255, 0.035);
-}
-
-.mf-si {
-  color: inherit;
-  transition: color 0.3s;
-}
-
-.mf-stage-item.is-on .mf-si {
-  color: var(--c);
-}
-
-.mf-sk {
-  font-weight: 500;
-  font-size: 14.5px;
-}
-
-.mf-sv {
-  font-size: 19px;
-  opacity: 0.45;
-  transform: translateX(-6px);
-  transition: opacity 0.4s ease, transform 0.4s var(--ease-out), color 0.3s ease;
-}
-
-.mf-stage-item:hover .mf-sv {
-  opacity: 0.8;
-  transform: translateX(-2px);
-}
-
-.mf-stage-item.is-on .mf-sv {
-  opacity: 1;
-  transform: none;
-  color: var(--c);
-}
-
-/* ---------- 3D Canvas Box ---------- */
-.mf-stage {
-  position: relative;
-  height: clamp(380px, 48vh, 560px);
-  border-radius: var(--radius-lg);
-  background:
-    radial-gradient(80% 70% at 50% 50%, rgba(10, 26, 140, 0.16), transparent 72%),
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 40px 40px,
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 40px 40px,
-    rgba(7, 9, 15, 0.65);
-  border: 1px solid var(--line);
-  overflow: hidden;
-  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.6);
-}
-
-.mf-stage-cap {
-  position: absolute;
-  left: 24px;
-  right: 24px;
-  top: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--fg-2);
-  font-size: 11px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.mf-stage-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  box-shadow: 0 0 10px currentColor;
-  display: inline-block;
-  transition: background 0.3s ease;
-}
-
-.mf-stage-hint {
-  position: absolute;
-  left: 24px;
-  bottom: 20px;
-  color: var(--fg-3);
-  font-size: 10.5px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* ---------- Pillars Header ---------- */
-.mf-pillars-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 28px;
-}
-
-.mf-pillars-title-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.mf-pillars-title {
-  margin: 0;
-  font-size: clamp(34px, 3.6vw, 56px);
-  line-height: 0.9;
-}
-
-.mf-pillars-note {
-  color: var(--fg-3);
-  font-size: 11px;
+  max-width: 54ch;
+  text-align: center;
 }
 
 /* ---------- The 3 Pillars Triptych Spread ---------- */
@@ -383,7 +242,11 @@
   -webkit-backdrop-filter: blur(14px);
   transform: translateY(4px);
   opacity: 0.85;
-  transition: transform 0.35s var(--ease-out), opacity 0.35s ease, background 0.3s, border-color 0.3s;
+  transition:
+    transform 0.35s var(--ease-out),
+    opacity 0.35s ease,
+    background 0.3s,
+    border-color 0.3s;
 }
 
 .mf-pillar:hover .mf-pillar-cta {
@@ -443,18 +306,125 @@
   font-size: 12px;
 }
 
+/* ---------- Archived Particle Component Styles (for future reuse) ---------- */
+.mf-particle-bundle {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.mf-stages {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.mf-stage-item {
+  display: grid;
+  grid-template-columns: 40px 170px 1fr;
+  align-items: baseline;
+  gap: 12px;
+  padding: 16px 8px;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg-3);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: color 0.3s ease, background 0.3s ease;
+  user-select: none;
+}
+
+.mf-stage-item:hover {
+  color: var(--fg);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.mf-stage-item.is-on {
+  color: var(--fg);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.mf-si {
+  color: inherit;
+  transition: color 0.3s;
+}
+
+.mf-stage-item.is-on .mf-si {
+  color: var(--c);
+}
+
+.mf-sk {
+  font-weight: 500;
+  font-size: 14.5px;
+}
+
+.mf-sv {
+  font-size: 19px;
+  opacity: 0.45;
+  transform: translateX(-6px);
+  transition: opacity 0.4s ease, transform 0.4s var(--ease-out), color 0.3s ease;
+}
+
+.mf-stage-item:hover .mf-sv {
+  opacity: 0.8;
+  transform: translateX(-2px);
+}
+
+.mf-stage-item.is-on .mf-sv {
+  opacity: 1;
+  transform: none;
+  color: var(--c);
+}
+
+.mf-stage {
+  position: relative;
+  height: clamp(380px, 48vh, 560px);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(80% 70% at 50% 50%, rgba(10, 26, 140, 0.16), transparent 72%),
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 40px 40px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 40px 40px,
+    rgba(7, 9, 15, 0.65);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.6);
+}
+
+.mf-stage-cap {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--fg-2);
+  font-size: 11px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.mf-stage-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px currentColor;
+  display: inline-block;
+  transition: background 0.3s ease;
+}
+
+.mf-stage-hint {
+  position: absolute;
+  left: 24px;
+  bottom: 20px;
+  color: var(--fg-3);
+  font-size: 10.5px;
+  pointer-events: none;
+  z-index: 2;
+}
+
 /* ---------- Responsive Layouts ---------- */
 @media (max-width: 960px) {
-  .mf-grid {
-    grid-template-columns: 1fr;
-    gap: 36px;
-  }
-
-  .mf-stage {
-    height: 380px;
-    order: 2;
-  }
-
   .mf-triptych {
     flex-direction: column;
     height: auto;
