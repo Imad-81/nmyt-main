@@ -117,7 +117,7 @@ export default function Manifesto() {
   )
 
   return (
-    <section ref={root} className="mf section" aria-label="About NMYT and Our Disciplines">
+    <section ref={root} className="mf" aria-label="About NMYT and Our Disciplines">
       <div className="wrap">
         {/* Centered Editorial Statement */}
         <header className="mf-header">
@@ -125,15 +125,23 @@ export default function Manifesto() {
             <MonoLabel index="01">About NMYT</MonoLabel>
           </div>
           <h2 className="display mf-headline mf-copy-in">
-            Two teams. One roof.
-            <br />
-            <em className="serif text-grad">One standard.</em>
+            <span className="mf-headline-main">Two teams. One roof.</span>
+            <em className="serif text-grad mf-headline-sub">One standard.</em>
           </h2>
-          <p className="mf-text mf-copy-in">
-            NMYT is a small studio with big standards. A Tech Studio that builds websites, landing pages and simple
-            systems — and a Creative Studio that shoots films, products and content. Most businesses juggle five vendors
-            to get there. You get one team, one standard, one story.
-          </p>
+
+          <div className="mf-statement mf-copy-in">
+            <p className="mf-statement-lead">
+              A small studio with big standards.
+            </p>
+            <p className="mf-statement-body">
+              A <span className="mf-tag-tech">Tech Studio</span> that builds websites, landing pages and simple systems — and a{' '}
+              <span className="mf-tag-creative">Creative Studio</span> that shoots films, products and content.
+            </p>
+            <div className="mf-statement-foot">
+              <span className="mf-foot-dim">Most businesses juggle five vendors to get there.</span>
+              <span className="mf-foot-highlight">You get one team, one standard, one story.</span>
+            </div>
+          </div>
         </header>
 
         {/* The 3 Pillars Spread (Moved up directly under the statement) */}

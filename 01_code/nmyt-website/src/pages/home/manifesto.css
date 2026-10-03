@@ -4,7 +4,8 @@
     radial-gradient(80% 50% at 50% 15%, rgba(22, 56, 255, 0.08), transparent 70%),
     radial-gradient(70% 40% at 50% 65%, rgba(124, 255, 58, 0.035), transparent 70%),
     var(--void);
-  padding-block: clamp(80px, 10vw, 150px);
+  padding-top: clamp(24px, 3.5vw, 48px);
+  padding-bottom: clamp(64px, 8vw, 120px);
   overflow: hidden;
 }
 
@@ -14,33 +15,98 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: clamp(20px, 2.5vw, 32px);
-  margin-bottom: clamp(48px, 6vw, 84px);
+  gap: clamp(16px, 2vw, 24px);
+  margin-bottom: clamp(36px, 4.5vw, 60px);
 }
 
 .mf-headline {
   margin: 0;
-  font-size: clamp(44px, 5.4vw, 86px);
-  line-height: 0.92;
-  letter-spacing: -0.025em;
-  color: var(--fg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
   text-align: center;
-  max-width: 18ch;
+  max-width: 100%;
 }
 
-.mf-headline em {
-  display: inline-block;
+.mf-headline-main {
+  font-size: clamp(32px, 5.2vw, 84px);
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+  white-space: nowrap;
+}
+
+.mf-headline-sub {
+  font-size: clamp(30px, 4.6vw, 74px);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
   padding-right: 0.08em;
 }
 
-.mf-text {
-  margin: 0 auto;
-  font-size: clamp(17px, 1.45vw, 22px);
-  line-height: 1.52;
-  letter-spacing: -0.015em;
-  color: var(--fg-2);
-  max-width: 54ch;
+/* ---------- Structured Editorial Statement ---------- */
+.mf-statement {
+  max-width: 62ch;
+  margin: 6px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
   text-align: center;
+}
+
+.mf-statement-lead {
+  margin: 0;
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-weight: 500;
+  color: var(--fg);
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.mf-statement-body {
+  margin: 0;
+  font-size: clamp(16px, 1.25vw, 18.5px);
+  color: var(--fg-2);
+  line-height: 1.55;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  max-width: 52ch;
+}
+
+.mf-tag-tech {
+  color: var(--sky);
+  font-weight: 500;
+}
+
+.mf-tag-creative {
+  color: var(--acid);
+  font-weight: 500;
+}
+
+.mf-statement-foot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--line);
+  font-size: clamp(13px, 1.1vw, 15px);
+  line-height: 1.4;
+}
+
+.mf-foot-dim {
+  color: var(--fg-3);
+}
+
+.mf-foot-highlight {
+  color: var(--fg);
+  font-weight: 500;
 }
 
 /* ---------- The 3 Pillars Triptych Spread ---------- */
