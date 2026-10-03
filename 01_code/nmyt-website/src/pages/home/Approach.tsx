@@ -34,7 +34,7 @@ export default function Approach() {
   return (
     <section ref={root} className="ap section">
       <div className="wrap">
-        <SectionHead index="04" label="Built for" title={<>Who we <em className="serif text-grad">work</em> with.</>} />
+        <SectionHead index="03" label="Built for" title={<>Who we <em className="serif text-grad">work</em> with.</>} />
         <div className="ap-list">
           {AUDIENCES.map((a) => (
             <div key={a.k} className="ap-row">
@@ -57,7 +57,7 @@ export default function Approach() {
         <div className="ap-proc">
           <Reveal className="mb-10 flex items-center gap-4">
             <span className="mono text-[var(--fg-3)]">
-              <span className="text-[var(--sky)]">05</span> / How we work
+              <span className="text-[var(--sky)]">04</span> / How we work
             </span>
             <div className="hairline flex-1" />
           </Reveal>
