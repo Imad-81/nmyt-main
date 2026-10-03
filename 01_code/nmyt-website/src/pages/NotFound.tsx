@@ -17,7 +17,7 @@ const CSS = `
 .nf-kicker{color:var(--fg-3);display:flex;gap:10px;align-items:center}
 .nf-kicker b{font-weight:450;color:#ff5a5a}
 .nf-code{position:relative;margin:.08em 0 0;font-size:clamp(150px,34vw,560px);line-height:.8;color:var(--fg);
-  text-shadow:0 0 120px rgba(22,56,255,.45);animation:nf-jit 3.2s steps(1) infinite}
+  animation:nf-jit 3.2s steps(1) infinite}
 .nf-code::before,.nf-code::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen}
 .nf-code::before{color:var(--royal);animation:nf-g1 2.6s steps(1) infinite}
 .nf-code::after{color:var(--acid);animation:nf-g2 3.1s steps(1) infinite}

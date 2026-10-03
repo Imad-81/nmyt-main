@@ -155,7 +155,6 @@
 
 .sw-card:hover .sw-media {
   border-color: var(--line-strong);
-  box-shadow: 0 24px 56px -12px rgba(0, 0, 0, 0.85);
 }
 
 /* Dynamic Specular Light Glare */

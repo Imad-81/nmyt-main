@@ -165,10 +165,6 @@
 }
 .gl-base {
   display: block;
-  text-shadow:
-    -0.016em 0 0 rgba(22, 56, 255, 0.6),
-    0.012em 0 0 rgba(0, 224, 138, 0.35),
-    0 10px 60px rgba(3, 4, 8, 0.6);
   will-change: transform;
 }
 .ch-em {
@@ -177,7 +173,6 @@
   font-size: 1.04em;
   letter-spacing: -0.03em;
   padding-right: 0.08em;
-  text-shadow: inherit;
 }
 .gl-layer {
   position: absolute;
@@ -367,8 +362,7 @@
   -webkit-backdrop-filter: blur(26px) saturate(170%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
-    inset 0 -60px 90px -50px rgba(124, 255, 58, 0.28),
-    0 50px 100px -40px rgba(0, 0, 0, 0.75);
+    inset 0 -60px 90px -50px rgba(124, 255, 58, 0.28);
   transform-style: preserve-3d;
   will-change: transform;
 }
@@ -659,9 +653,6 @@
   position: absolute;
   inset: 0;
   color: var(--acid);
-  text-shadow:
-    -0.02em 0 0 rgba(22, 56, 255, 0.7),
-    0 0 40px rgba(124, 255, 58, 0.35);
   clip-path: inset(0 100% 0 0);
   transition: clip-path 0.85s var(--ease-out);
 }
@@ -725,7 +716,6 @@
   overflow: hidden;
   background: linear-gradient(160deg, var(--navy), #03150c 60%, rgba(0, 224, 138, 0.55));
   box-shadow:
-    0 40px 90px -30px rgba(0, 0, 0, 0.8),
     0 0 0 1px rgba(124, 255, 58, 0.4),
     0 0 60px -10px rgba(124, 255, 58, 0.3);
 }
@@ -1294,7 +1284,6 @@
   pointer-events: none;
   color: var(--fg);
   font-size: 10.5px;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
 }
 .tl-hud > span {
   position: absolute;
@@ -1547,7 +1536,6 @@
   letter-spacing: 0.06em;
   white-space: nowrap;
   color: rgba(255, 255, 255, 0.92);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 .tl-lanes-wrap.is-sound .tl-lane--a1 .tl-clip,
 .tl-lanes-wrap.is-sound .tl-lane--a2 .tl-clip {
@@ -1669,7 +1657,6 @@
 }
 .vm-fill {
   color: var(--acid);
-  text-shadow: 0 0 60px rgba(124, 255, 58, 0.25);
 }
 .vm-out {
   color: transparent;
@@ -1686,7 +1673,6 @@
   margin: clamp(-24px, -1.2vw, -8px) 0 0 -8vw;
   transform: rotate(-3deg);
   background: var(--acid);
-  box-shadow: 0 30px 90px -30px rgba(124, 255, 58, 0.55);
 }
 .vm-row--b {
   font-size: clamp(40px, 6vw, 110px);
