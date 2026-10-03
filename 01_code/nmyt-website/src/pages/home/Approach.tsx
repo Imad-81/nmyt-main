@@ -4,8 +4,6 @@ import { gsap } from '@/lib/smooth'
 import { AUDIENCES } from '@/data/site'
 import { SectionHead, Marquee } from '@/components/ui'
 import { Reveal } from '@/components/Reveal'
-import Img from '@/components/Img'
-import { media } from '@/data/media'
 import './approach.css'
 
 const STEPS = [
@@ -46,13 +44,6 @@ export default function Approach() {
           ))}
         </div>
 
-        <figure className="ap-band">
-          <Img src={media('studioTeam')} alt="An edit suite at night — colour grading on one desk, storyboards on the next" className="ap-band-img" parallax={10} />
-          <figcaption className="mono">
-            <span>In-house</span>
-            <span>Edit · Grade · Storyboard · Code</span>
-          </figcaption>
-        </figure>
 
         <div className="ap-proc">
           <Reveal className="mb-10 flex items-center gap-4">
