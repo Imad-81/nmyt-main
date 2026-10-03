@@ -121,7 +121,7 @@ export default function Manifesto() {
       <div className="wrap">
         {/* Centered Editorial Statement */}
         <header className="mf-header">
-          <div className="mf-copy-in flex justify-center">
+          <div className="mf-copy-in w-full text-left">
             <MonoLabel index="01">About NMYT</MonoLabel>
           </div>
           <h2 className="display mf-headline mf-copy-in">
