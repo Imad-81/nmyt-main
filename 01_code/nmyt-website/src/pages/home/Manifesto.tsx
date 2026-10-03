@@ -162,13 +162,14 @@ export default function Manifesto() {
                 data-cursor="Explore"
                 aria-label={`${p.kicker} — ${p.title} ${p.em}`}
               >
-                <div
-                  className="mf-pillar-bg"
-                  style={{ backgroundImage: `url(${media(p.image, 'lg')})` }}
-                  aria-hidden="true"
-                />
-                <div className="mf-pillar-shade" aria-hidden="true" />
-                <div className="mf-pillar-glow" aria-hidden="true" />
+                <div className="mf-pillar-media" aria-hidden="true">
+                  <div
+                    className="mf-pillar-bg"
+                    style={{ backgroundImage: `url(${media(p.image, 'lg')})` }}
+                  />
+                  <div className="mf-pillar-shade" />
+                  <div className="mf-pillar-glow" />
+                </div>
 
                 {/* Top HUD */}
                 <header className="mf-pillar-head">
