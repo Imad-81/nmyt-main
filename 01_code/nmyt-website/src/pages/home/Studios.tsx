@@ -176,7 +176,7 @@ export default function Studios() {
     <section ref={root} className="section st" id="studios">
       <div className="wrap">
         <SectionHead
-          index="03"
+          index="02"
           label="Two studios"
           title={
             <>
