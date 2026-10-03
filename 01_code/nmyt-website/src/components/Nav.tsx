@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { gsap, getLenis } from '@/lib/smooth'
+import { gsap, getLenis, scrollToTop } from '@/lib/smooth'
 import { MagneticButton } from './MagneticButton'
 import { SITE } from '@/data/site'
 import './nav.css'
 
 export const NAV_LINKS = [
+  { to: '/', label: 'Home', tag: '00' },
   { to: '/tech', label: 'Tech Studio', tag: '01' },
   { to: '/creative', label: 'Creative Studio', tag: '02' },
   { to: '/originals', label: 'Originals', tag: '03' },
@@ -72,8 +73,18 @@ export default function Nav() {
           </Link>
 
           <nav className="nv-links glass" aria-label="Primary">
-            {NAV_LINKS.slice(0, 4).map((l) => (
-              <NavLink key={l.to} to={l.to} className={({ isActive }) => `nv-link ${isActive ? 'is-active' : ''}`}>
+            {NAV_LINKS.filter((l) => l.to !== '/contact').map((l) => (
+              <NavLink
+                key={l.to}
+                to={l.to}
+                end={l.to === '/'}
+                onClick={() => {
+                  if (l.to === '/' && loc.pathname === '/') {
+                    scrollToTop(false)
+                  }
+                }}
+                className={({ isActive }) => `nv-link ${isActive ? 'is-active' : ''}`}
+              >
                 <span className="nv-link-roll" data-text={l.label}>
                   {l.label}
                 </span>
