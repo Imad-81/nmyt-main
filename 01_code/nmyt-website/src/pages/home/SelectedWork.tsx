@@ -46,14 +46,14 @@ export default function SelectedWork() {
   return (
     <section ref={root} className="sw" aria-label="Selected work">
       <div className="sw-mhead wrap">
-        <MonoLabel index="03">Selected work</MonoLabel>
+        <MonoLabel index="02">Selected work</MonoLabel>
         <h2 className="display sw-title">
           Work that <em className="serif text-grad">moves</em> people.
         </h2>
       </div>
       <div ref={track} className="sw-track">
         <div className="sw-intro">
-          <MonoLabel index="03">Selected work</MonoLabel>
+          <MonoLabel index="02">Selected work</MonoLabel>
           <SplitReveal as="h2" className="display sw-title">
             Work that <em className="serif text-grad">moves</em> people.
           </SplitReveal>

@@ -1,6 +1,5 @@
 import HomeHero from './home/HomeHero'
 import Manifesto from './home/Manifesto'
-import Studios from './home/Studios'
 import SelectedWork from './home/SelectedWork'
 import OriginalsTeaser from './home/OriginalsTeaser'
 import Approach from './home/Approach'
@@ -11,7 +10,6 @@ export default function Home() {
     <>
       <HomeHero />
       <Manifesto />
-      <Studios />
       <SelectedWork />
       <OriginalsTeaser />
       <Approach />

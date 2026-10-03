@@ -43,7 +43,7 @@ export default function OriginalsTeaser() {
       <div className="ot-bar ot-bar--t" />
       <div className="ot-bar ot-bar--b" />
       <div className="ot-copy wrap">
-        <MonoLabel index="04" color="var(--emerald)">
+        <MonoLabel index="03" color="var(--emerald)">
           NMYT Originals
         </MonoLabel>
         <SplitReveal as="h2" className="display ot-title">
