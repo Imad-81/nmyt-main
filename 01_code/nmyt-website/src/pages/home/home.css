@@ -1,0 +1,53 @@
+/* Home page continuous lighting spine integration */
+
+.home-page {
+  position: relative;
+  background: var(--void);
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
+/* Allow fixed living light spine to shine through home sections */
+.home-page .hh {
+  background: transparent !important;
+}
+
+.home-page .hh-fadeout {
+  display: none !important;
+}
+
+.home-page .mf {
+  background:
+    radial-gradient(80% 50% at 50% 15%, rgba(22, 56, 255, 0.08), transparent 70%),
+    radial-gradient(70% 40% at 50% 65%, rgba(124, 255, 58, 0.035), transparent 70%),
+    transparent !important;
+}
+
+.home-page .sw {
+  background: transparent !important;
+}
+
+.home-page .ap {
+  background: transparent !important;
+}
+
+.home-page .ft {
+  background: transparent !important;
+}
+
+/* Subtle atmospheric backdrop blur on interactive cards to ensure ultra-sharp contrast */
+.home-page .mf-pillar {
+  background-color: rgba(7, 9, 15, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.home-page .sw-card {
+  background-color: rgba(7, 9, 15, 0.55);
+}
+
+.home-page .ap-step-vert {
+  background-color: rgba(7, 9, 15, 0.45);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
