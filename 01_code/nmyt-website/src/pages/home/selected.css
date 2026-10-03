@@ -3,9 +3,40 @@
   background: var(--void);
   padding-top: clamp(60px, 7vw, 100px);
   padding-bottom: clamp(40px, 5vw, 64px);
+  overflow: clip;
 }
 
-/* ---------- Bento 4-Column Grid (User's Layout) ---------- */
+/* ---------- Ambient Backdrop Aura (Follows hovered card) ---------- */
+.sw-aura {
+  position: absolute;
+  width: min(65vw, 700px);
+  height: min(65vw, 700px);
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    var(--aura-tone, var(--sky)) 0%,
+    rgba(10, 26, 140, 0.35) 45%,
+    transparent 72%
+  );
+  filter: blur(130px);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.85);
+  transition:
+    opacity 0.75s ease,
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    left 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    top 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+  will-change: transform, opacity, left, top;
+}
+
+.sw-aura.is-active {
+  opacity: 0.32;
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+/* ---------- Bento 4-Column Grid ---------- */
 .sw-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -22,6 +53,20 @@
   gap: clamp(18px, 2.2vw, 28px);
   padding-right: clamp(16px, 3.5vw, 48px);
   padding-bottom: 24px;
+}
+
+.sw-count-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+  font-size: 10px;
+  color: var(--fg-3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .sw-title {
@@ -85,6 +130,8 @@
   color: inherit;
   position: relative;
   cursor: pointer;
+  perspective: 1000px;
+  will-change: transform;
 }
 
 .sw-media {
@@ -94,6 +141,7 @@
   overflow: hidden;
   background: var(--ink-800);
   border: 1px solid var(--line);
+  transform-style: preserve-3d;
   transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
   clip-path: inset(0 round var(--radius));
@@ -107,16 +155,34 @@
 
 .sw-card:hover .sw-media {
   border-color: var(--line-strong);
-  box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.75);
+  box-shadow: 0 24px 56px -12px rgba(0, 0, 0, 0.85);
+}
+
+/* Dynamic Specular Light Glare */
+.sw-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  background: radial-gradient(
+    circle 260px at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.32) 0%,
+    rgba(255, 255, 255, 0.1) 40%,
+    transparent 80%
+  );
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  transition: opacity 0.35s ease;
+  z-index: 3;
 }
 
 .sw-img {
   position: absolute;
-  inset: 0;
+  inset: -8%;
   border-radius: var(--radius);
   background-size: cover;
   background-position: center;
-  filter: brightness(0.8) saturate(0.92);
+  filter: brightness(0.82) saturate(0.95);
   transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
   will-change: transform, filter;
@@ -126,8 +192,8 @@
 }
 
 .sw-card:hover .sw-img {
-  transform: scale(1.06);
-  filter: brightness(0.96) saturate(1.15);
+  transform: scale(1.08);
+  filter: brightness(0.98) saturate(1.18);
 }
 
 .sw-shade {
@@ -192,6 +258,19 @@
   height: 5px;
   border-radius: 50%;
   box-shadow: 0 0 6px currentColor;
+  animation: sw-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes sw-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+    box-shadow: 0 0 10px currentColor;
+  }
 }
 
 .sw-pill--glass {
@@ -219,7 +298,8 @@
 .sw-arrow {
   color: var(--fg-3);
   font-size: 16px;
-  transition: transform 0.3s ease, color 0.3s ease;
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.35s ease;
 }
 
 .sw-card:hover .sw-name {
@@ -227,7 +307,7 @@
 }
 
 .sw-card:hover .sw-arrow {
-  transform: translate(2px, -2px);
+  transform: translate(3px, -3px) scale(1.12);
   color: var(--sky);
 }
 

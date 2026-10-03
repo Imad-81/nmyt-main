@@ -116,6 +116,7 @@ export function Reveal({ children, as: Tag = 'div', className, style, y = 40, de
   useGSAP(
     () => {
       const el = ref.current
+      if (!el) return
       const targets = childSelector ? el.querySelectorAll(childSelector) : el
       if (!targets || (targets instanceof NodeList && targets.length === 0)) return
       const reduce = prefersReducedMotion()
