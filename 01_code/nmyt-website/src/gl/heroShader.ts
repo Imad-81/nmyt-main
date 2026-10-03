@@ -99,11 +99,11 @@ void main(){
     float g = w / (d + 0.0016) * exp(-d*10.0);
     vec3 c = mix(royal, sky, smoothstep(0.0, 1.0, fi*0.6 + 0.4*smoothstep(-0.6, 1.2, x)));
     c = mix(c, ice, 0.25*smoothstep(0.7, 1.0, fi));
-    col += c * g * 0.55;
+    col += c * g * 0.38;
   }
   // soft bloom sheet along A
   float dA = q.y - bA;
-  col += mix(deep, royal, 0.6) * 0.5 * exp(-dA*dA*(90.0/(spreadA*12.0+0.4))) * 0.3;
+  col += mix(deep, royal, 0.6) * 0.35 * exp(-dA*dA*(90.0/(spreadA*12.0+0.4))) * 0.22;
 
   // ---------- family B: creative silk ----------
   float spreadB = 0.014 + 0.26*smoothstep(1.0, -1.1, x);
@@ -116,14 +116,14 @@ void main(){
     float w = mix(0.0009, 0.0026, hash(vec2(fi, 7.7)));
     float g = w / (d + 0.0022) * exp(-d*9.0);
     vec3 c = mix(emer, acid, smoothstep(0.0, 1.0, fi*0.7 + 0.3*smoothstep(0.8, -1.0, x)));
-    col += c * g * 0.42;
+    col += c * g * 0.28;
   }
   float dB = q.y - bB;
-  col += mix(emer, acid, 0.3) * 0.12 * exp(-dB*dB*(90.0/(spreadB*12.0+0.4)));
+  col += mix(emer, acid, 0.3) * 0.08 * exp(-dB*dB*(90.0/(spreadB*12.0+0.4)));
 
   // ---------- convergence: white-hot where they cross ----------
   float cross = exp(-abs(bA - bB)*16.0) * exp(-dA*dA*140.0);
-  col += ice * cross * 0.9;
+  col += ice * cross * 0.65;
 
   col *= reveal;
 
@@ -132,7 +132,7 @@ void main(){
   col *= mix(0.55, 1.0, v);
 
   // filmic tonemap, keep saturation
-  col = 1.0 - exp(-col * 1.25);
+  col = 1.0 - exp(-col * 1.1);
   col = pow(col, vec3(0.95));
   col *= 1.0 - uScroll*0.65;
 
