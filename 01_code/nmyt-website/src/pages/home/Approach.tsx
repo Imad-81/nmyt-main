@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger, refreshScroll } from '@/lib/smooth'
-import { AUDIENCES } from '@/data/site'
-import { SectionHead, Marquee, MonoLabel } from '@/components/ui'
+import { MonoLabel, Marquee } from '@/components/ui'
 import ProcessParticles from './ProcessParticles'
+import AudienceDial from './AudienceDial'
 import './approach.css'
 
 const STEPS = [
@@ -53,19 +53,6 @@ export default function Approach() {
 
   useGSAP(
     () => {
-      // Audiences text fill scrub
-      gsap.utils.toArray<HTMLElement>('.ap-row').forEach((row) => {
-        gsap.fromTo(
-          row,
-          { '--fill': '0%' },
-          {
-            '--fill': '100%',
-            ease: 'none',
-            scrollTrigger: { trigger: row, start: 'top 80%', end: 'top 45%', scrub: true },
-          },
-        )
-      })
-
       // Vertical Rail laser fill animation
       gsap.fromTo(
         '.ap-rail-fill',
@@ -144,28 +131,10 @@ export default function Approach() {
 
   return (
     <section ref={root} className="ap section">
-      <div className="wrap">
-        {/* Section 03: Audiences */}
-        <SectionHead
-          index="03"
-          label="Built for"
-          title={
-            <>
-              Who we <em className="serif text-grad">work</em> with.
-            </>
-          }
-        />
-        <div className="ap-list">
-          {AUDIENCES.map((a) => (
-            <div key={a.k} className="ap-row">
-              <span className="display ap-k" data-text={a.k}>
-                {a.k}
-              </span>
-              <span className="ap-v">{a.v}</span>
-            </div>
-          ))}
-        </div>
+      {/* Section 03: Audiences — Precision Circular Dial Stage */}
+      <AudienceDial />
 
+      <div className="wrap">
         {/* Section 04: How We Work - Vertical Narrative & Sticky 3D Particle Morph */}
         <div className="ap-proc">
           <div className="ap-proc-head">

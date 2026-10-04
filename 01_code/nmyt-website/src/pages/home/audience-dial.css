@@ -1,0 +1,388 @@
+/* ==========================================================================
+   AUDIENCE CIRCULAR DIAL — Precision Optics & Warped Typography
+   ========================================================================== */
+
+.aud-dial-root {
+  position: relative;
+  width: 100%;
+}
+
+.aud-dial-pin {
+  width: 100%;
+  height: 100vh;
+  min-height: 720px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(
+    70% 60% at 75% 50%,
+    rgba(22, 180, 255, 0.06) 0%,
+    rgba(4, 18, 63, 0.03) 45%,
+    transparent 80%
+  );
+}
+
+.aud-dial-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 3.5vw, 44px);
+  position: relative;
+  z-index: 2;
+}
+
+.aud-dial-head {
+  width: 100%;
+}
+
+/* 2-Column Responsive Dial Console */
+.aud-dial-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: clamp(28px, 4vw, 56px);
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .aud-dial-grid {
+    grid-template-columns: 1.15fr 1fr;
+    gap: clamp(36px, 5vw, 72px);
+  }
+}
+
+/* Left Column: Live Narrative Display Card */
+.aud-narrative-col {
+  width: 100%;
+}
+
+.aud-narrative-card {
+  position: relative;
+  background: rgba(12, 15, 24, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: clamp(24px, 3.2vw, 44px);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.aud-narrative-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--sky) 40%, var(--acid) 80%, transparent);
+}
+
+.aud-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: clamp(14px, 1.8vw, 20px);
+}
+
+.aud-meta-tag {
+  font-weight: 600;
+  text-shadow: 0 0 12px currentColor;
+}
+
+.aud-meta-stop {
+  color: var(--fg-3);
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.aud-card-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 78%;
+  font-variation-settings: 'wdth' 78;
+  font-size: clamp(34px, 4.4vw, 62px);
+  line-height: 0.92;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  margin: 0 0 clamp(16px, 2vw, 24px) 0;
+  min-height: 1.8em;
+  display: flex;
+  align-items: center;
+  transition: color 0.4s ease;
+}
+
+.aud-card-desc {
+  color: var(--fg-2);
+  font-size: clamp(17px, 1.4vw, 22px);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  max-width: 38ch;
+  margin: 0 0 clamp(20px, 2.5vw, 32px) 0;
+  min-height: 2.9em;
+}
+
+.aud-card-deliv {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: clamp(24px, 2.8vw, 36px);
+}
+
+.aud-deliv-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--fg-2);
+  white-space: nowrap;
+}
+
+.aud-deliv-pill i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  box-shadow: 0 0 6px currentColor;
+}
+
+/* Interactive Archetype Navigation Selector Tabs */
+.aud-selector-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 5px;
+  background: rgba(3, 4, 8, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.aud-selector-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 4px;
+  border-radius: 8px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--fg-3);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+  user-select: none;
+}
+
+.aud-selector-btn:hover {
+  color: var(--fg-2);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.aud-selector-btn.is-active {
+  background: rgba(255, 255, 255, 0.09);
+  color: var(--fg);
+  border: 1px solid rgba(22, 180, 255, 0.35);
+  box-shadow: 0 0 14px rgba(22, 180, 255, 0.15);
+}
+
+.aud-btn-num {
+  font-size: 9px;
+  opacity: 0.6;
+}
+
+.aud-btn-label {
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Telemetry HUD Bar */
+.aud-hud-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--fg-3);
+}
+
+.aud-hud-stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.aud-hud-lbl {
+  opacity: 0.6;
+}
+
+.aud-hud-val {
+  color: var(--fg-2);
+  font-weight: 600;
+}
+
+/* Right Column: High-Precision 3D Circular Dial */
+.aud-dial-col {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aud-stage-box {
+  position: relative;
+  width: 100%;
+  max-width: clamp(380px, 42vw, 580px);
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* 3D WebGL Canvas Layer — Exactly matches stage box bounds */
+.aud-3d-canvas-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.aud-3d-canvas-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Fixed Optical Reticle at 12 o'clock Apex */
+.aud-focal-reticle {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.aud-reticle-bracket {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.aud-reticle-arrow {
+  font-size: 13px;
+  color: var(--sky);
+  filter: drop-shadow(0 0 10px var(--sky));
+  line-height: 1;
+  animation: audReticlePulse 2s ease-in-out infinite;
+}
+
+@keyframes audReticlePulse {
+  0%, 100% { opacity: 0.7; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(2px); }
+}
+
+.aud-reticle-laser {
+  width: 2px;
+  height: 12px;
+  background: linear-gradient(180deg, var(--sky), transparent);
+  box-shadow: 0 0 8px var(--sky);
+}
+
+.aud-reticle-hud {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(3, 4, 8, 0.85);
+  border: 1px solid rgba(22, 180, 255, 0.3);
+  color: var(--sky);
+  box-shadow: 0 0 12px rgba(22, 180, 255, 0.2);
+  white-space: nowrap;
+}
+
+.aud-reticle-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+  animation: audDotBlink 1.6s ease-in-out infinite;
+}
+
+@keyframes audDotBlink {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* The Circular Dial SVG Overlay Layer */
+.aud-dial-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  user-select: none;
+  touch-action: none;
+  cursor: grab;
+  z-index: 2;
+}
+
+.aud-dial-svg:active {
+  cursor: grabbing;
+}
+
+/* Rotor Elements */
+.aud-dial-rotor {
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+/* Dial Quadrants */
+.aud-dial-quadrant {
+  cursor: pointer;
+}
+
+/* Dial Interaction Hint */
+.aud-dial-hint {
+  position: absolute;
+  bottom: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--fg-3);
+  white-space: nowrap;
+  opacity: 0.7;
+  pointer-events: none;
+}
