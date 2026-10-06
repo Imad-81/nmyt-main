@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '@/lib/smooth'
@@ -14,9 +14,12 @@ interface Pillar {
   title: string
   em: string
   meta: string
+  items: string[]
   image: MediaKey
   tone: string
   badge: string
+  code: string
+  glow: string
   link: string
 }
 
@@ -28,9 +31,12 @@ const PILLARS: Pillar[] = [
     title: 'We',
     em: 'build.',
     meta: 'Websites · Landing pages · Dashboards · Systems',
+    items: ['Websites', 'Landing pages', 'Dashboards', 'Systems'],
     image: 'techHands',
     tone: 'var(--sky)',
     badge: 'Code & Architecture',
+    code: 'SYS.01 // CODE',
+    glow: 'var(--glow-tech)',
     link: '/tech',
   },
   {
@@ -40,9 +46,12 @@ const PILLARS: Pillar[] = [
     title: 'We',
     em: 'shoot.',
     meta: 'Brand films · Product · Social · Ads · Design',
+    items: ['Brand films', 'Product', 'Social', 'Ads', 'Design'],
     image: 'creativeCommercial',
     tone: 'var(--acid)',
     badge: 'Cinema & Motion',
+    code: 'CAM.02 // RAW',
+    glow: 'var(--glow-creative)',
     link: '/creative',
   },
   {
@@ -52,9 +61,12 @@ const PILLARS: Pillar[] = [
     title: 'We tell',
     em: 'stories.',
     meta: 'In-house short films · New filmmakers',
+    items: ['In-house short films', 'New filmmakers'],
     image: 'heroFilmset',
     tone: 'var(--ice)',
     badge: 'Original Productions',
+    code: 'FILM.03 // PROD',
+    glow: 'var(--glow-master)',
     link: '/originals',
   },
 ]
@@ -63,6 +75,14 @@ export default function Manifesto() {
   const root = useRef<HTMLElement>(null)
   const isMobile = useIsMobile()
   const [hoveredPillar, setHoveredPillar] = useState<number | null>(null)
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    e.currentTarget.style.setProperty('--mouse-x', `${x}px`)
+    e.currentTarget.style.setProperty('--mouse-y', `${y}px`)
+  }, [])
 
   useGSAP(
     () => {
@@ -125,7 +145,7 @@ export default function Manifesto() {
           </div>
         </header>
 
-        {/* The 3 Pillars Spread (Moved up directly under the statement) */}
+        {/* The 3 Pillars Triptych Spread */}
         <div className="mf-triptych" role="region" aria-label="Our Three Pillars">
           {PILLARS.map((p, i) => {
             const isHovered = hoveredPillar === i
@@ -137,47 +157,92 @@ export default function Manifesto() {
                 key={p.key}
                 to={p.link}
                 className={`mf-pillar mf-pillar--${p.key} ${cardState}`}
-                style={{ ['--tone' as string]: p.tone }}
+                style={{
+                  ['--tone' as string]: p.tone,
+                  ['--pillar-glow' as string]: p.glow,
+                }}
                 onMouseEnter={() => setHoveredPillar(i)}
                 onMouseLeave={() => setHoveredPillar(null)}
+                onMouseMove={handleMouseMove}
                 data-cursor="Explore"
                 aria-label={`${p.kicker} — ${p.title} ${p.em}`}
               >
+                {/* Cinema Viewfinder Reticles */}
+                <span className="mf-reticle mf-reticle--tl" aria-hidden="true">+</span>
+                <span className="mf-reticle mf-reticle--tr" aria-hidden="true">+</span>
+                <span className="mf-reticle mf-reticle--bl" aria-hidden="true">+</span>
+                <span className="mf-reticle mf-reticle--br" aria-hidden="true">+</span>
+
+                {/* Media Background Layer */}
                 <div className="mf-pillar-media" aria-hidden="true">
                   <div
                     className="mf-pillar-bg"
                     style={{ backgroundImage: `url(${media(p.image, isMobile ? 'sm' : 'lg')})` }}
                   />
+                  <div className="mf-pillar-tint" />
+                  <div className="mf-pillar-spotlight" />
                   <div className="mf-pillar-shade" />
                   <div className="mf-pillar-glow" />
                 </div>
 
-                {/* Top HUD */}
+                {/* Sculptural Ghost Numeral Watermark */}
+                <div className="mf-pillar-watermark display" aria-hidden="true">
+                  {p.index}
+                </div>
+
+                {/* Top HUD: Studio Index & Classification */}
                 <header className="mf-pillar-head">
                   <div className="mf-pillar-kicker mono">
-                    <i className="mf-dot" />
-                    <span>{p.kicker}</span>
+                    <span className="mf-dot-beacon">
+                      <span className="mf-dot-ring" />
+                      <i className="mf-dot" />
+                    </span>
+                    <span className="mf-kicker-text">{p.kicker}</span>
                   </div>
-                  <span className="mf-pill mono">{p.badge}</span>
+                  <div className="mf-head-meta">
+                    <span className="mf-code-tag mono">{p.code}</span>
+                    <span className="mf-pill mono">{p.badge}</span>
+                  </div>
                 </header>
 
-                {/* Bottom Body */}
+                {/* Bottom Body: Disciplines & Direct CTA */}
                 <div className="mf-pillar-body">
-                  <h4 className="display mf-pillar-title">
-                    <span className="mf-title-line">{p.title}</span>
-                    <em className="serif mf-title-em">{p.em}</em>
-                  </h4>
-                  <p className="mf-pillar-meta mono">{p.meta}</p>
+                  <div className="mf-title-group">
+                    <h3 className="display mf-pillar-title">
+                      <span className="mf-title-line">{p.title}</span>
+                      <em className="serif mf-title-em">{p.em}</em>
+                    </h3>
+                  </div>
 
+                  {/* Structured Deliverables Tags */}
+                  <div className="mf-pillar-tags mono" aria-label={p.meta}>
+                    {p.items.map((item) => (
+                      <span key={item} className="mf-pillar-tag">
+                        <i className="mf-tag-dot" />
+                        <span>{item}</span>
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Refined Magnetic Studio Access Button */}
                   <div className="mf-pillar-cta mono">
-                    <span>Enter Studio</span>
-                    <span className="mf-arrow" aria-hidden="true">
-                      <svg viewBox="0 0 16 16" width="14" height="14" fill="none">
-                        <path d="M3 13L13 3M13 3H5M13 3v8" stroke="currentColor" strokeWidth="1.5" />
+                    <span className="mf-cta-label">Enter Studio</span>
+                    <span className="mf-cta-disc" aria-hidden="true">
+                      <svg viewBox="0 0 16 16" width="13" height="13" fill="none">
+                        <path
+                          d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5v7"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                       </svg>
                     </span>
                   </div>
                 </div>
+
+                {/* Atmospheric Floor Light Bleed */}
+                <div className="mf-pillar-floor-glow" aria-hidden="true" />
               </Link>
             )
           })}
@@ -186,3 +251,4 @@ export default function Manifesto() {
     </section>
   )
 }
+
