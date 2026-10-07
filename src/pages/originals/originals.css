@@ -9,8 +9,8 @@
   --acid: var(--ivory);
   --ice: var(--ivory);
   --fg: #f4efe3;
-  --fg-2: rgba(244, 239, 227, 0.66);
-  --fg-3: rgba(244, 239, 227, 0.4);
+  --fg-2: rgba(244, 239, 227, 0.78);
+  --fg-3: rgba(244, 239, 227, 0.56);
   --void: #02040d;
   background: var(--void);
   color: var(--fg);

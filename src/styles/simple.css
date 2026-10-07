@@ -8,7 +8,7 @@
 }
 .sx-eyebrow {
   margin-bottom: 14px;
-  opacity: 0.55;
+  opacity: 0.68;
 }
 .sx-lede {
   margin-top: 20px;
@@ -49,12 +49,12 @@
   margin: 12px 0 0;
   font-size: 15.5px;
   line-height: 1.55;
-  opacity: 0.66;
+  opacity: 0.78;
 }
 .sx-step-tags {
   margin: 14px 0 0;
   font-size: 13px;
-  opacity: 0.42;
+  opacity: 0.6;
 }
 @media (max-width: 1099px) {
   .sx-steps,
@@ -100,12 +100,12 @@
 .sx-card-s {
   margin: 4px 0 0;
   font-size: 15px;
-  opacity: 0.58;
+  opacity: 0.72;
 }
 .sx-note {
   margin: 28px 0 0;
   font-size: 13px;
-  opacity: 0.4;
+  opacity: 0.6;
 }
 @media (max-width: 1023px) {
   .sx-cat {
@@ -198,7 +198,7 @@
   white-space: nowrap;
 }
 .sx-mq-item:nth-child(even) {
-  opacity: 0.32;
+  opacity: 0.42;
 }
 @keyframes sx-slide {
   to {

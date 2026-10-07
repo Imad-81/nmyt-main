@@ -305,7 +305,7 @@
   color: var(--paper-ink);
 }
 .tsx-item:nth-child(even) {
-  color: rgba(5, 10, 24, 0.3);
+  color: rgba(5, 10, 24, 0.4);
 }
 .tsx-star {
   width: 0.42em;
@@ -379,7 +379,7 @@
 }
 .ts-t-in {
   display: inline-block;
-  color: rgba(5, 10, 24, 0.34);
+  color: rgba(5, 10, 24, 0.58);
   transition:
     transform 0.8s var(--ease-out),
     color 0.5s;
@@ -1578,4 +1578,12 @@
 /* transforms need a box — the statement lines slide inside their masks */
 .th-sl {
   display: inline-block;
+}
+
+/* on paper, small blue text uses a deeper blue than the sky accent so it stays readable */
+.tp-light .ts-row.is-active .ts-n,
+.tp-light .md-live,
+.tp-light .mono b,
+.tp-light .tk-p-k {
+  color: #0a5fe0;
 }

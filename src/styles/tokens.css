@@ -9,8 +9,8 @@
 
   /* text */
   --fg: #f4f6fb;
-  --fg-2: rgba(244, 246, 251, 0.64);
-  --fg-3: rgba(244, 246, 251, 0.38);
+  --fg-2: rgba(244, 246, 251, 0.76);
+  --fg-3: rgba(244, 246, 251, 0.56);
 
   /* NMYT master — sampled from the logo metal + creative green */
   --royal: #1638ff;
@@ -24,7 +24,7 @@
   /* light (Tech Studio) */
   --paper: #f6f9ff;
   --paper-ink: #050a18;
-  --paper-ink-2: rgba(5, 10, 24, 0.62);
+  --paper-ink-2: rgba(5, 10, 24, 0.72);
   --paper-line: rgba(5, 10, 24, 0.1);
 
   /* glows */

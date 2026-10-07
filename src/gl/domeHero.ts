@@ -38,12 +38,12 @@ void main(){
   // deep space: near-black navy, a slow royal breath behind the mark, a faint green counter-light
   vec2 c = d.xy / max(-d.z, 0.2) - uMouse * 0.03;
   float r = length(c * vec2(0.8, 1.15));
-  vec3 col = vec3(0.0, 0.022, 0.04);
+  vec3 col = vec3(0.0, 0.006, 0.012);
   // a deep teal core behind the mark, royal blue to one side, green to the other
-  col += vec3(0.0, 0.3, 0.42) * exp(-r * r * 2.4) * (0.9 + 0.1 * sin(uTime * 0.4)) * uIntro;
-  col += vec3(0.02, 0.1, 0.62) * exp(-pow(length(c + vec2(0.62, -0.18)) * 1.5, 2.0)) * 0.55 * uIntro;
-  col += vec3(0.0, 0.42, 0.26) * exp(-pow(length(c - vec2(0.62, -0.26)) * 1.6, 2.0)) * 0.5 * uIntro;
-  col += vec3(0.0, 0.16, 0.2) * exp(-pow((c.y + 0.75) * 1.6, 2.0)) * 0.5 * uIntro;
+  col += vec3(0.0, 0.05, 0.095) * exp(-r * r * 2.0) * (0.9 + 0.1 * sin(uTime * 0.4)) * uIntro;
+  col += vec3(0.02, 0.1, 0.62) * exp(-pow(length(c + vec2(0.62, -0.18)) * 1.5, 2.0)) * 0.11 * uIntro;
+  col += vec3(0.0, 0.3, 0.3) * exp(-pow(length(c - vec2(0.62, -0.26)) * 1.6, 2.0)) * 0.1 * uIntro;
+  col += vec3(0.0, 0.1, 0.14) * exp(-pow((c.y + 0.75) * 1.6, 2.0)) * 0.3 * uIntro;
   vec2 sp = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
   col *= mix(0.55, 1.0, smoothstep(1.2, 0.2, length(sp * vec2(0.85, 1.1))));
   col *= 1.0 - uScroll * 0.7;
@@ -160,15 +160,15 @@ function buildEnv(renderer: THREE.WebGLRenderer) {
   strip(0x16b4ff, 4, [0, -7, 5], [14, 0.6])
   strip(0x1638ff, 3, [2, 2, -10], [18, 6])
   // greens
-  strip(0x7cff3a, 4.2, [5, -5, 6], [8, 0.5])
-  strip(0x00e08a, 3.4, [9, 0, 8], [1.2, 12])
-  strip(0x00e08a, 4.6, [-5, 6, 5], [7, 0.7])
-  strip(0x00e08a, 2.4, [10, 5, -3], [5, 5])
+  strip(0x16b4ff, 4.2, [5, -5, 6], [8, 0.5])
+  strip(0x1e5bff, 3.4, [9, 0, 8], [1.2, 12])
+  strip(0x9fe6ff, 4.6, [-5, 6, 5], [7, 0.7])
+  strip(0x1638ff, 2.4, [10, 5, -3], [5, 5])
   // soft greys: the body of the metal between the bright bands
   strip(0x1230a0, 0.45, [0, 0, 12], [30, 16])
   strip(0xdcecff, 4, [-3, 2, 11], [0.5, 14])
   strip(0x16b4ff, 4, [3.5, -1, 11], [0.9, 14])
-  strip(0x00e08a, 3.2, [7.5, 1, 9.5], [0.6, 12])
+  strip(0x16b4ff, 3.2, [7.5, 1, 9.5], [0.6, 12])
   strip(0x5a6480, 0.55, [0, -10, 0], [30, 30])
   const pmrem = new THREE.PMREMGenerator(renderer)
   const tex = pmrem.fromScene(env, 0.035).texture
@@ -200,11 +200,9 @@ function buildMaterial(time: { value: number }) {
         '#include <color_fragment>',
         `#include <color_fragment>
       float gx = clamp(vMp.x / ${MARK_W.toFixed(1)} + 0.5, 0.0, 1.0);
-      vec3 tint = mix(vec3(0.02, 0.14, 1.0), vec3(0.0, 0.5, 1.0), smoothstep(0.0, 0.3, gx));
-      tint = mix(tint, vec3(0.0, 0.82, 0.86), smoothstep(0.26, 0.52, gx));
-      tint = mix(tint, vec3(0.42, 1.0, 0.82), smoothstep(0.5, 0.64, gx));
-      tint = mix(tint, vec3(0.05, 0.95, 0.42), smoothstep(0.66, 1.0, gx));
-      diffuseColor.rgb *= mix(vec3(0.4, 0.62, 0.7), tint, 0.9);`,
+      vec3 tint = mix(vec3(0.02, 0.1, 0.78), vec3(0.04, 0.24, 1.0), smoothstep(0.0, 0.55, gx));
+      tint = mix(tint, vec3(0.06, 0.36, 1.0), smoothstep(0.55, 1.0, gx));
+      diffuseColor.rgb *= mix(vec3(0.3, 0.45, 0.8), tint, 0.92);`,
       )
       // the big flat faces can only mirror one direction: soften them so they hold a sheen, not a flash
       .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = mix(roughnessFactor, 0.46, vFace);')
@@ -214,8 +212,11 @@ function buildMaterial(time: { value: number }) {
       float bd = vMp.x * 0.9 - vMp.y * 1.5;
       float b1 = pow(0.5 + 0.5 * sin(bd * 1.55 - uT * 0.55), 10.0);
       float b2 = pow(0.5 + 0.5 * sin(bd * 0.8 + uT * 0.32 + 2.0), 22.0);
-      float shade = 0.56 + 0.26 * sin(bd * 0.6 + 1.0) + 0.1 * (vMp.y / ${(MARK_W * 0.183).toFixed(2)});
-      vec3 faceCol = tint * shade + mix(tint, vec3(0.8, 1.0, 0.96), 0.5) * (b1 * 0.6 + b2 * 0.9);
+      // brushed metal: broad navy-to-royal bands on the diagonal, then two bright streaks that travel
+      float band = 0.5 + 0.5 * sin(bd * 1.15 + 0.4);
+      float shade = 0.26 + 0.66 * band * band + 0.08 * (vMp.y / ${(MARK_W * 0.183).toFixed(2)});
+      vec3 streak = mix(vec3(0.1, 0.62, 1.0), vec3(0.78, 0.94, 1.0), b2);
+      vec3 faceCol = tint * shade + streak * (b1 * 0.75 + b2 * 1.0);
       totalEmissiveRadiance += faceCol * vFace * uEmis + tint * 0.06 * (1.0 - vFace) * uEmis;`,
       )
       .replace(
@@ -243,7 +244,7 @@ export function createDomeHero(host: HTMLElement, state: DomeState, opts: { redu
   const canvas = renderer.domElement
   Object.assign(canvas.style, { width: '100%', height: '100%', display: 'block' })
   host.appendChild(canvas)
-  renderer.setClearColor(0x00060a, 1)
+  renderer.setClearColor(0x000204, 1)
   // neutral tone mapping keeps the blues blue (ACES skews saturated blue toward purple)
   renderer.toneMapping = THREE.NeutralToneMapping
   renderer.toneMappingExposure = 1.0

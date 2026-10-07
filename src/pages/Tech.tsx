@@ -48,7 +48,7 @@ export default function Tech() {
           eyebrow="Process"
           title="From brief to launch."
           lede="Four steps, clear at every stage. You always know what is happening, what is next and what it costs."
-          accent="#0a7cff"
+          accent="#0a5fe0"
           items={[
             { title: 'Discover', body: 'We learn the business, the audience and the one job this build has to do. You get a clear scope, a timeline and a fixed quote.', tags: ['Kick-off call', 'Scope & sitemap', 'Timeline & quote'] },
             { title: 'Design', body: 'Wireframes first, then high-fidelity design in your brand. You see and click through everything before we build it.', tags: ['Wireframes', 'UI design', 'Clickable prototype'] },
