@@ -39,60 +39,83 @@
 }
 
 /* =============================== HERO =============================== */
+/* No imagery: the colour lives inside the type. A lens inverts the block wherever it passes. */
+@property --f1 {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 12%;
+}
+@property --f2 {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 82%;
+}
+@property --f3 {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 30%;
+}
 .ch {
+  --lx: 70%;
+  --ly: 60%;
+  --lr: 0px;
   position: relative;
   height: 100svh;
-  min-height: 660px;
+  min-height: 640px;
   overflow: hidden;
-  background: var(--void);
+  background: #020403;
   isolation: isolate;
 }
-.ch-port {
-  position: absolute;
-  z-index: 1;
-  right: max(-2vw, -40px);
-  bottom: 0;
-  height: min(84svh, 1000px);
-  aspect-ratio: 2 / 3;
-  transform-origin: 50% 100%;
-  background: radial-gradient(60% 45% at 58% 42%, rgba(0, 224, 138, 0.16), transparent 70%);
+/* the moving colour field: acid, emerald, sky, royal and a pass of space white */
+.ch-field {
+  background-color: #00e08a;
+  background-image:
+    radial-gradient(38% 70% at var(--f1) 22%, #7cff3a 0%, rgba(124, 255, 58, 0) 68%),
+    radial-gradient(34% 80% at var(--f2) 76%, #1638ff 0%, rgba(22, 56, 255, 0) 70%),
+    radial-gradient(26% 60% at var(--f3) 88%, #cfefff 0%, rgba(207, 239, 255, 0) 62%),
+    radial-gradient(40% 90% at calc(100% - var(--f1)) 60%, #16b4ff 0%, rgba(22, 180, 255, 0) 70%),
+    linear-gradient(100deg, #1e4dff 0%, #16b4ff 34%, #00e08a 62%, #7cff3a 100%);
+  animation: ch-field 14s ease-in-out infinite alternate;
 }
-.ch-port-hud {
+.ch.is-off .ch-field {
+  animation-play-state: paused;
+}
+@keyframes ch-field {
+  0% {
+    --f1: 8%;
+    --f2: 86%;
+    --f3: 24%;
+  }
+  50% {
+    --f1: 58%;
+    --f2: 30%;
+    --f3: 70%;
+  }
+  100% {
+    --f1: 92%;
+    --f2: 10%;
+    --f3: 44%;
+  }
+}
+.ch-title--fill .ch-field {
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.ch-inv {
   position: absolute;
-  inset: 12% 8% 22% 20%;
+  inset: 0;
+  z-index: 4;
   pointer-events: none;
+  clip-path: circle(var(--lr) at var(--lx) var(--ly));
+  will-change: clip-path;
 }
-.ch-port-l1,
-.ch-port-l2 {
-  position: absolute;
-  font-size: 10.5px;
-  color: var(--acid);
+.ch-copy--ghost .ch-title {
+  color: #020403;
 }
-.ch-port-l1 {
-  top: 12px;
-  right: 16px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.ch-port-l2 {
-  bottom: 12px;
-  left: 16px;
-  color: rgba(124, 255, 58, 0.7);
-}
-.ch-dots {
-  display: inline-flex;
-  gap: 4px;
-}
-.ch-dots b {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--acid);
-  box-shadow: 0 0 10px var(--acid);
-}
-.ch-dots b + b {
-  animation: cr-blink 1.6s steps(1) infinite;
+.ch-copy--ghost .ch-in {
+  visibility: hidden !important;
 }
 
 .ch-top {
@@ -145,7 +168,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-bottom: clamp(14px, 2.2vh, 24px);
+  margin-bottom: clamp(12px, 2vh, 22px);
   color: var(--fg-2);
 }
 .ch-tag--blink {
@@ -155,53 +178,28 @@
 .ch-title {
   position: relative;
   margin: 0;
-  font-size: clamp(56px, min(11.6vw, 20vh), 236px);
-  line-height: 0.84;
+  font-size: clamp(58px, min(14.6vw, 25vh), 330px);
+  line-height: 0.82;
   cursor: default;
+  /* room for the italic's descenders and overhang inside the clipped fill */
+  padding: 0.04em 0.06em 0.14em 0;
+  margin-bottom: -0.1em;
 }
 .ch-line {
   display: block;
   white-space: nowrap;
-}
-.gl-base {
-  display: block;
-  text-shadow:
-    -0.016em 0 0 rgba(22, 56, 255, 0.6),
-    0.012em 0 0 rgba(0, 224, 138, 0.35),
-    0 10px 60px rgba(3, 4, 8, 0.6);
-  will-change: transform;
+  /* room for the italic's descenders inside the clipped fill */
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
 }
 .ch-em {
-  display: inline-block;
-  color: var(--acid);
   font-size: 1.04em;
   letter-spacing: -0.03em;
   padding-right: 0.08em;
-  text-shadow: inherit;
-}
-.gl-layer {
-  position: absolute;
-  inset: 0;
-  display: block;
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-  mix-blend-mode: screen;
-}
-.gl-layer .ch-em {
-  color: inherit;
-  filter: none;
-  text-shadow: none;
-}
-.gl-layer--a {
-  color: var(--acid);
-}
-.gl-layer--b {
-  color: var(--royal);
 }
 
 .ch-row {
-  margin-top: clamp(18px, 3vh, 36px);
+  margin-top: clamp(16px, 2.6vh, 32px);
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -211,14 +209,14 @@
   max-width: 44ch;
   margin: 0;
 }
-.ch-hl {
+.ch-strong {
   color: var(--fg);
 }
 .ch-ctas {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: clamp(18px, 2.6vh, 28px);
+  margin-top: clamp(16px, 2.4vh, 26px);
 }
 .ch-meta {
   display: flex;
@@ -226,24 +224,6 @@
   align-items: flex-end;
   gap: 16px;
   color: var(--fg-3);
-}
-.ch-box {
-  display: flex;
-  flex-direction: column;
-  min-width: 200px;
-  padding: 14px 16px 12px;
-  color: var(--acid);
-  border: 1px solid var(--acid-a);
-  background: rgba(4, 18, 63, 0.35);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  font-size: 13px;
-}
-.ch-box em {
-  font-style: normal;
-  color: var(--fg-3);
-  margin-top: 12px;
-  font-size: 10.5px;
 }
 .ch-tc {
   display: inline-flex;
@@ -261,47 +241,23 @@
   color: var(--fg);
   font-variant-numeric: tabular-nums;
 }
-.ch-scan {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  pointer-events: none;
-  background: var(--scan);
-  opacity: 0.35;
-  mix-blend-mode: multiply;
-}
 .ch-fadeout {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 22vh;
+  height: 12vh;
   z-index: 2;
   pointer-events: none;
   background: linear-gradient(transparent, var(--void));
 }
 
-@media (max-width: 1023px) {
-  .ch-box {
-    display: none;
-  }
-}
 @media (max-width: 767px) {
-  .ch-port {
-    height: 66svh;
-    right: -14vw;
-    bottom: auto;
-    top: calc(var(--nav-h) + 20px);
-    opacity: 0.9;
-  }
-  .ch-port-hud {
-    display: none;
-  }
   .ch-sys {
     display: none;
   }
   .ch-title {
-    font-size: clamp(52px, 17.5vw, 120px);
+    font-size: clamp(50px, 19.5vw, 130px);
   }
   .ch-row {
     flex-direction: column;
@@ -313,6 +269,14 @@
   }
   .ch-lede {
     font-size: 16.5px;
+  }
+}
+@media (max-height: 760px) and (min-width: 768px) {
+  .ch-sys {
+    display: none;
+  }
+  .ch-title {
+    font-size: clamp(58px, min(13vw, 22vh), 260px);
   }
 }
 
@@ -1718,23 +1682,11 @@
 
 /* ========================== REDUCED MOTION ========================== */
 @media (prefers-reduced-motion: reduce) {
-  .ch-dots b + b,
   .ch-tag--blink,
   .gw-caret,
   .cw-hint i,
   .cw-card:hover .cw-scan::after {
     animation: none;
-  }
-}
-
-/* laptop heights: give the portrait room — HUD extras step back */
-@media (max-height: 900px) and (min-width: 768px) {
-  .ch-sys,
-  .ch-box {
-    display: none;
-  }
-  .ch-port {
-    height: min(80svh, 900px);
   }
 }
 

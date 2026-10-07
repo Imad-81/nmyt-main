@@ -90,13 +90,57 @@
   margin-top: clamp(64px, 8vw, 120px);
   padding-inline: var(--gutter);
 }
+.ft-mark-wrap {
+  display: grid;
+  place-items: center;
+}
+.ft-mark,
+.ft-mark-glow {
+  grid-area: 1 / 1;
+  width: min(100%, 1320px);
+  aspect-ratio: 874 / 317;
+  -webkit-mask: url('/brand/nmyt-white.webp') center / contain no-repeat;
+  mask: url('/brand/nmyt-white.webp') center / contain no-repeat;
+}
 .ft-mark {
-  width: 100%;
-  height: auto;
-  max-height: 44vw;
-  display: block;
-  margin: 0 auto;
-  overflow: visible;
+  position: relative;
+  overflow: hidden;
+  background: #f6f8fc;
+}
+.ft-mark::after {
+  content: '';
+  position: absolute;
+  inset: 0 -10%;
+  background: linear-gradient(105deg, transparent 22%, #1638ff 36%, #16b4ff 48%, #7cff3a 60%, #cfefff 66%, transparent 78%);
+  transform: translateX(-80%);
+  animation: ft-sweep 3s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+  will-change: transform;
+}
+/* the same pass, blurred behind the mark: the logo glows as the colour moves through it */
+.ft-mark-glow {
+  background: linear-gradient(100deg, #1638ff, #16b4ff 50%, #7cff3a);
+  filter: blur(26px);
+  opacity: 0;
+  animation: ft-glow 3s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+}
+@keyframes ft-sweep {
+  0% {
+    transform: translateX(-80%);
+  }
+  62%,
+  100% {
+    transform: translateX(80%);
+  }
+}
+@keyframes ft-glow {
+  0%,
+  62%,
+  100% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.55;
+  }
 }
 .ft-bar {
   position: relative;

@@ -1,32 +1,14 @@
-import { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { useGSAP } from '@gsap/react'
-import { gsap, getLenis } from '@/lib/smooth'
+import { getLenis } from '@/lib/smooth'
 import { SITE } from '@/data/site'
-import { MARK_PATH, MARK_VIEWBOX } from '@/gl/markPath'
 import { MagneticButton } from './MagneticButton'
 import { SplitReveal } from './Reveal'
 import './footer.css'
 
 export default function Footer({ accent = 'master' }: { accent?: 'master' | 'tech' | 'creative' }) {
-  const ref = useRef<HTMLElement>(null)
-  useGSAP(
-    () => {
-      const path = ref.current!.querySelector<SVGPathElement>('.ft-mark-line')!
-      const len = path.getTotalLength()
-      gsap.set(path, { strokeDasharray: len, strokeDashoffset: len })
-      gsap.to(path, {
-        strokeDashoffset: 0,
-        ease: 'none',
-        scrollTrigger: { trigger: ref.current, start: 'top 70%', end: 'bottom bottom', scrub: 1 },
-      })
-      gsap.fromTo('.ft-mark-fill', { autoAlpha: 0 }, { autoAlpha: 1, ease: 'none', scrollTrigger: { trigger: ref.current, start: 'center 60%', end: 'bottom bottom', scrub: 1 } })
-    },
-    { scope: ref },
-  )
   const year = new Date().getFullYear()
   return (
-    <footer ref={ref} className={`ft ft--${accent}`}>
+    <footer className={`ft ft--${accent}`}>
       <div className="ft-glow" />
       <div className="wrap relative">
         <div className="ft-cta">
@@ -79,22 +61,10 @@ export default function Footer({ accent = 'master' }: { accent?: 'master' | 'tec
         </div>
       </div>
 
-      <div className="ft-mark-wrap">
-        <svg className="ft-mark" viewBox={`0 0 ${MARK_VIEWBOX[0]} ${MARK_VIEWBOX[1]}`} preserveAspectRatio="xMidYMax meet" aria-hidden>
-          <defs>
-            <linearGradient id="ftg" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0" stopColor="#1638ff" />
-              <stop offset=".5" stopColor="#16b4ff" />
-              <stop offset="1" stopColor="#7cff3a" />
-            </linearGradient>
-            <linearGradient id="ftf" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stopColor="#1638ff" stopOpacity=".22" />
-              <stop offset="1" stopColor="#1638ff" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <path className="ft-mark-fill" d={MARK_PATH} fill="url(#ftf)" fillRule="evenodd" />
-          <path className="ft-mark-line" d={MARK_PATH} fill="none" stroke="url(#ftg)" strokeWidth="0.9" vectorEffect="non-scaling-stroke" />
-        </svg>
+      {/* the white NMYT mark, with the logo's own gradient passing through it every 3 seconds */}
+      <div className="ft-mark-wrap" role="img" aria-label="NMYT">
+        <div className="ft-mark-glow" aria-hidden />
+        <div className="ft-mark" aria-hidden />
       </div>
 
       <div className="wrap ft-bar mono">
