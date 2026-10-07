@@ -40,7 +40,7 @@ export default function Footer({ accent = 'master' }: { accent?: 'master' | 'tec
             <div className="mono ft-h">Explore</div>
             <Link to="/work">Work</Link>
             <Link to="/contact">Contact</Link>
-            <Link to="/">Home</Link>
+            <Link to="/about">About</Link>
           </div>
           <div>
             <div className="mono ft-h">Social</div>

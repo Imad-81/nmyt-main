@@ -38,10 +38,12 @@ void main(){
   // deep space: near-black navy, a slow royal breath behind the mark, a faint green counter-light
   vec2 c = d.xy / max(-d.z, 0.2) - uMouse * 0.03;
   float r = length(c * vec2(0.8, 1.15));
-  vec3 col = vec3(0.008, 0.012, 0.03);
-  col += vec3(0.03, 0.09, 0.42) * exp(-r * r * 3.2) * (0.85 + 0.15 * sin(uTime * 0.4)) * uIntro;
-  col += vec3(0.0, 0.22, 0.16) * exp(-pow(length(c - vec2(0.55, -0.28)) * 1.9, 2.0)) * 0.35 * uIntro;
-  col += vec3(0.05, 0.2, 0.5) * exp(-pow(length(c + vec2(0.6, -0.2)) * 1.7, 2.0)) * 0.3 * uIntro;
+  vec3 col = vec3(0.0, 0.022, 0.04);
+  // a deep teal core behind the mark, royal blue to one side, green to the other
+  col += vec3(0.0, 0.3, 0.42) * exp(-r * r * 2.4) * (0.9 + 0.1 * sin(uTime * 0.4)) * uIntro;
+  col += vec3(0.02, 0.1, 0.62) * exp(-pow(length(c + vec2(0.62, -0.18)) * 1.5, 2.0)) * 0.55 * uIntro;
+  col += vec3(0.0, 0.42, 0.26) * exp(-pow(length(c - vec2(0.62, -0.26)) * 1.6, 2.0)) * 0.5 * uIntro;
+  col += vec3(0.0, 0.16, 0.2) * exp(-pow((c.y + 0.75) * 1.6, 2.0)) * 0.5 * uIntro;
   vec2 sp = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
   col *= mix(0.55, 1.0, smoothstep(1.2, 0.2, length(sp * vec2(0.85, 1.1))));
   col *= 1.0 - uScroll * 0.7;
@@ -56,25 +58,30 @@ uniform vec2 uMouseW;
 varying vec3 vCol; varying float vA;
 void main(){
   vec3 p = position;
-  // drift across the frame, wrapping round; each ember keeps its own pace and wobble
-  p.x = mod(p.x + uTime * (0.35 + aRand.x * 0.9) + 20.0, 40.0) - 20.0;
-  p.y = mod(p.y + uTime * (aRand.w - 0.35) * 0.3 + 11.0, 22.0) - 11.0;
-  p.y += sin(uTime * (0.3 + aRand.y) + aRand.z * 6.283) * 0.5;
-  p.z += sin(uTime * 0.2 + aRand.w * 6.283) * 0.6;
+  // three streams, three directions: white falls from the upper left, blue rises from below,
+  // green sweeps in from the right
+  float grp = floor(aRand.x * 2.999);
+  vec2 dir = grp < 0.5 ? vec2(0.8, -0.6) : (grp < 1.5 ? vec2(0.16, 0.99) : vec2(-0.92, 0.38));
+  float pace = 0.55 + aRand.y * 1.25;
+  p.xy += dir * uTime * pace;
+  p.x = mod(p.x + 20.0, 40.0) - 20.0;
+  p.y = mod(p.y + 11.0, 22.0) - 11.0;
+  // embers flutter across their own path
+  vec2 side = vec2(-dir.y, dir.x);
+  p.xy += side * sin(uTime * (0.7 + aRand.w * 1.4) + aRand.z * 6.283) * 0.35;
   // the pointer parts them gently
   vec2 d = p.xy - uMouseW; float dl = length(d);
   p.xy += (d / max(dl, 1e-3)) * smoothstep(3.2, 0.0, dl) * 0.9;
   vec4 mv = modelViewMatrix * vec4(p, 1.0);
   gl_Position = projectionMatrix * mv;
-  gl_PointSize = (2.0 + aRand.z * aRand.z * 7.0) * uPR * (11.0 / -mv.z);
-  float k = aRand.x;
-  vec3 white = vec3(0.86, 0.94, 1.0);
-  vec3 blue = mix(vec3(0.09, 0.26, 1.0), vec3(0.09, 0.7, 1.0), aRand.y);
-  vec3 green = mix(vec3(0.0, 0.88, 0.54), vec3(0.49, 1.0, 0.23), aRand.y);
-  vCol = k < 0.3 ? white : (k < 0.68 ? blue : green);
+  gl_PointSize = (2.4 + aRand.z * aRand.z * 9.0) * uPR * (11.0 / -mv.z);
+  vec3 white = vec3(0.9, 0.97, 1.0);
+  vec3 blue = mix(vec3(0.1, 0.3, 1.0), vec3(0.1, 0.75, 1.0), aRand.w);
+  vec3 green = mix(vec3(0.0, 0.95, 0.6), vec3(0.5, 1.0, 0.3), aRand.w);
+  vCol = grp < 0.5 ? white : (grp < 1.5 ? blue : green);
   float tw = 0.55 + 0.45 * sin(uTime * (0.8 + aRand.w * 2.2) + aRand.x * 40.0);
   // fade at the wrap edges so nothing pops in or out
-  float edge = smoothstep(20.0, 16.0, abs(p.x));
+  float edge = smoothstep(20.0, 16.0, abs(p.x)) * smoothstep(11.0, 8.5, abs(p.y));
   vA = tw * edge * (0.5 + 0.5 * aRand.z) * uIntro * (1.0 - uScroll * 0.8);
 }`
 
@@ -84,7 +91,7 @@ void main(){
   float r = length(gl_PointCoord - 0.5);
   if (r > 0.5) discard;
   float glow = smoothstep(0.5, 0.0, r);
-  float a = (pow(glow, 2.2) + pow(glow, 8.0) * 0.8) * vA;
+  float a = (pow(glow, 2.0) + pow(glow, 7.0) * 1.2) * vA;
   gl_FragColor = vec4(vCol * a, a);
 }`
 
@@ -193,10 +200,11 @@ function buildMaterial(time: { value: number }) {
         '#include <color_fragment>',
         `#include <color_fragment>
       float gx = clamp(vMp.x / ${MARK_W.toFixed(1)} + 0.5, 0.0, 1.0);
-      vec3 tint = mix(vec3(0.05, 0.16, 0.95), vec3(0.06, 0.5, 1.0), smoothstep(0.0, 0.4, gx));
-      tint = mix(tint, vec3(0.72, 0.88, 1.0), smoothstep(0.36, 0.6, gx));
-      tint = mix(tint, vec3(0.2, 0.95, 0.5), smoothstep(0.62, 0.98, gx));
-      diffuseColor.rgb *= mix(vec3(0.5, 0.62, 0.78), tint, 0.82);`,
+      vec3 tint = mix(vec3(0.02, 0.14, 1.0), vec3(0.0, 0.5, 1.0), smoothstep(0.0, 0.3, gx));
+      tint = mix(tint, vec3(0.0, 0.82, 0.86), smoothstep(0.26, 0.52, gx));
+      tint = mix(tint, vec3(0.42, 1.0, 0.82), smoothstep(0.5, 0.64, gx));
+      tint = mix(tint, vec3(0.05, 0.95, 0.42), smoothstep(0.66, 1.0, gx));
+      diffuseColor.rgb *= mix(vec3(0.4, 0.62, 0.7), tint, 0.9);`,
       )
       // the big flat faces can only mirror one direction: soften them so they hold a sheen, not a flash
       .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = mix(roughnessFactor, 0.46, vFace);')
@@ -206,8 +214,8 @@ function buildMaterial(time: { value: number }) {
       float bd = vMp.x * 0.9 - vMp.y * 1.5;
       float b1 = pow(0.5 + 0.5 * sin(bd * 1.55 - uT * 0.55), 10.0);
       float b2 = pow(0.5 + 0.5 * sin(bd * 0.8 + uT * 0.32 + 2.0), 22.0);
-      float shade = 0.44 + 0.22 * sin(bd * 0.6 + 1.0) + 0.1 * (vMp.y / ${(MARK_W * 0.183).toFixed(2)});
-      vec3 faceCol = tint * shade + mix(tint, vec3(0.86, 0.95, 1.0), 0.6) * (b1 * 0.5 + b2 * 0.8);
+      float shade = 0.56 + 0.26 * sin(bd * 0.6 + 1.0) + 0.1 * (vMp.y / ${(MARK_W * 0.183).toFixed(2)});
+      vec3 faceCol = tint * shade + mix(tint, vec3(0.8, 1.0, 0.96), 0.5) * (b1 * 0.6 + b2 * 0.9);
       totalEmissiveRadiance += faceCol * vFace * uEmis + tint * 0.06 * (1.0 - vFace) * uEmis;`,
       )
       .replace(
@@ -235,7 +243,7 @@ export function createDomeHero(host: HTMLElement, state: DomeState, opts: { redu
   const canvas = renderer.domElement
   Object.assign(canvas.style, { width: '100%', height: '100%', display: 'block' })
   host.appendChild(canvas)
-  renderer.setClearColor(0x030408, 1)
+  renderer.setClearColor(0x00060a, 1)
   // neutral tone mapping keeps the blues blue (ACES skews saturated blue toward purple)
   renderer.toneMapping = THREE.NeutralToneMapping
   renderer.toneMappingExposure = 1.0
@@ -263,7 +271,7 @@ export function createDomeHero(host: HTMLElement, state: DomeState, opts: { redu
   scene.add(dome)
 
   // embers
-  const EMBERS = window.matchMedia('(max-width: 767px)').matches ? 420 : 950
+  const EMBERS = window.matchMedia('(max-width: 767px)').matches ? 520 : 1200
   const ePos = new Float32Array(EMBERS * 3)
   const eRnd = new Float32Array(EMBERS * 4)
   for (let i = 0; i < EMBERS; i++) {

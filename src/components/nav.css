@@ -233,3 +233,23 @@
     display: none;
   }
 }
+
+/* over a white hero the mark and menu switch to ink, and the dark veil stays away */
+html[data-navtone='ink'] .nv::before {
+  opacity: 0 !important;
+}
+html[data-navtone='ink'] .nv-logo {
+  color: #06080d;
+}
+html[data-navtone='ink'] .nv-burger {
+  border-color: rgba(6, 8, 13, 0.3);
+}
+html[data-navtone='ink'] .nv-burger span {
+  background: #06080d;
+}
+html[data-navtone='ink'] .nv .mb--light {
+  box-shadow: 0 0 0 1px rgba(6, 8, 13, 0.16);
+}
+.nv-logo {
+  transition: color 0.4s, opacity 0.4s;
+}

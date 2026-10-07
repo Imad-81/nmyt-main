@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Reveal, SplitReveal } from '@/components/Reveal'
 
 /** Light-theme section head: `01 / SERVICES` rule, display title, optional lede to the right. */
-export function TechHead({ label, title, lede, className = '' }: { index: string; label: string; title: ReactNode; lede?: ReactNode; aside?: ReactNode; className?: string }) {
+export function TechHead({ label, title, lede, className = '' }: { index?: string; label: string; title: ReactNode; lede?: ReactNode; aside?: ReactNode; className?: string }) {
   return (
     <div className={`tk-head ${className}`}>
       <Reveal className="eyebrow tk-eyebrow">{label}</Reveal>

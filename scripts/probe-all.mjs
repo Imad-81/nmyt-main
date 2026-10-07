@@ -3,7 +3,7 @@
 // usage: PORT=5183 node scripts/probe-all.mjs
 import puppeteer from 'puppeteer-core'
 const base = `http://localhost:${process.env.PORT ?? 5173}`
-const routes = ['/', '/tech', '/creative', '/originals', '/work', '/contact', '/nope']
+const routes = ['/', '/tech', '/creative', '/originals', '/work', '/about', '/contact', '/nope']
 const sizes = [[1440, 900], [1366, 650], [768, 1024], [390, 844], [320, 640]]
 const browser = await puppeteer.launch({
   executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',

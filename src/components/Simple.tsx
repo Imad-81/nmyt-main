@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { Reveal, SplitReveal } from './Reveal'
-import { STUDIO_META, type Project } from '@/data/work'
-import { media, type MediaKey } from '@/data/media'
+import Motion from './Motion'
+import type { MediaKey } from '@/data/media'
 import '@/styles/simple.css'
 
 /**
@@ -68,26 +68,20 @@ export function Steps({
   )
 }
 
-/** Projects in a plain two-column grid that reads top to bottom. */
-export function WorkGrid({ eyebrow, title, lede, items, id, note }: { eyebrow?: string; title: ReactNode; lede?: ReactNode; items: Project[]; id?: string; note?: string }) {
+/** What the studio makes, shown as examples. Not client work: there is none published yet. */
+export function Catalogue({ eyebrow, title, lede, items, id, note }: { eyebrow?: string; title: ReactNode; lede?: ReactNode; items: { img: MediaKey; title: string; body: string }[]; id?: string; note?: string }) {
   return (
     <section className="sx section" id={id}>
       <div className="wrap">
         <Head eyebrow={eyebrow} title={title} lede={lede} />
-        <div className="sx-work">
+        <div className="sx-cat">
           {items.map((p) => (
-            <Reveal key={p.slug} className="sx-card-wrap" y={36}>
-              <Link to="/work" className="sx-card">
-                <div className="sx-card-media">
-                  <img src={media(p.image, 'sm')} srcSet={`${media(p.image, 'sm')} 900w, ${media(p.image)} 2000w`} sizes="(max-width: 767px) 100vw, 50vw" alt={`${p.name}, ${p.client}`} loading="lazy" decoding="async" />
-                </div>
-                <div className="sx-card-meta">
-                  <h3 className="sx-card-t">{p.name}</h3>
-                  <p className="sx-card-s">
-                    {p.client} <span aria-hidden>·</span> {STUDIO_META[p.studio].label}
-                  </p>
-                </div>
-              </Link>
+            <Reveal key={p.title} className="sx-card" y={36}>
+              <Motion k={p.img} className="sx-card-media" />
+              <div className="sx-card-meta">
+                <h3 className="sx-card-t">{p.title}</h3>
+                <p className="sx-card-s">{p.body}</p>
+              </div>
             </Reveal>
           ))}
         </div>
@@ -106,7 +100,7 @@ export function Pillars({ items }: { items: { img: MediaKey; title: string; body
           {items.map((p) => (
             <Reveal key={p.title} className="sx-pillar-wrap" y={36}>
               <Link to={p.to} className="sx-pillar" style={{ ['--tone' as string]: p.tone }}>
-                <img src={media(p.img, 'sm')} srcSet={`${media(p.img, 'sm')} 900w, ${media(p.img)} 2000w`} sizes="(max-width: 899px) 100vw, 33vw" alt="" loading="lazy" decoding="async" />
+                <Motion k={p.img} className="sx-pillar-media" />
                 <div className="sx-pillar-copy">
                   <h3 className="display sx-pillar-t">{p.title}</h3>
                   <p className="sx-pillar-b">{p.body}</p>

@@ -1,8 +1,8 @@
 // Central, editable site facts. Replace placeholders marked TODO with real details.
 export const SITE = {
   name: 'NMYT',
-  tagline: 'Where code meets cinema.',
-  email: 'hello@nmyt.studio', // TODO: confirm real inbox
+  tagline: 'A new-generation studio that builds the tech and shoots the story.',
+  email: 'contact@nmyt.in',
   phone: '', // TODO: optional
   location: 'Hyderabad, India',
   socials: [

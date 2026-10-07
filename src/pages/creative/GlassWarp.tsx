@@ -4,8 +4,6 @@ import * as THREE from 'three'
 import ShaderCanvas, { type ShaderFrame } from '@/gl/ShaderCanvas'
 import { WARP_FRAG } from '@/gl/creativeShader'
 import { gsap, prefersReducedMotion } from '@/lib/smooth'
-import { MonoLabel } from '@/components/ui'
-import { Reveal } from '@/components/Reveal'
 import { useIsMobile } from '@/lib/hooks'
 
 type U = Record<string, THREE.IUniform>
@@ -130,23 +128,21 @@ export default function GlassWarp() {
       <div className="gw-shade" aria-hidden />
 
       <div className="wrap gw-inner">
-        <Reveal className="gw-head">
-          <MonoLabel index="01" color="var(--acid)">
-            The studio
-          </MonoLabel>
-          <div className="hairline flex-1" />
-        </Reveal>
-
         <div className="gw-stage">
 
-          <Reveal className="gw-copy" delay={0.2}>
-            <p className="gw-state display">
-              One team.
-              <br />
-              <em className="serif">Idea to final grade.</em>
+          {/* the statement: large, one phrase in serif, the last word keeps changing */}
+          <div className="gw-say">
+            <p className="gw-say-a">One team.</p>
+            <p className="gw-say-b">
+              Idea to final{' '}
+              <span className="gw-swap">
+                {['grade.', 'cut.', 'mix.', 'frame.'].map((w) => (
+                  <i key={w}>{w}</i>
+                ))}
+              </span>
             </p>
-            <p className="gw-sub">Fewer hand-offs, one visual language, so the film, the feed and the identity all look like the same brand.</p>
-          </Reveal>
+            <p className="gw-sub">Fewer hand-offs and one visual language, so the film, the feed and the identity all look like the same brand.</p>
+          </div>
         </div>
 
       </div>

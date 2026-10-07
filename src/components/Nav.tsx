@@ -10,7 +10,8 @@ export const NAV_LINKS = [
   { to: '/creative', label: 'Creative Studio', tag: '02' },
   { to: '/originals', label: 'Originals', tag: '03' },
   { to: '/work', label: 'Work', tag: '04' },
-  { to: '/contact', label: 'Contact', tag: '05' },
+  { to: '/about', label: 'About', tag: '05' },
+  { to: '/contact', label: 'Contact', tag: '06' },
 ]
 
 export default function Nav() {
@@ -73,7 +74,7 @@ export default function Nav() {
           </Link>
 
           <nav className="nv-links glass" aria-label="Primary">
-            {NAV_LINKS.slice(0, 4).map((l) => (
+            {NAV_LINKS.slice(0, 5).map((l) => (
               <NavLink key={l.to} to={l.to} className={({ isActive }) => `nv-link ${isActive ? 'is-active' : ''}`}>
                 <span className="nv-link-roll" data-text={l.label}>
                   {l.label}

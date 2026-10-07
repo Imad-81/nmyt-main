@@ -2,11 +2,17 @@ import Footer from '@/components/Footer'
 import CreativeHero from './creative/CreativeHero'
 import GlassWarp from './creative/GlassWarp'
 import CreativeServices from './creative/CreativeServices'
-import { SlideMarquee, Steps, WorkGrid } from '@/components/Simple'
-import { PROJECTS } from '@/data/work'
+import { Catalogue, SlideMarquee, Steps } from '@/components/Simple'
 import './creative/creative.css'
 
-const WORK = PROJECTS.filter((p) => p.studio === 'creative' || p.studio === 'hybrid')
+const MAKES = [
+  { img: 'creativeCommercial', title: 'Brand commercials', body: 'Script, shoot, grade and sound.' },
+  { img: 'workSkincare', title: 'Product films', body: 'Macro, motion and stills.' },
+  { img: 'workFashion', title: 'Lookbooks', body: 'Fashion and lifestyle shoots.' },
+  { img: 'workRestaurant', title: 'Food and hospitality', body: 'Kitchens, plates and people.' },
+  { img: 'creativeSocial', title: 'Social content', body: 'A month planned, shot in a day.' },
+  { img: 'workMusic', title: 'Live and music', body: 'Stage visuals and performance films.' },
+] as const
 
 const STAGES = [
   { title: 'Concept', body: 'Idea, script and boards. The feeling is decided before the camera comes out.' },
@@ -23,7 +29,7 @@ export default function Creative() {
       <CreativeHero />
       <GlassWarp />
       <CreativeServices />
-      <WorkGrid id="cr-work" eyebrow="Selected work" title="Selected creative work." lede="Films, shoots and content systems for brands that wanted to be looked at twice." items={WORK} note="Sample projects, shown to illustrate the layout." />
+      <Catalogue id="cr-work" eyebrow="What we make" title="The catalogue." lede="The kinds of pieces the studio produces. Client work will be shown on the Work page once it is released." items={[...MAKES]} note="Studio look development frames, shown as examples." />
       <Steps eyebrow="How a film gets made" title="From idea to final mix." lede="One team carries the piece the whole way, so nothing is lost between hands." items={STAGES} accent="var(--acid)" />
       <SlideMarquee words={['Brand films', 'Product shoots', 'Social', 'Ads', 'Brand design', 'Cinematics']} accent="var(--acid)" />
       <Footer accent="creative" />

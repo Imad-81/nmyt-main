@@ -54,21 +54,24 @@ export default function HomeHero() {
         </div>
       )}
 
+      {/* the words support the picture: bottom-left, never over the mark */}
       <div className="hh-copy wrap">
-        <Reveal trigger="intro" delay={0.5} as="h1" className="display hh-title">
-          Where code meets cinema.
+        <Reveal trigger="intro" delay={0.5} as="h1" className="hh-say">
+          A new-generation studio that builds the tech <em>and shoots the story.</em>
         </Reveal>
-        <Reveal trigger="intro" delay={0.7} className="lede hh-lede">
-          A new-generation studio that builds the tech and shoots the story. Websites, systems, films and content, made by one team to one standard.
-        </Reveal>
-        <Reveal trigger="intro" delay={0.9} className="hh-ctas">
-          <MagneticButton to="/contact" variant="light">
-            Start a project
-          </MagneticButton>
-          <MagneticButton to="/work" variant="ghost">
-            See the work
-          </MagneticButton>
-        </Reveal>
+        <div className="hh-row">
+          <Reveal trigger="intro" delay={0.7} className="hh-sub">
+            Websites, systems, films and content. One team, one standard.
+          </Reveal>
+          <Reveal trigger="intro" delay={0.85} className="hh-ctas">
+            <MagneticButton to="/contact" variant="light">
+              Start a project
+            </MagneticButton>
+            <MagneticButton to="/about" variant="ghost">
+              About us
+            </MagneticButton>
+          </Reveal>
+        </div>
       </div>
       <div className="hh-fadeout" />
     </section>

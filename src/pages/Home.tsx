@@ -4,9 +4,7 @@ import Studios from './home/Studios'
 import OriginalsTeaser from './home/OriginalsTeaser'
 import Approach from './home/Approach'
 import Footer from '@/components/Footer'
-import { Pillars, Steps, WorkGrid } from '@/components/Simple'
-import { PROCESS } from '@/data/site'
-import { PROJECTS } from '@/data/work'
+import { Pillars } from '@/components/Simple'
 
 const PILLARS = [
   { img: 'techHands', title: 'We build.', body: 'Websites, landing pages, dashboards and simple systems.', to: '/tech', tone: 'var(--sky)' },
@@ -21,10 +19,8 @@ export default function Home() {
       <Manifesto />
       <Pillars items={[...PILLARS]} />
       <Studios />
-      <WorkGrid eyebrow="Selected work" title="Work that moves people." lede="Films, sites and systems for brands that care how they show up." items={PROJECTS.slice(0, 4)} note="Sample projects, shown to illustrate the layout." />
-      <OriginalsTeaser />
       <Approach />
-      <Steps eyebrow="How we work" title="Four steps. No surprise invoices." items={PROCESS.map(({ t, d }) => ({ title: t, body: d }))} />
+      <OriginalsTeaser />
       <Footer />
     </>
   )

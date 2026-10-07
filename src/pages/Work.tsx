@@ -1,171 +1,121 @@
-import { useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { useGSAP } from '@gsap/react'
-import { Flip } from 'gsap/Flip'
-import { gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/smooth'
+import { useEffect, useRef } from 'react'
+import { MagneticButton } from '@/components/MagneticButton'
+import { Reveal } from '@/components/Reveal'
 import Footer from '@/components/Footer'
-import { Reveal, SplitReveal, whenRevealed } from '@/components/Reveal'
-import { MonoLabel } from '@/components/ui'
-import { PROJECTS, STUDIO_META, type Studio } from '@/data/work'
-import { WorkGrid, WorkList, type Sized } from './work/WorkViews'
 import './work/work.css'
 
-gsap.registerPlugin(Flip)
+const WORDS = ['Work', 'in', 'progress']
 
-type Filter = 'all' | 'tech' | 'creative' | 'hybrid'
-const FILTERS: { k: Filter; label: string; color: string }[] = [
-  { k: 'all', label: 'All', color: 'var(--fg)' },
-  { k: 'tech', label: 'Tech', color: STUDIO_META.tech.color },
-  { k: 'creative', label: 'Creative', color: STUDIO_META.creative.color },
-  { k: 'hybrid', label: 'Hybrid', color: STUDIO_META.hybrid.color },
-]
-
-// Hybrid work belongs to both studios, so it shows under Tech and Creative too.
-const matches = (f: Filter, s: Studio) => f === 'all' || s === f || (s === 'hybrid' && (f === 'tech' || f === 'creative'))
-
+/**
+ * /work. There is no client work to publish yet, so the page says so, properly:
+ * one screen, the words breathing between light and bold, over a field of slow rings
+ * that follow the pointer.
+ */
 export default function Work() {
-  const root = useRef<HTMLDivElement>(null)
-  const [filter, setFilter] = useState<Filter>('all')
-  const [view, setView] = useState<'grid' | 'list'>('grid')
-  const flipState = useRef<Flip.FlipState | null>(null)
-  const viewChanged = useRef(false)
-  const oldH = useRef(0)
+  const root = useRef<HTMLElement>(null)
+  const canvas = useRef<HTMLCanvasElement>(null)
 
-  const counts = useMemo(() => Object.fromEntries(FILTERS.map((f) => [f.k, PROJECTS.filter((p) => matches(f.k, p.studio)).length])) as Record<Filter, number>, [])
+  useEffect(() => {
+    const c = canvas.current!
+    const el = root.current!
+    const g = c.getContext('2d')!
+    let w = 1
+    let h = 1
+    let raf = 0
+    let on = true
+    const mouse = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5 }
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
+    const resize = () => {
+      const r = el.getBoundingClientRect()
+      w = r.width
+      h = r.height
+      c.width = Math.round(w * dpr)
+      c.height = Math.round(h * dpr)
+    }
+    resize()
+    const ro = new ResizeObserver(resize)
+    ro.observe(el)
+    const io = new IntersectionObserver(([e]) => (on = e.isIntersecting))
+    io.observe(el)
+    const move = (e: PointerEvent) => {
+      const r = el.getBoundingClientRect()
+      mouse.tx = (e.clientX - r.left) / r.width
+      mouse.ty = (e.clientY - r.top) / r.height
+    }
+    el.addEventListener('pointermove', move, { passive: true })
 
-  // assign alternating sizes based on the visible order
-  const items: Sized[] = useMemo(() => {
-    const vis = PROJECTS.filter((p) => matches(filter, p.studio))
-    return PROJECTS.map((p, i) => {
-      const v = vis.indexOf(p)
-      if (v < 0) return { p, i, visible: false, size: 'sm' as const }
-      const lastOdd = vis.length % 2 === 1 && v === vis.length - 1
-      const row = Math.floor(v / 2)
-      const first = v % 2 === 0
-      const size = lastOdd ? 'full' : (row % 2 === 0) === first ? 'lg' : 'sm'
-      return { p, i, visible: true, size }
-    })
-  }, [filter])
+    const t0 = performance.now()
+    const draw = (now: number) => {
+      raf = requestAnimationFrame(draw)
+      if (!on || document.hidden) return
+      const t = (now - t0) / 1000
+      mouse.x += (mouse.tx - mouse.x) * 0.04
+      mouse.y += (mouse.ty - mouse.y) * 0.04
+      g.setTransform(dpr, 0, 0, dpr, 0, 0)
+      g.clearRect(0, 0, w, h)
+      // rings in progress: each one is drawn only part of the way round, and keeps going
+      const cx = w * (0.5 + (mouse.x - 0.5) * 0.12)
+      const cy = h * (0.52 + (mouse.y - 0.5) * 0.12)
+      const R = Math.hypot(w, h) * 0.62
+      const N = 26
+      g.lineCap = 'round'
+      for (let i = 0; i < N; i++) {
+        const f = i / (N - 1)
+        const r = 40 + f * f * R
+        const speed = (i % 2 ? -1 : 1) * (0.1 + (1 - f) * 0.22)
+        const start = t * speed + i * 1.7
+        const sweep = Math.PI * (0.35 + 0.55 * (0.5 + 0.5 * Math.sin(t * 0.35 + i * 0.9)))
+        const hue = i % 3
+        g.strokeStyle = hue === 0 ? `rgba(22,180,255,${0.1 + 0.3 * (1 - f)})` : hue === 1 ? `rgba(0,224,138,${0.08 + 0.26 * (1 - f)})` : `rgba(207,239,255,${0.05 + 0.16 * (1 - f)})`
+        g.lineWidth = 1 + (1 - f) * 1.2
+        g.beginPath()
+        g.ellipse(cx, cy, r, r * 0.86, 0, start, start + sweep)
+        g.stroke()
+        // the working end of each ring
+        const ex = cx + Math.cos(start + sweep) * r
+        const ey = cy + Math.sin(start + sweep) * r * 0.86
+        g.fillStyle = hue === 1 ? 'rgba(124,255,58,.9)' : 'rgba(207,239,255,.9)'
+        g.beginPath()
+        g.arc(ex, ey, 1.4 + (1 - f) * 1.4, 0, Math.PI * 2)
+        g.fill()
+      }
+    }
+    raf = requestAnimationFrame(draw)
+    return () => {
+      cancelAnimationFrame(raf)
+      ro.disconnect()
+      io.disconnect()
+      el.removeEventListener('pointermove', move)
+    }
+  }, [])
 
-  const choose = (f: Filter) => {
-    if (f === filter) return
-    const q = gsap.utils.selector(root)
-    flipState.current = Flip.getState(q('.wk-item'), { props: 'opacity' })
-    oldH.current = (q('.wk-grid, .wk-list')[0] as HTMLElement | undefined)?.offsetHeight ?? 0
-    setFilter(f)
-  }
-  const switchView = (v: 'grid' | 'list') => {
-    if (v === view) return
-    viewChanged.current = true
-    setView(v)
-  }
-
-  // animate filter changes with Flip
-  useLayoutEffect(() => {
-    const state = flipState.current
-    if (!state) return
-    flipState.current = null
-    const reduce = prefersReducedMotion()
-    const q = gsap.utils.selector(root)
-    const dur = reduce ? 0.4 : 1
-    // hold the container height so the page below doesn't jump while items go absolute
-    const box = q('.wk-grid, .wk-list')[0] as HTMLElement | undefined
-    if (box && oldH.current) gsap.fromTo(box, { height: oldH.current }, { height: box.offsetHeight, duration: dur, ease: 'expo.inOut', clearProps: 'height' })
-    Flip.from(state, {
-      targets: q('.wk-item'),
-      duration: dur,
-      ease: 'expo.inOut',
-      absolute: true,
-      prune: true,
-      onEnter: (els) => gsap.fromTo(els, { autoAlpha: 0, scale: reduce ? 1 : 0.9 }, { autoAlpha: 1, scale: 1, duration: 0.8, delay: 0.3, ease: 'expo.out' }),
-      onLeave: (els) => gsap.to(els, { autoAlpha: 0, scale: reduce ? 1 : 0.9, duration: 0.45, ease: 'power2.in' }),
-      onComplete: () => ScrollTrigger.refresh(),
-    })
-  }, [filter])
-
-  // animate view switches
-  useLayoutEffect(() => {
-    if (!viewChanged.current) return
-    viewChanged.current = false
-    const q = gsap.utils.selector(root)
-    gsap.fromTo(q('.wk-item:not(.is-out)'), { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.06, ease: 'expo.out', clearProps: 'transform' })
-    ScrollTrigger.refresh()
-  }, [view])
-
-  // header count ticker
-  useGSAP(
-    (_ctx, contextSafe) => {
-      const el = root.current!.querySelector('.wk-count b')
-      if (!el) return
-      const o = { v: 0 }
-      return whenRevealed(contextSafe!(() => {
-        gsap.to(o, { v: PROJECTS.length, duration: 1.6, delay: 0.6, ease: 'power3.out', onUpdate: () => void (el.textContent = String(Math.round(o.v)).padStart(2, '0')) })
-      }))
-    },
-    { scope: root },
-  )
-
-  const visibleCount = counts[filter]
-
+  let n = 0
   return (
-    <div ref={root} className="wk">
-      <section className="wk-hero wrap">
-        <Reveal trigger="intro" className="wk-top" childSelector=".wk-fade" delay={0.3}>
-          <MonoLabel index="00" className="wk-fade">
-            Index
-          </MonoLabel>
-          <div className="hairline wk-fade flex-1" />
-          <span className="mono wk-fade wk-count">
-            <b>00</b> Projects
-          </span>
-        </Reveal>
-        <SplitReveal as="h1" className="display wk-title" trigger="intro" delay={0.2}>
-          Selected <em className="serif wk-em">work</em>
-        </SplitReveal>
-        <Reveal trigger="intro" delay={0.9} className="wk-intro">
-          <p className="lede">Sites and systems from the Tech Studio. Films, shoots and content from the Creative Studio. Some projects need both.</p>
-        </Reveal>
-      </section>
-
-      <section className="wrap wk-body">
-        <Reveal className="wk-bar" childSelector=".wk-bar > *" stagger={0.1}>
-          <div className="wk-filters" role="group" aria-label="Filter projects by studio">
-            {FILTERS.map((f) => (
-              <button key={f.k} type="button" className={`wk-filter ${filter === f.k ? 'is-on' : ''}`} aria-pressed={filter === f.k} onClick={() => choose(f.k)}>
-                {f.k !== 'all' && <i style={{ background: f.color }} />}
-                {f.label}
-                <sup>{String(counts[f.k]).padStart(2, '0')}</sup>
-              </button>
-            ))}
-          </div>
-          <div className="wk-views" role="group" aria-label="Layout">
-            <span className="mono wk-showing" aria-live="polite">
-              Showing {String(visibleCount).padStart(2, '0')}
+    <>
+    <section ref={root} className="wip">
+      <canvas ref={canvas} className="wip-canvas" aria-hidden />
+      <div className="wip-shade" aria-hidden />
+      <div className="wip-inner wrap">
+        <h1 className="wip-title" aria-label="Work in progress">
+          {WORDS.map((word) => (
+            <span key={word} className="wip-word" aria-hidden>
+              {word.split('').map((ch) => (
+                <span key={n} className="wip-ch" style={{ animationDelay: `${(n++ * 0.11).toFixed(2)}s` }}>
+                  {ch}
+                </span>
+              ))}
             </span>
-            <div className="wk-toggle" data-view={view}>
-              <span className="wk-toggle-knob" aria-hidden />
-              <button type="button" aria-pressed={view === 'grid'} onClick={() => switchView('grid')}>
-                <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden>
-                  <rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1" fill="none" stroke="currentColor" strokeWidth="1.3" />
-                  <rect x="9" y="1.5" width="5.5" height="5.5" rx="1" fill="none" stroke="currentColor" strokeWidth="1.3" />
-                  <rect x="1.5" y="9" width="5.5" height="5.5" rx="1" fill="none" stroke="currentColor" strokeWidth="1.3" />
-                  <rect x="9" y="9" width="5.5" height="5.5" rx="1" fill="none" stroke="currentColor" strokeWidth="1.3" />
-                </svg>
-                Grid
-              </button>
-              <button type="button" aria-pressed={view === 'list'} onClick={() => switchView('list')}>
-                <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden>
-                  <path d="M1.5 3.5h13M1.5 8h13M1.5 12.5h13" fill="none" stroke="currentColor" strokeWidth="1.3" />
-                </svg>
-                List
-              </button>
-            </div>
-          </div>
+          ))}
+        </h1>
+        <Reveal trigger="intro" delay={0.5} className="wip-foot">
+          <p className="wip-note">We are finishing our first projects. They will be shown here once they are out in the world, with the people we made them for.</p>
+          <MagneticButton to="/contact" variant="light">
+            Start a project
+          </MagneticButton>
         </Reveal>
-
-        {view === 'grid' ? <WorkGrid items={items} /> : <WorkList items={items} />}
-      </section>
-
-      <Footer />
-    </div>
+      </div>
+    </section>
+    <Footer />
+    </>
   )
 }

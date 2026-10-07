@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, prefersReducedMotion } from '@/lib/smooth'
-import { media } from '@/data/media'
+import Motion from '@/components/Motion'
 import { MagneticButton } from '@/components/MagneticButton'
 import { MonoLabel } from '@/components/ui'
 import { SplitReveal, Reveal } from '@/components/Reveal'
@@ -39,7 +39,7 @@ export default function OriginalsTeaser() {
         .ot-slate b{color:#fff;font-weight:500}
         @media (max-width:767px){.ot-slate{display:none}.ot-copy{bottom:14%}}
       `}</style>
-      <div className="ot-img" style={{ backgroundImage: `url(${media('originalsDirector')})` }} />
+      <Motion k="originalsDirector" className="ot-img" />
       <div className="ot-shade" />
       <div className="ot-flare" />
       <div className="ot-bar ot-bar--t" />

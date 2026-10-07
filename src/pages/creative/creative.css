@@ -39,172 +39,112 @@
 }
 
 /* =============================== HERO =============================== */
-@property --f1 {
-  syntax: '<percentage>';
-  inherits: false;
-  initial-value: 12%;
-}
-@property --f2 {
-  syntax: '<percentage>';
-  inherits: false;
-  initial-value: 82%;
-}
-@property --f3 {
-  syntax: '<percentage>';
-  inherits: false;
-  initial-value: 30%;
-}
+/* A white studio wall, one drawn object, quiet type. */
 .ch {
-  --px: 0;
-  --py: 0;
   position: relative;
   height: 100svh;
   min-height: 600px;
   overflow: hidden;
-  background: #020403;
   isolation: isolate;
-  display: grid;
-  place-items: center;
+  color: #06080d;
+  background:
+    radial-gradient(60% 55% at 70% 48%, #ffffff 0%, rgba(255, 255, 255, 0) 70%),
+    linear-gradient(180deg, #eef0f2 0%, #e3e6e9 100%);
 }
-/* slow aurora: three soft lights that drift and lean toward the pointer (transform only) */
-.ch-aurora {
+.ch ::selection {
+  background: #06080d;
+  color: #fff;
+}
+.ch-canvas {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 0;
-  filter: blur(70px);
-  transform: translate3d(calc(var(--px) * 40px), calc(var(--py) * 30px), 0);
-  transition: transform 1.2s var(--ease-out);
 }
-.ch-aurora i {
-  position: absolute;
-  border-radius: 50%;
-  will-change: transform;
-}
-.ch-aurora i:nth-child(1) {
-  left: 8%;
-  top: 18%;
-  width: 46vw;
-  height: 46vw;
-  background: radial-gradient(closest-side, rgba(22, 56, 255, 0.5), transparent);
-  animation: ch-drift-a 19s ease-in-out infinite alternate;
-}
-.ch-aurora i:nth-child(2) {
-  right: 4%;
-  top: 8%;
-  width: 40vw;
-  height: 40vw;
-  background: radial-gradient(closest-side, rgba(0, 224, 138, 0.38), transparent);
-  animation: ch-drift-b 23s ease-in-out infinite alternate;
-}
-.ch-aurora i:nth-child(3) {
-  left: 32%;
-  bottom: -12%;
-  width: 44vw;
-  height: 34vw;
-  background: radial-gradient(closest-side, rgba(124, 255, 58, 0.22), transparent);
-  animation: ch-drift-a 27s ease-in-out infinite alternate-reverse;
-}
-@keyframes ch-drift-a {
-  to {
-    transform: translate3d(14vw, 6vh, 0) scale(1.15);
-  }
-}
-@keyframes ch-drift-b {
-  to {
-    transform: translate3d(-16vw, 10vh, 0) scale(0.9);
-  }
-}
-.ch.is-off .ch-aurora i,
-.ch.is-off .ch-field {
-  animation-play-state: paused;
-}
-
 .ch-copy {
-  position: relative;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(30px, 7vh, 84px);
   z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding-top: var(--nav-h);
+}
+.ch-kicker {
+  margin: 0 0 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(6, 8, 13, 0.55);
+}
+.ch-kicker::before {
+  content: '';
+  display: inline-block;
+  width: 22px;
+  height: 8px;
+  margin-right: 10px;
+  background: #00c85a;
+  transform: skewX(-24deg);
 }
 .ch-title {
   margin: 0;
-  font-size: clamp(44px, min(9.6vw, 17vh), 176px);
-  letter-spacing: -0.05em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(42px, min(7.6vw, 14vh), 132px);
+  letter-spacing: -0.055em;
   line-height: 0.98;
+  text-transform: none;
 }
 .ch-line {
   display: block;
   white-space: nowrap;
-  /* room so the fill is never clipped at descenders or edges */
-  padding: 0.04em 0.06em 0.16em;
-  margin-bottom: -0.16em;
 }
-/* the letters are windows onto a brighter pass of the same light */
-.ch-field {
-  background-color: #00e08a;
-  background-image:
-    radial-gradient(38% 90% at var(--f1) 22%, #7cff3a 0%, rgba(124, 255, 58, 0) 68%),
-    radial-gradient(34% 100% at var(--f2) 76%, #1e4dff 0%, rgba(30, 77, 255, 0) 70%),
-    radial-gradient(26% 80% at var(--f3) 88%, #e8fbff 0%, rgba(232, 251, 255, 0) 62%),
-    linear-gradient(100deg, #2a6bff 0%, #16b4ff 32%, #00e08a 62%, #7cff3a 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  animation: ch-field 12s ease-in-out infinite alternate;
-}
-@keyframes ch-field {
-  0% {
-    --f1: 8%;
-    --f2: 86%;
-    --f3: 24%;
-  }
-  50% {
-    --f1: 58%;
-    --f2: 30%;
-    --f3: 70%;
-  }
-  100% {
-    --f1: 92%;
-    --f2: 10%;
-    --f3: 44%;
-  }
+.ch-title em {
+  font-family: 'Instrument Serif', 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  font-size: 1.08em;
+  padding-right: 0.06em;
 }
 .ch-lede {
-  max-width: 46ch;
-  margin: clamp(18px, 3vh, 30px) 0 0;
+  max-width: 40ch;
+  margin: clamp(16px, 2.6vh, 26px) 0 0;
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.5;
+  color: rgba(6, 8, 13, 0.62);
 }
 .ch-ctas {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
+  align-items: center;
+  gap: 22px;
   margin-top: clamp(18px, 2.8vh, 30px);
 }
+.ch-link {
+  font-size: 15px;
+  font-weight: 500;
+  color: #06080d;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+  padding-bottom: 3px;
+  transition: background-size 0.5s var(--ease-out);
+}
+.ch-link:hover {
+  background-size: 0 1px;
+  background-position: 100% 100%;
+}
+/* the wall falls away into the dark page below */
 .ch-fadeout {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 16vh;
+  height: 9vh;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(transparent, var(--void));
+  background: linear-gradient(rgba(227, 230, 233, 0), rgba(3, 4, 8, 0.0) 40%, rgba(3, 4, 8, 0.0));
 }
 @media (max-width: 767px) {
   .ch-title {
-    font-size: clamp(40px, 14vw, 84px);
-  }
-  .ch-aurora {
-    filter: blur(50px);
-  }
-  .ch-aurora i:nth-child(1),
-  .ch-aurora i:nth-child(2),
-  .ch-aurora i:nth-child(3) {
-    width: 90vw;
-    height: 90vw;
+    font-size: clamp(38px, 13vw, 72px);
   }
 }
 
@@ -1633,4 +1573,94 @@
 /* hover preview retired */
 .sv-prev {
   display: none !important;
+}
+
+/* ---- the statement over the warped type ---- */
+.gw-stage {
+  position: relative;
+  min-height: min(78vh, 720px);
+  display: flex;
+  align-items: flex-end;
+}
+.gw-say {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding-bottom: clamp(8px, 2vh, 24px);
+  isolation: isolate;
+}
+.gw-say::before {
+  content: '';
+  position: absolute;
+  inset: -40% -10% -30% -10%;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(3, 6, 18, 0) 0%, rgba(3, 6, 18, 0.78) 55%, rgba(3, 6, 18, 0.92) 100%);
+  pointer-events: none;
+}
+.gw-say-a,
+.gw-say-b {
+  margin: 0;
+  line-height: 0.98;
+  color: var(--fg);
+}
+.gw-say-a {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(40px, 7.4vw, 128px);
+  letter-spacing: -0.055em;
+}
+.gw-say-b {
+  font-family: 'Instrument Serif', 'Times New Roman', serif;
+  font-style: italic;
+  font-size: clamp(46px, 8.6vw, 150px);
+  letter-spacing: -0.03em;
+  color: var(--acid);
+  padding-bottom: 0.14em;
+}
+/* the last word: four takes, one after another */
+.gw-swap {
+  display: inline-grid;
+  vertical-align: baseline;
+}
+.gw-swap i {
+  grid-area: 1 / 1;
+  font-style: inherit;
+  opacity: 0;
+  filter: blur(14px);
+  animation: gw-take 10s ease-in-out infinite;
+  padding-right: 0.06em;
+}
+.gw-swap i:nth-child(2) {
+  animation-delay: 2.5s;
+}
+.gw-swap i:nth-child(3) {
+  animation-delay: 5s;
+}
+.gw-swap i:nth-child(4) {
+  animation-delay: 7.5s;
+}
+@keyframes gw-take {
+  0% {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateY(0.18em);
+  }
+  5%,
+  22% {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+  27%,
+  100% {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateY(-0.18em);
+  }
+}
+.gw-say .gw-sub {
+  margin: clamp(14px, 2vh, 24px) 0 0;
+  max-width: 44ch;
+  font-size: clamp(15px, 1.15vw, 18px);
+  color: var(--fg-2);
 }

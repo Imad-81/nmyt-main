@@ -38,7 +38,7 @@
   letter-spacing: -0.02em;
 }
 .ap-band {
-  margin: clamp(69px, 8.64vw, 130px) 0 0;
+  margin: 0;
 }
 .ap-band-img {
   width: 100%;

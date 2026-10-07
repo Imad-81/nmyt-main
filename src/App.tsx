@@ -10,6 +10,7 @@ const Tech = lazy(() => import('@/pages/Tech'))
 const Creative = lazy(() => import('@/pages/Creative'))
 const Originals = lazy(() => import('@/pages/Originals'))
 const Work = lazy(() => import('@/pages/Work'))
+const About = lazy(() => import('@/pages/About'))
 const Contact = lazy(() => import('@/pages/Contact'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
 
@@ -83,6 +84,7 @@ export default function App() {
             <Route path="/creative" element={<Creative />} />
             <Route path="/originals" element={<Originals />} />
             <Route path="/work" element={<Work />} />
+            <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

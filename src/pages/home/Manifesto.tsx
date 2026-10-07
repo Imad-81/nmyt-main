@@ -9,13 +9,6 @@ const ScopeMorph = lazy(() => import('@/gl/ScopeMorph'))
 const TEXT =
   'NMYT is a small studio with big standards. Two teams, one roof: a Tech Studio that builds websites, landing pages and simple systems, and a Creative Studio that shoots films, products and content. Most businesses juggle five vendors to get there. You get one team, one standard, one story.'
 
-const FACTS = [
-  { n: '2', l: 'Studios, one team' },
-  { n: '11', l: 'Disciplines in-house' },
-  { n: '2025', l: 'Founded in Hyderabad' },
-  { n: '0', l: 'Templates' },
-]
-
 export default function Manifesto() {
   const root = useRef<HTMLElement>(null)
   const [stage, setStage] = useState(1)
@@ -35,7 +28,6 @@ export default function Manifesto() {
           })
         },
       })
-      gsap.fromTo('.mf-fact', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, stagger: 0.08, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: '.mf-facts', start: 'top 92%', once: true } })
     },
     { scope: root },
   )
@@ -61,14 +53,6 @@ export default function Manifesto() {
             {SCOPE_LABELS[stage]}
           </div>
         </div>
-      </div>
-      <div className="mf-facts wrap">
-        {FACTS.map((f) => (
-          <div key={f.l} className="mf-fact">
-            <span className="display mf-n">{f.n}</span>
-            <span className="mf-l">{f.l}</span>
-          </div>
-        ))}
       </div>
     </section>
   )
