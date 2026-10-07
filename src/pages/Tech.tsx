@@ -6,7 +6,7 @@ import { gsap, prefersReducedMotion } from '@/lib/smooth'
 import TechHero, { TechStatement } from './tech/TechHero'
 import TechServices, { TechStrip } from './tech/TechServices'
 import TechKit from './tech/TechKit'
-import TechProcess from './tech/TechProcess'
+import { Steps } from '@/components/Simple'
 import TechWork from './tech/TechWork'
 import './tech/tech.css'
 
@@ -44,7 +44,18 @@ export default function Tech() {
         <TechStrip />
         <TechServices />
         <TechKit reduce={reduce} />
-        <TechProcess reduce={reduce} />
+        <Steps
+          eyebrow="Process"
+          title="From brief to launch."
+          lede="Four steps, clear at every stage. You always know what is happening, what is next and what it costs."
+          accent="#0a7cff"
+          items={[
+            { title: 'Discover', body: 'We learn the business, the audience and the one job this build has to do. You get a clear scope, a timeline and a fixed quote.', tags: ['Kick-off call', 'Scope & sitemap', 'Timeline & quote'] },
+            { title: 'Design', body: 'Wireframes first, then high-fidelity design in your brand. You see and click through everything before we build it.', tags: ['Wireframes', 'UI design', 'Clickable prototype'] },
+            { title: 'Build', body: 'Clean, fast, responsive code with a CMS where you need one. Tested on real devices, audited for speed and accessibility.', tags: ['Development', 'CMS setup', 'QA on real devices'] },
+            { title: 'Launch & care', body: 'We ship, measure and keep improving. Hosting, updates and monthly iteration, so it gets better, not older.', tags: ['Launch', 'Analytics', 'Monthly care'] },
+          ]}
+        />
         <TechWork reduce={reduce} />
         <Dusk reduce={reduce} />
       </div>

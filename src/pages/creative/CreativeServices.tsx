@@ -4,7 +4,6 @@ import { gsap, prefersReducedMotion, ScrollTrigger } from '@/lib/smooth'
 import { SectionHead } from '@/components/ui'
 import { CREATIVE_SERVICES } from '@/data/site'
 import { media, type MediaKey } from '@/data/media'
-import { useMediaQuery } from '@/lib/hooks'
 
 const IMG: MediaKey[] = ['creativeCommercial', 'creativeProduct', 'creativeSocial', 'creativePortrait', 'creativeBrand', 'originalsMonitor']
 const TAG = ['FILM', 'STILLS + MOTION', 'ALWAYS-ON', 'PAID', 'IDENTITY', 'MOTION']
@@ -13,7 +12,7 @@ export default function CreativeServices() {
   const root = useRef<HTMLElement>(null)
   const prev = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(-1)
-  const hover = useMediaQuery('(hover: hover) and (pointer: fine)')
+  const hover = false as boolean // the floating hover preview is retired: the list stays a calm list
   const mv = useRef<{ x?: (v: number) => void; y?: (v: number) => void; r?: (v: number) => void; lx: number; ly: number; on: boolean }>({ lx: 0, ly: 0, on: false })
 
   const enter = (e: React.PointerEvent) => {
@@ -118,7 +117,6 @@ export default function CreativeServices() {
                   </span>
                 </h3>
                 <div className="sv-side">
-                  <span className="mono sv-tag">{`// ${TAG[i]}`}</span>
                   <p className="sv-body">{s.body}</p>
                 </div>
                 <span className="sv-arrow" aria-hidden>

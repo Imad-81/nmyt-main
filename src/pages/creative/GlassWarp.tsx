@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import * as THREE from 'three'
 import ShaderCanvas, { type ShaderFrame } from '@/gl/ShaderCanvas'
@@ -7,9 +6,7 @@ import { WARP_FRAG } from '@/gl/creativeShader'
 import { gsap, prefersReducedMotion } from '@/lib/smooth'
 import { MonoLabel } from '@/components/ui'
 import { Reveal } from '@/components/Reveal'
-import { CREATIVE_SERVICES } from '@/data/site'
 import { useIsMobile } from '@/lib/hooks'
-import { Scramble } from './fx'
 
 type U = Record<string, THREE.IUniform>
 
@@ -138,88 +135,9 @@ export default function GlassWarp() {
             The studio
           </MonoLabel>
           <div className="hairline flex-1" />
-          <span className="mono gw-head-r">NMYT/CREATIVE</span>
         </Reveal>
 
         <div className="gw-stage">
-          <Link to="/contact" className="gw-card gw-bar" data-depth="0.6" data-cursor-hover>
-            <div className="gw-float">
-              <div className="gw-tilt gw-glass gw-bar-in">
-                <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden>
-                  <circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" strokeWidth="1.8" />
-                  <path d="M13 13l5 5" stroke="currentColor" strokeWidth="1.8" />
-                </svg>
-                <span className="gw-bar-txt">
-                  brief@nmyt:~$ <b>start_project</b>
-                  <i className="gw-caret" />
-                </span>
-                <span className="gw-bar-go" aria-hidden>
-                  →
-                </span>
-              </div>
-            </div>
-          </Link>
-
-          <div className="gw-card gw-a" data-depth="1">
-            <div className="gw-float">
-              <div className="gw-tilt gw-glass">
-                <Scramble as="div" className="mono gw-t" text="NMYT CREATIVE" />
-                <div className="gw-rule" />
-                <Scramble as="div" className="mono gw-t gw-dim" text="DISCIPLINES" delay={0.15} />
-                <ul className="gw-list">
-                  {CREATIVE_SERVICES.map((s) => (
-                    <li key={s.n}>
-                      <span className="gw-check" aria-hidden>
-                        ✓
-                      </span>
-                      {s.title}
-                    </li>
-                  ))}
-                </ul>
-                <div className="gw-rule" />
-                <Scramble as="div" className="mono gw-t gw-dim" text="STATUS" delay={0.3} />
-                <div className="gw-status">
-                  <i className="gw-live" aria-hidden />
-                  Open for new projects
-                </div>
-                <div className="gw-rule" />
-                <div className="mono gw-foot">CH_02 // ONLINE</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="gw-card gw-b" data-depth="-0.8">
-            <div className="gw-float">
-              <div className="gw-tilt gw-glass">
-                <Scramble as="div" className="mono gw-t" text="SYSTEM INFORMATION" delay={0.2} />
-                <div className="gw-rule" />
-                <dl className="gw-dl mono">
-                  <div>
-                    <dt>Mode</dt>
-                    <dd>In-house</dd>
-                  </div>
-                  <div>
-                    <dt>Pipeline</dt>
-                    <dd>Idea → Grade</dd>
-                  </div>
-                  <div>
-                    <dt>Output</dt>
-                    <dd>Film · Stills</dd>
-                  </div>
-                  <div>
-                    <dt>Formats</dt>
-                    <dd>16:9 · 9:16 · 1:1</dd>
-                  </div>
-                </dl>
-                <div className="gw-rule" />
-                <div className="mono gw-t gw-acid">
-                  Made by hand,
-                  <br />
-                  not by template
-                </div>
-              </div>
-            </div>
-          </div>
 
           <Reveal className="gw-copy" delay={0.2}>
             <p className="gw-state display">
@@ -231,9 +149,6 @@ export default function GlassWarp() {
           </Reveal>
         </div>
 
-        <div className="gw-bottom mono" aria-hidden>
-          Film • Stills • Social • Ads • Identity • Motion
-        </div>
       </div>
     </section>
   )

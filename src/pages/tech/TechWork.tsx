@@ -81,7 +81,7 @@ export default function TechWork({ reduce }: { reduce: boolean }) {
         <div className="tw-studio">
           <Reveal className="tk-head-row">
             <span className="mono tk-label">
-              <b>/</b> From the studio
+              From the studio
             </span>
             <span className="tk-rule" />
           </Reveal>

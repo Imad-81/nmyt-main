@@ -2,7 +2,7 @@
    /work — index
    ===================================================================== */
 .wk-hero {
-  padding-top: calc(var(--nav-h) + clamp(40px, 8vh, 96px));
+  padding-top: calc(var(--nav-h) + clamp(29px, 5.76vh, 69px));
 }
 .wk-top {
   display: flex;
@@ -21,8 +21,8 @@
 .wk-title {
   margin: 0;
   filter: drop-shadow(0 0 60px rgba(22, 56, 255, 0.35));
-  font-size: clamp(68px, min(14vw, 26vh), 290px);
-  line-height: 0.82;
+  font-size: clamp(36px, min(6vw, 11vh), 104px);
+  line-height: 1.04;
 }
 .wk-line {
   display: block;
@@ -47,8 +47,8 @@
 }
 
 .wk-body {
-  padding-top: clamp(64px, 9vw, 140px);
-  padding-bottom: clamp(96px, 12vw, 200px);
+  padding-top: clamp(46px, 6.48vw, 101px);
+  padding-bottom: clamp(69px, 8.64vw, 144px);
 }
 
 /* ---------- controls ---------- */
@@ -162,7 +162,7 @@
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--gutter);
-  row-gap: clamp(48px, 6vw, 96px);
+  row-gap: clamp(35px, 4.32vw, 69px);
   align-items: start;
 }
 .wk-item.is-out {
@@ -269,7 +269,7 @@
   display: flex;
   flex-direction: column;
   margin: 0;
-  font-size: clamp(22px, 2vw, 32px);
+  font-size: clamp(18px, 1.64vw, 26px);
   font-weight: 500;
   line-height: 1.12;
   letter-spacing: -0.03em;
@@ -324,7 +324,7 @@
   color: var(--fg-3);
 }
 .wk-row-name {
-  font-size: clamp(34px, 4.4vw, 80px);
+  font-size: clamp(20px, 2.64vw, 48px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -449,6 +449,6 @@
     display: none;
   }
   .wk-row-name {
-    font-size: clamp(30px, 10vw, 48px);
+    font-size: clamp(25px, 8.2vw, 39px);
   }
 }

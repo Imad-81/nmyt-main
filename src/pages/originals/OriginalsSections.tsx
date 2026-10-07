@@ -2,7 +2,8 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, SplitText, prefersReducedMotion } from '@/lib/smooth'
 import { Reveal, SplitReveal } from '@/components/Reveal'
-import { MonoLabel, SectionHead, Marquee, Brackets } from '@/components/ui'
+import { MonoLabel, SectionHead, Marquee } from '@/components/ui'
+import { Steps } from '@/components/Simple'
 import { MagneticButton } from '@/components/MagneticButton'
 import Img from '@/components/Img'
 import { media, type MediaKey } from '@/data/media'
@@ -38,9 +39,6 @@ export function Manifesto() {
             Manifesto
           </MonoLabel>
           <div className="hairline flex-1" />
-          <span className="mono" style={{ color: 'var(--fg-3)' }}>
-            Scene 01
-          </span>
         </Reveal>
         <p className="display om-text">
           We make our own <em className="serif om-em om-em--a">films.</em> And we make room for <em className="serif om-em om-em--b">new filmmakers.</em>
@@ -102,100 +100,20 @@ const STEPS = [
 ]
 
 export function Program() {
-  const root = useRef<HTMLElement>(null)
-  useGSAP(
-    () => {
-      const q = gsap.utils.selector(root)
-      const track = q('.op-track')[0] as HTMLElement
-      const mm = gsap.matchMedia()
-      mm.add('(min-width: 1024px)', () => {
-        if (prefersReducedMotion()) {
-          root.current!.classList.add('op--static')
-          return () => root.current?.classList.remove('op--static')
-        }
-        const dist = () => Math.max(0, track.scrollWidth - window.innerWidth)
-        const tween = gsap.to(track, {
-          x: () => -dist(),
-          ease: 'none',
-          scrollTrigger: { trigger: q('.op-pin')[0], start: 'top top', end: () => `+=${dist()}`, pin: true, scrub: 0.8, invalidateOnRefresh: true },
-        })
-        gsap.fromTo(q('.op-progress i'), { scaleX: 0 }, { scaleX: 1, ease: 'none', scrollTrigger: { trigger: q('.op-pin')[0], start: 'top top', end: () => `+=${dist()}`, scrub: true, invalidateOnRefresh: true } })
-        q('.op-card').forEach((card) => {
-          gsap.fromTo(
-            card.querySelector('.op-num'),
-            { xPercent: 40 },
-            { xPercent: -40, ease: 'none', scrollTrigger: { trigger: card, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true } },
-          )
-          gsap.fromTo(
-            card.querySelector('.op-streak'),
-            { scaleX: 0.15, opacity: 0.2 },
-            { scaleX: 1, opacity: 1, ease: 'none', scrollTrigger: { trigger: card, containerAnimation: tween, start: 'left 95%', end: 'center 55%', scrub: true } },
-          )
-        })
-      })
-      mm.add('(max-width: 1023px)', () => {
-        q('.op-card').forEach((card) => {
-          gsap.fromTo(card, { autoAlpha: 0, y: 50 }, { autoAlpha: 1, y: 0, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: card, start: 'top 88%', once: true } })
-        })
-      })
-    },
-    { scope: root },
-  )
-
   return (
-    <section ref={root} className="op">
-      <div className="op-pin">
-        <div className="wrap op-head">
-          <MonoLabel index="02" color="var(--emerald)">
-            The program
-          </MonoLabel>
-          <div className="hairline flex-1" />
-          <div className="op-progress" aria-hidden>
-            <i />
-          </div>
-        </div>
-        <div className="op-track">
-          <div className="op-intro">
-            <SplitReveal as="h2" className="display op-title" type="chars" stagger={0.025}>
-              From pitch
-              <br />
-              to <em className="serif op-em">paid.</em>
-            </SplitReveal>
-            <Reveal className="lede op-lede" delay={0.2}>
-              Four steps for filmmakers early in their careers, from a first idea to a finished film and a place on our sets.
-            </Reveal>
-          </div>
-          {STEPS.map((s) => (
-            <article key={s.n} className="op-card" style={{ ['--c' as string]: s.c }}>
-              <div className="op-card-top mono">
-                <span>Reel {s.n}</span>
-                <span>{s.n} / 04</span>
-              </div>
-              <div className="op-vis" aria-hidden>
-                <span className="op-streak" />
-                <span className="op-num serif">{s.n}</span>
-                <Brackets color="rgba(255,255,255,.28)" size={12} inset={12} />
-              </div>
-              <h3 className="display op-card-title">{s.title}</h3>
-              <p className="op-card-body">{s.body}</p>
-              <div className="op-tags">
-                {s.tags.map((t) => (
-                  <span key={t} className="pill">
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </article>
-          ))}
-          <div className="op-end">
-            <span className="mono">End of reel</span>
-            <MagneticButton to="/contact?type=filmmaker" variant="ghost">
-              Pitch your film
-            </MagneticButton>
-          </div>
-        </div>
+    <Steps
+      eyebrow="The program"
+      title="From pitch to paid."
+      lede="Four steps for filmmakers early in their careers, from a first idea to a finished film and a place on our sets."
+      items={STEPS.map(({ title, body, tags }) => ({ title, body, tags }))}
+      accent="var(--ivory)"
+    >
+      <div className="mt-12">
+        <MagneticButton to="/contact?type=filmmaker" variant="ghost">
+          Pitch your film
+        </MagneticButton>
       </div>
-    </section>
+    </Steps>
   )
 }
 

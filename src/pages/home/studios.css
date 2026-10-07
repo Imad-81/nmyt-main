@@ -3,7 +3,7 @@
 }
 .sc-row {
   position: relative;
-  margin-top: clamp(48px, 6vw, 88px);
+  margin-top: clamp(35px, 4.32vw, 63px);
   display: flex;
   gap: 18px;
   height: min(86vh, 820px);
@@ -99,12 +99,12 @@
 }
 .sc-title {
   margin: 0;
-  font-size: clamp(56px, min(7.2vw, 15vh), 140px);
+  font-size: clamp(34px, min(4.32vw, 9vh), 84px);
 }
 .sc-title em {
   color: var(--hue);
   font-size: 0.96em;
-  line-height: 0.8;
+  line-height: 1.04;
 }
 .sc-lede {
   max-width: 34ch;
@@ -401,6 +401,6 @@
     width: min(280px, 34%);
   }
   .sc-title {
-    font-size: clamp(48px, min(6vw, 12vh), 120px);
+    font-size: clamp(29px, min(3.6vw, 7.2vh), 72px);
   }
 }

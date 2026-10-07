@@ -1,31 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, prefersReducedMotion } from '@/lib/smooth'
 import { SplitReveal, Reveal, whenRevealed } from '@/components/Reveal'
 import { media } from '@/data/media'
 
-const pad = (n: number) => String(n).padStart(2, '0')
-
-/** Live 24fps timecode written straight into a span (no re-renders). */
-function useTimecode() {
-  const ref = useRef<HTMLSpanElement>(null)
-  useEffect(() => {
-    const t0 = performance.now()
-    let raf = 0
-    const tick = () => {
-      raf = requestAnimationFrame(tick)
-      const s = (performance.now() - t0) / 1000
-      if (ref.current) ref.current.textContent = `${pad(Math.floor(s / 3600))}:${pad(Math.floor(s / 60) % 60)}:${pad(Math.floor(s) % 60)}:${pad(Math.floor((s % 1) * 24))}`
-    }
-    tick()
-    return () => cancelAnimationFrame(raf)
-  }, [])
-  return ref
-}
-
 export default function OriginalsHero() {
   const root = useRef<HTMLElement>(null)
-  const tc = useTimecode()
 
   useGSAP(
     (_ctx, contextSafe) => {
@@ -86,14 +66,11 @@ export default function OriginalsHero() {
       </div>
 
       <div className="oh-copy wrap">
-        <Reveal trigger="intro" delay={0.9} className="mono oh-kicker">
-          <span className="oh-dot" /> In-house short films <span className="oh-sep">/</span> New filmmakers
-        </Reveal>
         <h1 className="display oh-title">
-          <SplitReveal as="span" className="oh-line" type="chars" trigger="intro" delay={0.7} stagger={0.04} duration={1.5}>
+          <SplitReveal as="span" className="oh-line" trigger="intro" delay={0.7}>
             NMYT
           </SplitReveal>
-          <SplitReveal as="span" className="oh-line" type="chars" trigger="intro" delay={0.95} stagger={0.035} duration={1.5}>
+          <SplitReveal as="span" className="oh-line" trigger="intro" delay={0.82}>
             <em className="serif oh-em">Originals</em>
           </SplitReveal>
         </h1>
@@ -103,23 +80,8 @@ export default function OriginalsHero() {
       </div>
 
       {/* letterbox — opens to 2.39:1 once the loader lifts */}
-      <div className="oh-bar oh-bar--top" aria-hidden>
-        <div className="oh-bar-row mono">
-          <span>NMYT / Originals</span>
-          <span>2.39 : 1</span>
-        </div>
-      </div>
-      <div className="oh-bar oh-bar--bot">
-        <div className="oh-bar-row mono">
-          <span className="oh-rec">
-            <i /> REC <b ref={tc}>00:00:00:00</b>
-          </span>
-          <span className="oh-bar-mid">Anamorphic · 24 fps</span>
-          <span className="oh-scroll">
-            Scroll <em />
-          </span>
-        </div>
-      </div>
+      <div className="oh-bar oh-bar--top" aria-hidden />
+      <div className="oh-bar oh-bar--bot" aria-hidden />
       <div className="oh-fadeblack" aria-hidden />
     </section>
   )

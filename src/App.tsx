@@ -2,7 +2,6 @@ import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useSta
 import { Route, Routes, useLocation, type Location } from 'react-router-dom'
 import { gsap, initSmoothScroll, scrollToTop, ScrollTrigger } from '@/lib/smooth'
 import Nav from '@/components/Nav'
-import Cursor from '@/components/Cursor'
 import Grain from '@/components/Grain'
 import Loader from '@/components/Loader'
 import Home from '@/pages/Home'
@@ -93,14 +92,13 @@ export default function App() {
         <style>{`
           .pt{position:fixed;inset:0;z-index:500;background:var(--void)}
           .pt::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--grad-master)}
-          .pt-logo{position:absolute;left:50%;top:50%;width:min(36vw,280px);transform:translate(-50%,-50%)}
+          .pt-logo{position:absolute;left:50%;top:50%;width:min(30vw,200px);transform:translate(-50%,-50%)}
           .pt-logo img{width:100%;height:auto}
         `}</style>
         <div className="pt-logo">
-          <img src="/brand/nmyt-logo.webp" alt="" />
+          <img src="/brand/nmyt-mask-sm.webp" alt="" />
         </div>
       </div>
-      <Cursor />
       <Grain />
     </>
   )

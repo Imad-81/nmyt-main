@@ -7,129 +7,37 @@
   place-items: center;
   overflow: hidden;
 }
-.ld-stage {
-  position: relative;
-  visibility: hidden;
-  display: grid;
-  place-items: center;
-}
 .ld-halo {
   position: absolute;
-  width: min(90vw, 1100px);
+  width: min(86vw, 900px);
   aspect-ratio: 2 / 1;
   background:
-    radial-gradient(40% 50% at 35% 50%, rgba(22, 56, 255, 0.55), transparent 70%),
-    radial-gradient(35% 45% at 62% 50%, rgba(22, 180, 255, 0.35), transparent 70%),
-    radial-gradient(30% 40% at 78% 58%, rgba(124, 255, 58, 0.18), transparent 70%);
+    radial-gradient(40% 50% at 35% 50%, rgba(22, 56, 255, 0.4), transparent 70%),
+    radial-gradient(35% 45% at 62% 50%, rgba(22, 180, 255, 0.22), transparent 70%),
+    radial-gradient(30% 40% at 78% 58%, rgba(124, 255, 58, 0.12), transparent 70%);
   filter: blur(40px);
+  opacity: 0;
   pointer-events: none;
 }
-.ld-logo {
+/* the exact logo silhouette, cut from the full-resolution artwork */
+.ld-mark {
   position: relative;
-  width: min(62vw, 600px);
-  aspect-ratio: 882 / 327;
+  width: min(56vw, 460px);
+  aspect-ratio: 1545 / 575;
+  overflow: hidden;
+  visibility: hidden;
+  -webkit-mask: url('/brand/nmyt-mask-hq.webp') center / contain no-repeat;
+  mask: url('/brand/nmyt-mask-hq.webp') center / contain no-repeat;
 }
-.ld-logo > * {
+.ld-white,
+.ld-light {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  will-change: transform;
 }
-.ld-spectrum {
-  mask-size: 100% 100%;
-  -webkit-mask-size: 100% 100%;
-  mask-repeat: no-repeat;
-  -webkit-mask-repeat: no-repeat;
-  overflow: hidden;
+.ld-white {
+  background: #f6f8fc;
 }
-.ld-spectrum-fill {
-  position: absolute;
-  inset: 0;
-  width: 200%;
-  background: linear-gradient(
-    100deg,
-    #0a1a8c 0%,
-    #1638ff 12%,
-    #16b4ff 22%,
-    #cfefff 26%,
-    #7cff3a 34%,
-    #00e08a 40%,
-    #1638ff 50%,
-    #0a1a8c 60%,
-    #16b4ff 72%,
-    #7cff3a 84%,
-    #1638ff 100%
-  );
-}
-.ld-metal {
-  object-fit: contain;
-  filter: drop-shadow(0 0 40px rgba(22, 56, 255, 0.35));
-  user-select: none;
-}
-.ld-sheen-mask {
-  mask-size: 100% 100%;
-  -webkit-mask-size: 100% 100%;
-  mask-repeat: no-repeat;
-  -webkit-mask-repeat: no-repeat;
-  overflow: hidden;
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
-.ld-sheen {
-  position: absolute;
-  inset: -10% 0;
-  width: 100%;
-  background: linear-gradient(105deg, transparent 38%, rgba(207, 239, 255, 0.0) 42%, rgba(207, 239, 255, 0.75) 50%, rgba(255, 255, 255, 0.0) 58%, transparent 62%);
-}
-.ld-foot {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 34px;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: end;
-  color: var(--fg-3);
-}
-.ld-mid {
-  text-align: center;
-}
-.ld-mid i {
-  font-style: normal;
-  color: var(--sky);
-  margin: 0 0.5em;
-}
-.ld-right {
-  text-align: right;
-}
-.ld-count {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-stretch: 78%;
-  font-size: 44px;
-  line-height: 1;
-  color: var(--fg);
-  letter-spacing: -0.02em;
-}
-.ld-line-wrap {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.06);
-}
-.ld-line {
-  height: 100%;
-  background: var(--grad-master);
-  transform-origin: left;
-  transform: scaleX(0);
-}
-@media (max-width: 767px) {
-  .ld-mid {
-    display: none;
-  }
-  .ld-foot {
-    grid-template-columns: 1fr 1fr;
-  }
+.ld-light {
+  background: linear-gradient(100deg, transparent 20%, #1638ff 38%, #16b4ff 50%, #7cff3a 60%, #f6f8fc 68%, transparent 80%);
 }

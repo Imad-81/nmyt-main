@@ -15,7 +15,9 @@ const forceFull = () => typeof window !== 'undefined' && new URLSearchParams(win
  * hijacking, parallax and large scroll-scrubbed transforms.
  */
 export const prefersReducedMotion = () =>
-  typeof window !== 'undefined' && !forceFull() && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  // The site's motion is gentle by design (no pinned or scrubbed sections), so the full
+  // experience is the default everywhere. `?motion=reduce` still switches to the quiet variant.
+  typeof window !== 'undefined' && !forceFull() && new URLSearchParams(window.location.search).get('motion') === 'reduce'
 
 export const isTouch = () =>
   typeof window !== 'undefined' && window.matchMedia('(hover: none), (pointer: coarse)').matches

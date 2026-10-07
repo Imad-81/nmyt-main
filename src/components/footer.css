@@ -3,7 +3,7 @@
   overflow: hidden;
   background: var(--void);
   border-top: 1px solid var(--line);
-  padding-top: clamp(96px, 12vw, 180px);
+  padding-top: clamp(69px, 8.64vw, 130px);
 }
 .ft-glow {
   position: absolute;
@@ -35,11 +35,11 @@
   color: var(--acid);
 }
 .ft-title {
-  font-size: clamp(56px, min(12vw, 24vh), 224px);
+  font-size: clamp(34px, min(7.2vw, 14.4vh), 134px);
 }
 .ft-title em {
   font-size: 1.05em;
-  line-height: 0.8;
+  line-height: 1.04;
   background: var(--grad-master);
   -webkit-background-clip: text;
   background-clip: text;
@@ -55,7 +55,7 @@
   flex-wrap: wrap;
 }
 .ft-grid {
-  margin-top: clamp(80px, 10vw, 160px);
+  margin-top: clamp(58px, 7.2vw, 115px);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 32px;
@@ -87,7 +87,7 @@
 }
 .ft-mark-wrap {
   position: relative;
-  margin-top: clamp(64px, 8vw, 120px);
+  margin-top: clamp(46px, 5.76vw, 86px);
   padding-inline: var(--gutter);
 }
 .ft-mark-wrap {

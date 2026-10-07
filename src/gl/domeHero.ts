@@ -1,12 +1,10 @@
 /**
- * "The Dome" — NMYT home hero.
- * The camera sits inside a huge sphere. Two families of light rings wrap it:
- * royal/sky threads (Tech Studio) and acid/emerald silk (Creative Studio). Their axes are
- * offset, so the rings interleave and burn white where they cross — a spatial enclosure of
- * light with the chrome NMYT mark floating at its centre, reflecting the same palette.
+ * NMYT home hero.
+ * Deep space, the chrome NMYT mark at the centre, and embers in the brand's three lights
+ * (space white, blue, green) drifting across. The pointer turns the mark and parts the embers.
  *
- * Plain three.js (no React renderer): one draw call for the dome, one for the mark.
- * Resolution adapts to the device's real frame time, and the loop sleeps off-screen.
+ * Plain three.js (no React renderer): three draw calls in total. Resolution adapts to the
+ * device's real frame time, and the loop sleeps off-screen.
  */
 import * as THREE from 'three'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js'
@@ -33,72 +31,61 @@ uniform float uScroll;
 uniform vec2 uMouse;
 uniform vec2 uRes;
 
-const vec3 ROYAL = vec3(0.086, 0.22, 1.0);
-const vec3 SKY   = vec3(0.086, 0.706, 1.0);
-const vec3 ICE   = vec3(0.81, 0.94, 1.0);
-const vec3 ACID  = vec3(0.486, 1.0, 0.227);
-const vec3 EMER  = vec3(0.0, 0.878, 0.541);
-const vec3 DEEP  = vec3(0.02, 0.05, 0.30);
-
-float hash(float n){ return fract(sin(n * 91.345) * 47453.5453); }
 float hash2(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
-
-// one family of rings around an axis. returns colour in rgb, raw intensity in a
-vec4 rings(vec3 d, vec3 axis, float N, float t, float seed, vec3 cA, vec3 cB, float wav, float zoom){
-  vec3 bx = normalize(cross(vec3(0.0, 1.0, 0.0), axis));
-  vec3 by = cross(axis, bx);
-  float pol = acos(clamp(dot(d, axis), -1.0, 1.0)) / zoom;
-  float az = atan(dot(d, by), dot(d, bx));
-  // silk: the rings breathe along their length (integer harmonics keep the seam closed)
-  float w = wav * (0.6 * sin(az * 2.0 + t * 0.7 + seed) + 0.4 * sin(az * 3.0 - t * 0.45 + seed * 2.3));
-  float v = (pow(pol, 0.86) + w * (0.05 + pol * 0.16)) * N;
-  float id = floor(v);
-  float h = hash(id + seed * 17.0);
-  float dist = abs(fract(v) - 0.5) / N;
-  // rings nearer the viewer (wider polar angle) read thicker: depth without geometry
-  float width = mix(0.0006, 0.0024, h * h) * (0.6 + pol * 1.9);
-  float g = width / (dist + 0.0011) * exp(-dist * 46.0);
-  g += width * 9.0 * exp(-dist * dist * 2600.0);   // soft halo round the core
-  // light travelling round each ring at its own pace
-  float k = 1.0 + floor(h * 3.0);
-  float flow = 0.34 + 0.66 * pow(0.5 + 0.5 * sin(az * k - t * (0.7 + h * 1.6) + h * 40.0), 2.4);
-  g *= step(0.14, h) * flow;
-  // rings write in from the pole outward; keep the centre calm for the mark
-  g *= smoothstep(0.0, 0.25, uIntro * 1.5 - pol) * mix(0.2, 1.0, smoothstep(0.1, 0.36, pol));
-  return vec4(mix(cA, cB, h) * g, g);
-}
 
 void main(){
   vec3 d = normalize(vDir);
-  float t = uTime * 0.22;
-  float zoom = 1.0 + uScroll * 0.7;
-  vec3 m = vec3(uMouse * 0.07, 0.0);
-  vec3 axA = normalize(vec3(0.05, 0.13, -1.0) + m);
-  vec3 axB = normalize(vec3(-0.11, 0.03, -1.0) - m * 0.6);
-
-  vec4 a = rings(d, axA, 21.0, t, 1.0, ROYAL, SKY, 1.0, zoom);
-  vec4 b = rings(d, axB, 14.0, t * 0.9, 5.0, EMER, ACID, 1.5, zoom);
-  vec3 col = a.rgb * 1.5 + b.rgb * 1.0;
-  col += ICE * min(a.a, b.a) * 0.9;            // white-hot where the two studios cross
-
-  // atmosphere: a deep blue breath behind the mark, a faint green counter-glow
-  float pc = acos(clamp(-d.z, -1.0, 1.0));
-  col += DEEP * exp(-pc * pc * 5.0) * 0.55 * uIntro;
-  col += mix(ROYAL, SKY, 0.35) * exp(-pow((pc - 0.52) * 4.2, 2.0)) * 0.05 * uIntro;
-  col += EMER * exp(-pow((acos(clamp(dot(d, axB), -1.0, 1.0)) - 0.6) * 4.0, 2.0)) * 0.022 * uIntro;
-
-  // sparse dust riding the light
-  vec2 gp = floor(gl_FragCoord.xy / 3.0);
-  float s = hash2(gp + floor(uTime * 5.0));
-  col += vec3(0.8, 0.95, 1.0) * step(0.9972, s) * min(1.0, (a.a + b.a) * 1.6) * 0.7;
-
-  // vignette in view space, filmic tonemap that keeps saturation
+  // deep space: near-black navy, a slow royal breath behind the mark, a faint green counter-light
+  vec2 c = d.xy / max(-d.z, 0.2) - uMouse * 0.03;
+  float r = length(c * vec2(0.8, 1.15));
+  vec3 col = vec3(0.008, 0.012, 0.03);
+  col += vec3(0.03, 0.09, 0.42) * exp(-r * r * 3.2) * (0.85 + 0.15 * sin(uTime * 0.4)) * uIntro;
+  col += vec3(0.0, 0.22, 0.16) * exp(-pow(length(c - vec2(0.55, -0.28)) * 1.9, 2.0)) * 0.35 * uIntro;
+  col += vec3(0.05, 0.2, 0.5) * exp(-pow(length(c + vec2(0.6, -0.2)) * 1.7, 2.0)) * 0.3 * uIntro;
   vec2 sp = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
-  col *= mix(0.5, 1.0, smoothstep(1.25, 0.2, length(sp * vec2(0.85, 1.1))));
-  col = 1.0 - exp(-col * 1.3);
-  col *= 1.0 - uScroll * 0.75;
+  col *= mix(0.55, 1.0, smoothstep(1.2, 0.2, length(sp * vec2(0.85, 1.1))));
+  col *= 1.0 - uScroll * 0.7;
   col += (hash2(gl_FragCoord.xy + fract(uTime) * 61.0) - 0.5) / 255.0;
   gl_FragColor = vec4(col, 1.0);
+}`
+
+const EMBER_VERT = /* glsl */ `
+attribute vec4 aRand;
+uniform float uTime; uniform float uPR; uniform float uIntro; uniform float uScroll;
+uniform vec2 uMouseW;
+varying vec3 vCol; varying float vA;
+void main(){
+  vec3 p = position;
+  // drift across the frame, wrapping round; each ember keeps its own pace and wobble
+  p.x = mod(p.x + uTime * (0.35 + aRand.x * 0.9) + 20.0, 40.0) - 20.0;
+  p.y = mod(p.y + uTime * (aRand.w - 0.35) * 0.3 + 11.0, 22.0) - 11.0;
+  p.y += sin(uTime * (0.3 + aRand.y) + aRand.z * 6.283) * 0.5;
+  p.z += sin(uTime * 0.2 + aRand.w * 6.283) * 0.6;
+  // the pointer parts them gently
+  vec2 d = p.xy - uMouseW; float dl = length(d);
+  p.xy += (d / max(dl, 1e-3)) * smoothstep(3.2, 0.0, dl) * 0.9;
+  vec4 mv = modelViewMatrix * vec4(p, 1.0);
+  gl_Position = projectionMatrix * mv;
+  gl_PointSize = (2.0 + aRand.z * aRand.z * 7.0) * uPR * (11.0 / -mv.z);
+  float k = aRand.x;
+  vec3 white = vec3(0.86, 0.94, 1.0);
+  vec3 blue = mix(vec3(0.09, 0.26, 1.0), vec3(0.09, 0.7, 1.0), aRand.y);
+  vec3 green = mix(vec3(0.0, 0.88, 0.54), vec3(0.49, 1.0, 0.23), aRand.y);
+  vCol = k < 0.3 ? white : (k < 0.68 ? blue : green);
+  float tw = 0.55 + 0.45 * sin(uTime * (0.8 + aRand.w * 2.2) + aRand.x * 40.0);
+  // fade at the wrap edges so nothing pops in or out
+  float edge = smoothstep(20.0, 16.0, abs(p.x));
+  vA = tw * edge * (0.5 + 0.5 * aRand.z) * uIntro * (1.0 - uScroll * 0.8);
+}`
+
+const EMBER_FRAG = /* glsl */ `
+varying vec3 vCol; varying float vA;
+void main(){
+  float r = length(gl_PointCoord - 0.5);
+  if (r > 0.5) discard;
+  float glow = smoothstep(0.5, 0.0, r);
+  float a = (pow(glow, 2.2) + pow(glow, 8.0) * 0.8) * vA;
+  gl_FragColor = vec4(vCol * a, a);
 }`
 
 function buildMark() {
@@ -275,6 +262,25 @@ export function createDomeHero(host: HTMLElement, state: DomeState, opts: { redu
   dome.renderOrder = -1
   scene.add(dome)
 
+  // embers
+  const EMBERS = window.matchMedia('(max-width: 767px)').matches ? 420 : 950
+  const ePos = new Float32Array(EMBERS * 3)
+  const eRnd = new Float32Array(EMBERS * 4)
+  for (let i = 0; i < EMBERS; i++) {
+    ePos[i * 3] = (Math.random() - 0.5) * 40
+    ePos[i * 3 + 1] = (Math.random() - 0.5) * 22
+    ePos[i * 3 + 2] = -14 + Math.random() * 19
+    for (let k = 0; k < 4; k++) eRnd[i * 4 + k] = Math.random()
+  }
+  const emberGeo = new THREE.BufferGeometry()
+  emberGeo.setAttribute('position', new THREE.BufferAttribute(ePos, 3))
+  emberGeo.setAttribute('aRand', new THREE.BufferAttribute(eRnd, 4))
+  const emberU = { uTime: uniforms.uTime, uIntro: uniforms.uIntro, uScroll: uniforms.uScroll, uPR: { value: pr }, uMouseW: { value: new THREE.Vector2(99, 99) } }
+  const emberMat = new THREE.ShaderMaterial({ vertexShader: EMBER_VERT, fragmentShader: EMBER_FRAG, uniforms: emberU, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false })
+  const embers = new THREE.Points(emberGeo, emberMat)
+  embers.frustumCulled = false
+  scene.add(embers)
+
   const envTex = buildEnv(renderer)
   scene.environment = envTex
   const markGeo = buildMark()
@@ -286,6 +292,7 @@ export function createDomeHero(host: HTMLElement, state: DomeState, opts: { redu
 
   const size = { w: 1, h: 1 }
   let fit = 1
+  const view = { w: 1, h: 1 }
   let restY = 0
   const resize = () => {
     const r = host.getBoundingClientRect()
@@ -294,6 +301,7 @@ export function createDomeHero(host: HTMLElement, state: DomeState, opts: { redu
     renderer.setPixelRatio(pr)
     renderer.setSize(size.w, size.h, false)
     uniforms.uRes.value.set(size.w * pr, size.h * pr)
+    emberU.uPR.value = pr
     camera.aspect = size.w / size.h
     camera.updateProjectionMatrix()
     // fit the mark to the frame: wide on phones, restrained on desktop, clear of the headline
@@ -301,7 +309,9 @@ export function createDomeHero(host: HTMLElement, state: DomeState, opts: { redu
     const vw = vh * camera.aspect
     const land = camera.aspect > 1.05
     fit = Math.min((vw * (land ? 0.46 : 0.8)) / MARK_W, (vh * 0.3) / (MARK_W * 0.366))
-    restY = vh * (land ? 0.13 : 0.15)
+    restY = vh * 0.1
+    view.w = vw
+    view.h = vh
   }
   resize()
   const ro = new ResizeObserver(resize)
@@ -353,6 +363,7 @@ export function createDomeHero(host: HTMLElement, state: DomeState, opts: { redu
       mouse.y += (pointer.y - mouse.y) * 0.045
     }
     uniforms.uMouse.value.copy(mouse)
+    emberU.uMouseW.value.set((mouse.x * view.w) / 2, (mouse.y * view.h) / 2)
     uniforms.uIntro.value = state.intro
     uniforms.uScroll.value = state.scroll
 
@@ -381,6 +392,8 @@ export function createDomeHero(host: HTMLElement, state: DomeState, opts: { redu
       ro.disconnect()
       io.disconnect()
       canvas.removeEventListener('webglcontextlost', onLost)
+      emberGeo.dispose()
+      emberMat.dispose()
       domeGeo.dispose()
       domeMat.dispose()
       markGeo.dispose()

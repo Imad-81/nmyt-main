@@ -67,8 +67,9 @@ export default function Nav() {
     <>
       <header className={`nv ${hidden && !open ? 'nv--hidden' : ''} ${scrolled ? 'nv--scrolled' : ''}`}>
         <div className="nv-inner">
-          <Link to="/" className="nv-logo" aria-label="NMYT home" data-cursor-hover>
-            <img src="/brand/nmyt-logo-h34.png" srcSet="/brand/nmyt-logo-h34.png 1x, /brand/nmyt-logo-h43.png 1.25x, /brand/nmyt-logo-h51.png 1.5x, /brand/nmyt-logo-h68.png 2x" alt="NMYT" width={92} height={34} />
+          <Link to="/" className="nv-logo" aria-label="NMYT home">
+            <span className="nv-mark" aria-hidden />
+            <span className="nv-word">NMYT</span>
           </Link>
 
           <nav className="nv-links glass" aria-label="Primary">
@@ -82,9 +83,6 @@ export default function Nav() {
           </nav>
 
           <div className="nv-right">
-            <span className="nv-status mono">
-              <i /> Taking new projects
-            </span>
             <MagneticButton to="/contact" variant="light" small>
               Start a project
             </MagneticButton>
@@ -101,7 +99,6 @@ export default function Nav() {
         <nav className="mm-nav wrap">
           {NAV_LINKS.map((l) => (
             <Link key={l.to} to={l.to} className="mm-row">
-              <span className="mono mm-tag">{l.tag}</span>
               <span className="mask-line">
                 <span className="mm-link display">{l.label}</span>
               </span>

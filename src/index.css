@@ -1,8 +1,4 @@
-@import '@fontsource-variable/archivo/wdth.css';
-@import '@fontsource-variable/geist/wght.css';
-@import '@fontsource-variable/geist-mono/wght.css';
-@import '@fontsource/instrument-serif/400.css';
-@import '@fontsource/instrument-serif/400-italic.css';
+@import '@fontsource-variable/inter/opsz.css';
 @import './styles/tokens.css';
 @import 'tailwindcss';
 
@@ -21,10 +17,10 @@
   --color-navy: #04123f;
   --color-paper: #f6f9ff;
   --color-paper-ink: #050a18;
-  --font-display: 'Archivo Variable', 'Arial Narrow', sans-serif;
-  --font-serif: 'Instrument Serif', serif;
-  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
+  --font-display: 'Inter Variable', -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'Inter Variable', -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  --font-sans: 'Inter Variable', -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Inter Variable', -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -85,59 +81,48 @@ button {
   border: 0;
   cursor: pointer;
 }
-@media (hover: hover) and (pointer: fine) {
-  html.has-cursor,
-  html.has-cursor * {
-    cursor: none !important;
-  }
-}
-
 /* ---------- type ---------- */
-.display {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-stretch: 78%;
-  font-variation-settings: 'wdth' 78;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  line-height: 0.86;
-}
+/* One family for everything (Inter, the open face closest to Graphik / SF Pro).
+   Headings: bold, sentence case, tight. No second typeface, no mono labels. */
+.display,
 .display-wide {
   font-family: var(--font-display);
-  font-weight: 900;
-  font-stretch: 112%;
-  font-variation-settings: 'wdth' 112;
-  text-transform: uppercase;
-  letter-spacing: -0.035em;
-  line-height: 0.88;
-}
-.serif {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
+  font-weight: 700;
+  font-optical-sizing: auto;
   text-transform: none;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.04em;
+  line-height: 1.04;
 }
+/* formerly an italic serif accent: now the same face, carrying only the accent colour */
+.serif {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  font-size: 1em !important;
+}
+/* formerly uppercase mono labels: now quiet small text in the same face */
 .mono {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
+  font-family: var(--font-sans);
+  font-size: 13px;
   line-height: 1.4;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 450;
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 500;
 }
 .lede {
-  font-size: clamp(18px, 1.55vw, 24px);
-  line-height: 1.38;
+  font-size: clamp(16px, 1.25vw, 20px);
+  line-height: 1.45;
   letter-spacing: -0.02em;
   color: var(--fg-2);
   font-weight: 400;
 }
 .h-section {
-  font-size: clamp(52px, min(9.2vw, 17vh), 168px);
+  font-size: clamp(34px, min(5.4vw, 10vh), 92px);
 }
 .h-sub {
-  font-size: clamp(40px, 5.6vw, 96px);
+  font-size: clamp(28px, 3.8vw, 64px);
 }
 .text-grad {
   background: var(--grad-master);
@@ -154,13 +139,11 @@ button {
   padding-inline: var(--gutter);
 }
 .hairline {
-  height: 1px;
-  background: var(--line);
-  width: 100%;
+  display: none;
 }
 .section {
   position: relative;
-  padding-block: clamp(96px, 14vw, 220px);
+  padding-block: clamp(64px, 9vw, 150px);
 }
 
 /* ---------- utilities ---------- */
@@ -184,10 +167,9 @@ button {
   padding: 0 14px;
   border-radius: 999px;
   border: 1px solid var(--line-strong);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
   color: var(--fg-2);
   white-space: nowrap;
 }
@@ -202,4 +184,10 @@ button {
 }
 .no-scrollbar {
   scrollbar-width: none;
+}
+
+.eyebrow {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
 }

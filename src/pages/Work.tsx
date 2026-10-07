@@ -118,14 +118,9 @@ export default function Work() {
             <b>00</b> Projects
           </span>
         </Reveal>
-        <h1 className="display wk-title">
-          <SplitReveal as="span" className="wk-line" type="chars" trigger="intro" delay={0.2} stagger={0.03} duration={1.4}>
-            Selected
-          </SplitReveal>
-          <SplitReveal as="span" className="wk-line wk-line--2" type="chars" trigger="intro" delay={0.4} stagger={0.03} duration={1.4}>
-            <em className="serif wk-em">work</em>
-          </SplitReveal>
-        </h1>
+        <SplitReveal as="h1" className="display wk-title" trigger="intro" delay={0.2}>
+          Selected <em className="serif wk-em">work</em>
+        </SplitReveal>
         <Reveal trigger="intro" delay={0.9} className="wk-intro">
           <p className="lede">Sites and systems from the Tech Studio. Films, shoots and content from the Creative Studio. Some projects need both.</p>
         </Reveal>

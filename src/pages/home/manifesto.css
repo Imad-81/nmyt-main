@@ -1,182 +1,78 @@
 .mf {
   position: relative;
-  background:
-    radial-gradient(60% 40% at 75% 45%, rgba(22, 56, 255, 0.1), transparent 70%),
-    var(--void);
-}
-.mf-pin {
-  position: relative;
-  height: 340vh;
-}
-.mf-sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
+  background: radial-gradient(60% 40% at 75% 40%, rgba(22, 56, 255, 0.1), transparent 70%), var(--void);
 }
 .mf-grid {
   display: grid;
-  grid-template-columns: 1fr 1.15fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
   gap: clamp(24px, 4vw, 72px);
   align-items: center;
-  height: 100%;
-  padding-top: var(--nav-h);
 }
-.mf-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 36px;
+.mf-eyebrow {
+  color: var(--fg-3);
+  margin-bottom: 18px;
 }
 .mf-text {
   margin: 0;
-  font-size: clamp(24px, 2.35vw, 40px);
-  line-height: 1.18;
-  letter-spacing: -0.03em;
-  font-weight: 450;
+  font-size: clamp(20px, 2vw, 32px);
+  line-height: 1.24;
+  letter-spacing: -0.028em;
+  font-weight: 500;
   color: var(--fg);
 }
 .mf-w {
-  opacity: 0.14;
+  opacity: 0.16;
   transition: opacity 0.25s linear;
 }
-.mf-stages {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--line);
-}
-.mf-stages li {
-  display: grid;
-  grid-template-columns: 40px 170px 1fr;
-  align-items: baseline;
-  gap: 12px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
-  color: var(--fg-3);
-  transition: color 0.5s;
-}
-.mf-stages li.is-on {
-  color: var(--fg);
-}
-.mf-si {
-  color: inherit;
-}
-.mf-stages li.is-on .mf-si {
-  color: var(--c);
-}
-.mf-sk {
-  font-weight: 500;
-  font-size: 15px;
-}
-.mf-sv {
-  font-size: 22px;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: opacity 0.5s, transform 0.7s var(--ease-out);
-}
-.mf-stages li.is-on .mf-sv {
-  opacity: 1;
-  transform: none;
-  color: var(--c);
-}
+/* the hologram: no frame, no grid, just the figure in the dark */
 .mf-stage {
   position: relative;
-  height: min(72vh, 660px);
-  border-radius: 24px;
-  background:
-    radial-gradient(70% 60% at 50% 50%, rgba(10, 26, 140, 0.18), transparent 70%),
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 40px 40px,
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 40px 40px;
-  border: 1px solid var(--line);
-  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  width: 100%;
 }
 .mf-stage-cap {
   position: absolute;
-  left: 20px;
-  right: 20px;
-  top: 18px;
-  display: flex;
-  justify-content: space-between;
-  color: var(--fg-3);
-}
-.mf-stage-hint {
-  position: absolute;
-  left: 20px;
-  bottom: 18px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
   color: var(--fg-3);
 }
 .mf-facts {
-  position: relative;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border-top: 1px solid var(--line);
-  margin-top: -1px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: clamp(48px, 6vw, 96px);
 }
 .mf-fact {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 40px 0 56px;
-  border-right: 1px solid var(--line);
-  padding-left: 20px;
-}
-.mf-fact:first-child {
-  padding-left: 0;
-}
-.mf-fact:last-child {
-  border-right: 0;
+  gap: 6px;
 }
 .mf-n {
-  font-size: clamp(72px, 9vw, 160px);
-  background: linear-gradient(180deg, #fff 30%, rgba(255, 255, 255, 0.25));
+  font-size: clamp(32px, 3.6vw, 60px);
+  background: linear-gradient(180deg, #fff 30%, rgba(255, 255, 255, 0.3));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 .mf-l {
+  font-size: 14.5px;
   color: var(--fg-3);
 }
 
 @media (max-width: 900px) {
-  .mf-pin {
-    height: 300vh;
-  }
   .mf-grid {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
-    gap: 16px;
-    padding-block: calc(var(--nav-h) + 8px) 20px;
   }
   .mf-stage {
     order: -1;
-    height: 38vh;
-  }
-  .mf-copy {
-    gap: 18px;
-  }
-  .mf-text {
-    font-size: 19px;
-  }
-  .mf-stages li {
-    grid-template-columns: 32px 1fr;
-    padding: 8px 0;
-  }
-  .mf-sv {
-    display: none;
+    aspect-ratio: 16 / 11;
   }
   .mf-facts {
     grid-template-columns: 1fr 1fr;
-  }
-  .mf-fact {
-    padding-left: 16px;
-    border-bottom: 1px solid var(--line);
-  }
-  .mf-fact:nth-child(odd) {
-    padding-left: 0;
-  }
-  .mf-fact:nth-child(2) {
-    border-right: 0;
+    row-gap: 32px;
   }
 }

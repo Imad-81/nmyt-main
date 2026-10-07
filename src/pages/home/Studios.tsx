@@ -133,7 +133,7 @@ export default function Studios() {
         onPointerMove={onMove}
         onPointerLeave={onLeave}
         onClick={() => nav(tech ? '/tech' : '/creative')}
-        data-cursor="Enter"
+       
         role="link"
         tabIndex={0}
         onKeyDown={(e) => e.key === 'Enter' && nav(tech ? '/tech' : '/creative')}
@@ -142,10 +142,6 @@ export default function Studios() {
         <div className="sc-spot" />
         <div className="sc-glow" />
         <div className="sc-edge" />
-        <header className="sc-head">
-          <span className="mono sc-idx">{tech ? '01 / Tech Studio' : '02 / Creative Studio'}</span>
-          <span className="mono sc-tag">{tech ? '[ White · Sky ]' : '//GREEN_&_DEEP_BLUE'}</span>
-        </header>
         <div className="sc-body">
           <h3 className="display sc-title">
             {tech ? 'Tech' : 'Creative'}

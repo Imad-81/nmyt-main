@@ -1,0 +1,213 @@
+/* Calm vertical sections: open layout, no boxes, no rules. Prefix: sx */
+.sx-head {
+  max-width: 880px;
+}
+.sx-head--center {
+  margin-inline: auto;
+  text-align: center;
+}
+.sx-eyebrow {
+  margin-bottom: 14px;
+  opacity: 0.55;
+}
+.sx-lede {
+  margin-top: 20px;
+  max-width: 46ch;
+}
+.sx-head--center .sx-lede {
+  margin-inline: auto;
+}
+
+/* steps */
+.sx-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(28px, 3.4vw, 56px);
+  margin-top: clamp(40px, 5vw, 80px);
+}
+.sx-steps--5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.sx-steps--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.sx-step-n {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sx-accent);
+  margin-bottom: 14px;
+}
+.sx-step-t {
+  margin: 0;
+  font-size: clamp(20px, 1.7vw, 26px);
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+.sx-step-b {
+  margin: 12px 0 0;
+  font-size: 15.5px;
+  line-height: 1.55;
+  opacity: 0.66;
+}
+.sx-step-tags {
+  margin: 14px 0 0;
+  font-size: 13px;
+  opacity: 0.42;
+}
+@media (max-width: 1099px) {
+  .sx-steps,
+  .sx-steps--5 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 599px) {
+  .sx-steps,
+  .sx-steps--5,
+  .sx-steps--3 {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* work grid */
+.sx-work {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(28px, 3.2vw, 56px) clamp(20px, 2.4vw, 40px);
+  margin-top: clamp(40px, 5vw, 80px);
+}
+.sx-card {
+  display: block;
+}
+.sx-card-media {
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(127, 127, 127, 0.12);
+}
+.sx-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--ease-out);
+}
+.sx-card:hover .sx-card-media img {
+  transform: scale(1.03);
+}
+.sx-card-meta {
+  padding-top: 16px;
+}
+.sx-card-t {
+  margin: 0;
+  font-size: clamp(19px, 1.5vw, 24px);
+  font-weight: 650;
+  letter-spacing: -0.025em;
+}
+.sx-card-s {
+  margin: 4px 0 0;
+  font-size: 15px;
+  opacity: 0.58;
+}
+.sx-note {
+  margin: 28px 0 0;
+  font-size: 13px;
+  opacity: 0.4;
+}
+@media (max-width: 767px) {
+  .sx-work {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* pillars */
+.sx-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 1.4vw, 22px);
+}
+.sx-pillar {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  border-radius: 22px;
+  overflow: hidden;
+  background: var(--ink-800);
+}
+.sx-pillar img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.1s var(--ease-out);
+}
+.sx-pillar:hover img {
+  transform: scale(1.035);
+}
+.sx-pillar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(3, 4, 8, 0) 38%, rgba(3, 4, 8, 0.86) 100%);
+}
+.sx-pillar-copy {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  padding: clamp(20px, 2vw, 32px);
+}
+.sx-pillar-t {
+  margin: 0;
+  font-size: clamp(26px, 2.5vw, 40px);
+  color: var(--tone);
+}
+.sx-pillar-b {
+  margin: 8px 0 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--fg-2);
+  max-width: 34ch;
+}
+@media (max-width: 899px) {
+  .sx-pillars {
+    grid-template-columns: 1fr;
+  }
+  .sx-pillar {
+    aspect-ratio: 16 / 11;
+  }
+}
+
+/* sliding line */
+.sx-mq {
+  overflow: hidden;
+  padding-block: clamp(36px, 5vw, 80px);
+  font-size: clamp(34px, 5.2vw, 88px);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.sx-mq-track {
+  display: flex;
+  width: max-content;
+  animation: sx-slide 38s linear infinite;
+  will-change: transform;
+}
+.sx-mq-set {
+  display: flex;
+  flex-shrink: 0;
+}
+.sx-mq-item {
+  padding-inline: 0.5em;
+  white-space: nowrap;
+}
+.sx-mq-item:nth-child(even) {
+  opacity: 0.32;
+}
+@keyframes sx-slide {
+  to {
+    transform: translateX(-50%);
+  }
+}

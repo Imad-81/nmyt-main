@@ -12,9 +12,7 @@ export default function Footer({ accent = 'master' }: { accent?: 'master' | 'tec
       <div className="ft-glow" />
       <div className="wrap relative">
         <div className="ft-cta">
-          <div className="mono ft-kicker">
-            <span>[ Next ]</span> Have something worth making?
-          </div>
+          <div className="eyebrow ft-kicker">Have something worth making?</div>
           <SplitReveal as="h2" className="display ft-title">
             Let’s make it <em className="serif">move.</em>
           </SplitReveal>

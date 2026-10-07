@@ -1,29 +1,24 @@
 import type { ReactNode, CSSProperties } from 'react'
 import { Reveal, SplitReveal } from './Reveal'
 
-/** `01 / ABOUT` style label */
-export function MonoLabel({ index, children, className = '', color }: { index?: string; children: ReactNode; className?: string; color?: string }) {
+/** Small eyebrow label above a heading. (`index` / `color` are accepted for compatibility and ignored.) */
+export function MonoLabel({ children, className = '' }: { index?: string; children: ReactNode; className?: string; color?: string }) {
   return (
-    <div className={`mono inline-flex items-center gap-2 ${className}`} style={{ color: 'var(--fg-3)' }}>
-      {index && <span style={{ color: color ?? 'var(--sky)' }}>{index}</span>}
-      {index && <span aria-hidden>/</span>}
-      <span>{children}</span>
+    <div className={`eyebrow ${className}`} style={{ color: 'var(--fg-3)' }}>
+      {children}
     </div>
   )
 }
 
-/** Section header: mono index row with hairline, big display title, optional lede. */
+/** Section header: eyebrow, heading, optional lede. */
 export function SectionHead({
-  index,
   label,
   title,
   lede,
-  accent,
   className = '',
   titleClassName = 'h-section',
-  aside,
 }: {
-  index: string
+  index?: string
   label: string
   title: ReactNode
   lede?: ReactNode
@@ -34,18 +29,14 @@ export function SectionHead({
 }) {
   return (
     <div className={className}>
-      <Reveal className="mb-10 flex items-center gap-4 md:mb-14">
-        <MonoLabel index={index} color={accent}>
-          {label}
-        </MonoLabel>
-        <div className="hairline flex-1" />
-        {aside}
+      <Reveal className="mb-4 md:mb-5">
+        <MonoLabel>{label}</MonoLabel>
       </Reveal>
       <SplitReveal as="h2" className={`display ${titleClassName}`}>
         {title}
       </SplitReveal>
       {lede && (
-        <Reveal className="lede mt-8 max-w-[40ch]" delay={0.15}>
+        <Reveal className="lede mt-6 max-w-[44ch]" delay={0.15}>
           {lede}
         </Reveal>
       )}
@@ -74,20 +65,7 @@ export function Marquee({ children, speed = 40, reverse, className = '', style }
   )
 }
 
-/** Corner brackets — HUD framing like SpaceX overlays. */
-export function Brackets({ color = 'rgba(255,255,255,.4)', size = 14, inset = 0 }: { color?: string; size?: number; inset?: number }) {
-  const b = (pos: CSSProperties, rot: number) => (
-    <span
-      className="pointer-events-none absolute"
-      style={{ ...pos, width: size, height: size, borderTop: `1px solid ${color}`, borderLeft: `1px solid ${color}`, transform: `rotate(${rot}deg)` }}
-    />
-  )
-  return (
-    <>
-      {b({ top: inset, left: inset }, 0)}
-      {b({ top: inset, right: inset }, 90)}
-      {b({ bottom: inset, right: inset }, 180)}
-      {b({ bottom: inset, left: inset }, 270)}
-    </>
-  )
+/** Corner brackets were a HUD decoration; retired. Kept as a no-op so call sites stay valid. */
+export function Brackets(_props: { color?: string; size?: number; inset?: number }) {
+  return null
 }

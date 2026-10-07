@@ -51,30 +51,29 @@ export function SplitReveal({
       let tween: gsap.core.Tween | null = null
       let cleanupWait = () => {}
       gsap.set(el, { autoAlpha: 0 })
+      // Lines rise and fade in. No clipping masks: descenders and edges can never be cut off.
       const split = SplitText.create(el, {
-        type: type === 'chars' ? 'lines,words,chars' : type === 'words' ? 'lines,words' : 'lines',
-        mask: 'lines',
+        type: type === 'lines' ? 'lines' : 'lines,words',
         linesClass: 'sr-line',
         autoSplit: true,
         onSplit(self) {
           tween?.kill()
           gsap.set(el, { autoAlpha: 1 })
-          const targets = type === 'chars' ? self.chars : type === 'words' ? self.words : self.lines
+          const targets = type === 'lines' ? self.lines : self.words
+          const y = reduce ? 10 : 28
           const vars: gsap.TweenVars = {
-            yPercent: 115,
-            rotate: type === 'lines' && !reduce ? 2.5 : 0,
-            duration: reduce ? Math.min(duration, 0.9) : duration,
+            duration: Math.min(duration, 1.1),
             ease: 'expo.out',
-            stagger: stagger ?? (type === 'chars' ? 0.028 : type === 'words' ? 0.05 : 0.09),
+            stagger: type === 'lines' ? (stagger ?? 0.09) : 0.045,
             delay,
           }
           if (trigger === 'scroll') {
-            tween = gsap.from(targets, { ...vars, scrollTrigger: { trigger: el, start, once: true } })
+            tween = gsap.from(targets, { ...vars, y, autoAlpha: 0, scrollTrigger: { trigger: el, start, once: true } })
           } else {
-            gsap.set(targets, { yPercent: 115 })
+            gsap.set(targets, { autoAlpha: 0, y })
             cleanupWait()
             cleanupWait = whenRevealed(() => {
-              tween = gsap.fromTo(targets, { yPercent: 115, rotate: vars.rotate }, { ...vars, yPercent: 0, rotate: 0 })
+              tween = gsap.to(targets, { ...vars, y: 0, autoAlpha: 1 })
             })
           }
           return tween ?? undefined

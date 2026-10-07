@@ -32,7 +32,7 @@ export default function OriginalsTeaser() {
         .ot-bar--t{top:0}.ot-bar--b{bottom:0}
         .ot-flare{position:absolute;left:-10%;right:-10%;top:41%;height:2px;z-index:2;background:linear-gradient(90deg,transparent,rgba(22,180,255,.0) 10%,rgba(120,200,255,.9) 48%,#fff 50%,rgba(120,200,255,.9) 52%,transparent 90%);filter:blur(1px);box-shadow:0 0 30px 6px rgba(22,120,255,.55);mix-blend-mode:screen;transform-origin:50% 50%}
         .ot-copy{position:absolute;z-index:4;left:0;right:0;bottom:17%}
-        .ot-title{margin:18px 0 0;font-size:clamp(64px,11vw,210px)}
+        .ot-title{margin:14px 0 0;font-size:clamp(34px,min(5.4vw,10vh),92px)}
         .ot-title em{color:var(--ice);font-size:1.02em}
         .ot-row{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;margin-top:28px;flex-wrap:wrap}
         .ot-slate{position:absolute;z-index:4;right:var(--gutter);top:16%;display:grid;grid-template-columns:auto auto;gap:6px 18px;color:rgba(255,255,255,.65);padding:14px 16px;border:1px solid rgba(255,255,255,.18);border-radius:10px;background:rgba(0,0,0,.35);backdrop-filter:blur(8px)}
@@ -44,16 +44,6 @@ export default function OriginalsTeaser() {
       <div className="ot-flare" />
       <div className="ot-bar ot-bar--t" />
       <div className="ot-bar ot-bar--b" />
-      <div className="ot-slate mono" aria-hidden>
-        <span>Prod.</span>
-        <b>NMYT Originals</b>
-        <span>Scene</span>
-        <b>01</b>
-        <span>Take</span>
-        <b>03</b>
-        <span>Roll</span>
-        <b>A001</b>
-      </div>
       <div className="ot-copy wrap">
         <MonoLabel index="05" color="var(--emerald)">
           NMYT Originals
