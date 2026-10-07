@@ -97,10 +97,10 @@
 .ft-mark,
 .ft-mark-glow {
   grid-area: 1 / 1;
-  width: min(100%, 1320px);
-  aspect-ratio: 874 / 317;
-  -webkit-mask: url('/brand/nmyt-white.webp') center / contain no-repeat;
-  mask: url('/brand/nmyt-white.webp') center / contain no-repeat;
+  width: min(100%, 1180px);
+  aspect-ratio: 1545 / 575;
+  -webkit-mask: url('/brand/nmyt-mask-hq.webp') center / contain no-repeat;
+  mask: url('/brand/nmyt-mask-hq.webp') center / contain no-repeat;
 }
 .ft-mark {
   position: relative;

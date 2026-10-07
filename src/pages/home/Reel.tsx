@@ -6,9 +6,9 @@ import { Brackets } from '@/components/ui'
 import './reel.css'
 
 const CHAPTERS: { key: MediaKey; kicker: string; title: string; em: string; meta: string; tone: string }[] = [
-  { key: 'techHands', kicker: '01 — Tech Studio', title: 'We', em: 'build.', meta: 'Websites · Landing pages · Dashboards · Systems', tone: 'var(--sky)' },
-  { key: 'creativeCommercial', kicker: '02 — Creative Studio', title: 'We', em: 'shoot.', meta: 'Brand films · Product · Social · Ads · Design', tone: 'var(--acid)' },
-  { key: 'heroFilmset', kicker: '03 — NMYT Originals', title: 'We tell', em: 'stories.', meta: 'In-house short films · New filmmakers', tone: 'var(--ice)' },
+  { key: 'techHands', kicker: '01 / Tech Studio', title: 'We', em: 'build.', meta: 'Websites · Landing pages · Dashboards · Systems', tone: 'var(--sky)' },
+  { key: 'creativeCommercial', kicker: '02 / Creative Studio', title: 'We', em: 'shoot.', meta: 'Brand films · Product · Social · Ads · Design', tone: 'var(--acid)' },
+  { key: 'heroFilmset', kicker: '03 / NMYT Originals', title: 'We tell', em: 'stories.', meta: 'In-house short films · New filmmakers', tone: 'var(--ice)' },
 ]
 
 /**

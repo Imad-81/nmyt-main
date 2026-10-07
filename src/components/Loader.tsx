@@ -101,7 +101,7 @@ export default function Loader({ onDone }: { onDone: () => void }) {
           <span ref={count} className="ld-count">000</span>
         </div>
         <div className="ld-meta mono ld-mid">Tech Studio <i>·</i> Creative Studio <i>·</i> Originals</div>
-        <div className="ld-meta mono ld-right">NMYT — New Gen Studio</div>
+        <div className="ld-meta mono ld-right">NMYT / New Gen Studio</div>
       </div>
       <div className="ld-line-wrap">
         <div className="ld-line" />

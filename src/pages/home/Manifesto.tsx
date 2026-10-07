@@ -1,12 +1,13 @@
-import { useRef, useState } from 'react'
+import { lazy, Suspense, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger } from '@/lib/smooth'
-import ParticleMorph from '@/gl/ParticleMorph'
 import { MonoLabel, Brackets } from '@/components/ui'
 import './manifesto.css'
 
+const ParticleMorph = lazy(() => import('@/gl/ParticleMorph'))
+
 const TEXT =
-  'NMYT is a small studio with big standards. Two teams, one roof: a Tech Studio that builds websites, landing pages and simple systems — and a Creative Studio that shoots films, products and content. Most businesses juggle five vendors to get there. You get one team, one standard, one story.'
+  'NMYT is a small studio with big standards. Two teams, one roof: a Tech Studio that builds websites, landing pages and simple systems, and a Creative Studio that shoots films, products and content. Most businesses juggle five vendors to get there. You get one team, one standard, one story.'
 
 const STAGES = [
   { k: 'Tech Studio', v: 'A website, wireframed.', c: 'var(--sky)' },
@@ -15,9 +16,9 @@ const STAGES = [
 ]
 
 const FACTS = [
-  { n: '2', l: 'Studios' },
-  { n: '11', l: 'Disciplines' },
-  { n: '1', l: 'Team, start to finish' },
+  { n: '2', l: 'Studios, one team' },
+  { n: '11', l: 'Disciplines in-house' },
+  { n: '2025', l: 'Founded in Hyderabad' },
   { n: '0', l: 'Templates' },
 ]
 
@@ -83,7 +84,9 @@ export default function Manifesto() {
           </div>
           <div className="mf-stage">
             <Brackets color="rgba(255,255,255,.28)" size={16} />
-            <ParticleMorph progress={progress} />
+            <Suspense fallback={null}>
+              <ParticleMorph progress={progress} />
+            </Suspense>
             <div className="mf-stage-cap mono">
               <span>Fig. 0{stage + 1}</span>
               <span>{STAGES[stage].k}</span>

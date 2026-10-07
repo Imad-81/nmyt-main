@@ -19,7 +19,7 @@ export function WorkGrid({ items }: { items: Sized[] }) {
           <article key={p.slug} data-flip-id={p.slug} className={`wk-item wk-cell wk-cell--${size} ${visible ? '' : 'is-out'}`} data-cursor="View" aria-hidden={!visible}>
             <div className="wk-media">
               <div className="wk-zoom">
-                <Img src={media(p.image)} alt={`${p.name} — ${p.client}`} className="wk-img" parallax={12} wipe="up" />
+                <Img src={media(p.image)} alt={`${p.name} / ${p.client}`} className="wk-img" parallax={12} wipe="up" />
               </div>
               <div className="wk-shade" />
               <div className="wk-pills">

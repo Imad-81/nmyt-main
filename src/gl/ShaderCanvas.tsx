@@ -13,7 +13,8 @@ export type ShaderFrame = {
 type Props = {
   fragment: string
   uniforms?: Record<string, THREE.IUniform>
-  onFrame?: (f: ShaderFrame) => void
+  /** return false to skip drawing this frame (the last image stays on screen) */
+  onFrame?: (f: ShaderFrame) => void | boolean
   className?: string
   style?: CSSProperties
   /** max device-pixel-ratio */
@@ -30,7 +31,8 @@ void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }
 
 /**
  * Full-screen fragment-shader canvas. Provides uRes, uTime, uMouse (smoothed -1..1).
- * Pauses when off-screen or tab hidden. Used by hero + studio backgrounds.
+ * Pauses when off-screen or tab hidden, and lowers its own resolution on devices that
+ * can't hold a smooth frame rate. Used by hero + studio backgrounds.
  */
 export default function ShaderCanvas({ fragment, uniforms = {}, onFrame, className, style, dpr = 1.5, follow = 0.06, transparent = false }: Props) {
   const host = useRef<HTMLDivElement>(null)
@@ -41,7 +43,8 @@ export default function ShaderCanvas({ fragment, uniforms = {}, onFrame, classNa
     const el = host.current!
     const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: transparent, powerPreference: 'high-performance', premultipliedAlpha: false })
     const isMobile = window.matchMedia('(max-width: 767px)').matches
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? Math.min(dpr, 1.25) : dpr))
+    let pr = Math.min(window.devicePixelRatio, isMobile ? Math.min(dpr, 1.25) : dpr)
+    renderer.setPixelRatio(pr)
     renderer.setClearColor(0x030408, transparent ? 0 : 1)
     el.appendChild(renderer.domElement)
     Object.assign(renderer.domElement.style, { width: '100%', height: '100%', display: 'block' })
@@ -63,8 +66,8 @@ export default function ShaderCanvas({ fragment, uniforms = {}, onFrame, classNa
       const r = el.getBoundingClientRect()
       size.w = Math.max(1, r.width)
       size.h = Math.max(1, r.height)
+      renderer.setPixelRatio(pr)
       renderer.setSize(size.w, size.h, false)
-      const pr = renderer.getPixelRatio()
       ;(u.uRes.value as THREE.Vector2).set(size.w * pr, size.h * pr)
     }
     resize()
@@ -77,11 +80,27 @@ export default function ShaderCanvas({ fragment, uniforms = {}, onFrame, classNa
 
     const clock = new THREE.Clock()
     let raf = 0
+    let frames = 0
+    let slow = 0
     const m = u.uMouse.value as THREE.Vector2
     const loop = () => {
       raf = requestAnimationFrame(loop)
-      const dt = Math.min(clock.getDelta(), 0.05)
+      const raw = clock.getDelta()
+      const dt = Math.min(raw, 0.05)
       if (!visible || document.hidden) return
+      // adaptive resolution: when the GPU can't hold ~45fps, trade pixels for smoothness
+      if (raw < 0.2) {
+        frames++
+        if (raw > 0.022) slow++
+        if (frames >= 45) {
+          if (slow > 22 && pr > 0.6) {
+            pr = Math.max(0.6, pr * 0.8)
+            resize()
+          }
+          frames = 0
+          slow = 0
+        }
+      }
       u.uTime.value += dt
       // pointer relative to this element
       const r = el.getBoundingClientRect()
@@ -91,7 +110,7 @@ export default function ShaderCanvas({ fragment, uniforms = {}, onFrame, classNa
         m.x += (tx - m.x) * follow
         m.y += (ty - m.y) * follow
       }
-      cb.current?.({ time: u.uTime.value, dt, mouse: m, uniforms: u, size })
+      if (cb.current?.({ time: u.uTime.value, dt, mouse: m, uniforms: u, size }) === false) return
       renderer.render(scene, camera)
     }
     loop()

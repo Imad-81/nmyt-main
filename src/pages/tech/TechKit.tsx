@@ -333,19 +333,19 @@ export default function TechKit({ reduce }: { reduce: boolean }) {
               <em className="serif">properly.</em>
             </>
           }
-          lede="No mystery deliverables. Every project ships fast, clean and yours to run — here’s what that looks like."
+          lede="No mystery deliverables. Every project ships fast, clean and yours to run, here’s what that looks like."
         />
         <Reveal className="tk-grid" childSelector=".tk-p" stagger={0.1} y={50} start="top 85%">
-          <Panel className="tk-p--perf" k="01 — Speed" title="Fast by default." body="Every build is audited for speed, accessibility and SEO before it goes live.">
+          <Panel className="tk-p--perf" k="01 / Speed" title="Fast by default." body="Every build is audited for speed, accessibility and SEO before it goes live.">
             <PerfRing />
           </Panel>
-          <Panel className="tk-p--build" k="02 — Build" title="Designed and built end to end." body="From first wireframe to live site — one team, no hand-offs.">
+          <Panel className="tk-p--build" k="02 / Build" title="Designed and built end to end." body="From first wireframe to live site, one team, no hand-offs.">
             <BrowserBuild />
           </Panel>
-          <Panel className="tk-p--dash" k="03 — Systems" title="Tools your team will actually use." body="Dashboards, booking flows and admin panels that replace spreadsheets and busywork.">
+          <Panel className="tk-p--dash" k="03 / Systems" title="Tools your team will actually use." body="Dashboards, booking flows and admin panels that replace spreadsheets and busywork.">
             <MiniDash />
           </Panel>
-          <Panel className="tk-p--list" k="04 — Included" title="In every build." ill={false}>
+          <Panel className="tk-p--list" k="04 / Included" title="In every build." ill={false}>
             <Checklist />
           </Panel>
         </Reveal>

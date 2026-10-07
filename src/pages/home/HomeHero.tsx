@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
-import { createDomeHero, type DomeHero } from '@/gl/domeHero'
+import type { DomeHero } from '@/gl/domeHero'
 import { gsap, prefersReducedMotion } from '@/lib/smooth'
 import { SplitReveal, Reveal, whenRevealed } from '@/components/Reveal'
 import './hero.css'
@@ -15,12 +15,21 @@ export default function HomeHero() {
   // the dome: WebGL when available, a still poster of the real logo when not
   useEffect(() => {
     const reduce = prefersReducedMotion()
-    let dome: DomeHero | null = createDomeHero(stage.current!, state.current, { reduce, onLost: () => setPoster(true) })
-    if (!dome) setPoster(true)
+    let dome: DomeHero | null = null
+    let gone = false
+    // three.js loads beside the page, never in front of it
+    import('@/gl/domeHero')
+      .then(({ createDomeHero }) => {
+        if (gone) return
+        dome = createDomeHero(stage.current!, state.current, { reduce, onLost: () => setPoster(true) })
+        if (!dome) setPoster(true)
+      })
+      .catch(() => setPoster(true))
     const off = whenRevealed(() => {
       gsap.to(state.current, { intro: 1, duration: reduce ? 1.6 : 3.4, ease: 'power2.out', delay: 0.1 })
     })
     return () => {
+      gone = true
       off()
       gsap.killTweensOf(state.current)
       dome?.dispose()
@@ -98,7 +107,7 @@ export default function HomeHero() {
         </h1>
         <div className="hh-row">
           <Reveal trigger="intro" delay={1.1} className="lede hh-lede">
-            A new-generation studio that builds the tech and shoots the story — websites, systems, films and content for brands, founders and independents.
+            A new-generation studio that builds the tech and shoots the story. Websites, systems, films and content, made by one team to one standard.
           </Reveal>
           <Reveal trigger="intro" delay={1.3} className="hh-meta mono" childSelector=".hh-m">
             <span className="hh-m hh-tc">

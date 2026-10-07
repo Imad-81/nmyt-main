@@ -1,19 +1,14 @@
 import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '@/lib/smooth'
-import { AUDIENCES } from '@/data/site'
+import { AUDIENCES, PROCESS } from '@/data/site'
 import { SectionHead, Marquee } from '@/components/ui'
 import { Reveal } from '@/components/Reveal'
 import Img from '@/components/Img'
 import { media } from '@/data/media'
 import './approach.css'
 
-const STEPS = [
-  { n: '01', t: 'Listen', d: 'A real conversation about the business, the audience and the one thing that has to change.' },
-  { n: '02', t: 'Shape', d: 'Strategy, scope and a clear plan — what we’ll make, how long it takes, what it costs.' },
-  { n: '03', t: 'Make', d: 'Design, code, shoot, cut, grade. One team, in-house, with you in the loop every week.' },
-  { n: '04', t: 'Launch & grow', d: 'Ship it, measure it, improve it. We stay on for the next version, not just the first.' },
-]
+const STEPS = PROCESS
 
 export default function Approach() {
   const root = useRef<HTMLElement>(null)
@@ -47,7 +42,7 @@ export default function Approach() {
         </div>
 
         <figure className="ap-band">
-          <Img src={media('studioTeam')} alt="An edit suite at night — colour grading on one desk, storyboards on the next" className="ap-band-img" parallax={10} />
+          <Img src={media('studioTeam')} alt="An edit suite at night, colour grading on one desk, storyboards on the next" className="ap-band-img" parallax={10} />
           <figcaption className="mono">
             <span>In-house</span>
             <span>Edit · Grade · Storyboard · Code</span>

@@ -53,7 +53,7 @@ export const PROJECTS: Project[] = [
     studio: 'hybrid',
     services: ['Product film', 'Landing page'],
     year: '2026',
-    summary: 'Macro product film and a one-page launch site built around it — one story, told in both mediums.',
+    summary: 'Macro product film and a one-page launch site built around it, one story, told in both mediums.',
     image: 'workSkincare',
   },
   {

@@ -33,8 +33,11 @@ float noise(vec2 p){
 float fbm(vec2 p){
   float v = 0.0; float a = 0.5;
   mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
-  for (int i = 0; i < 5; i++){ v += a*noise(p); p = m*p; a *= 0.5; }
-  return v;
+  for (int i = 0; i < 3; i++){ v += a*noise(p); p = m*p; a *= 0.5; }
+  return v * 1.14;
+}
+float fbm2(vec2 p){
+  return noise(p)*0.62 + noise(p*2.1 + 3.7)*0.38;
 }
 
 void main(){
@@ -63,7 +66,7 @@ void main(){
   // flowing atmosphere (polar domain warp)
   vec2 fp = vec2(arc*1.4, d*4.0);
   float n  = fbm(fp*1.3 + vec2(t, -t*0.6));
-  float n2 = fbm(fp*2.4 + n*1.8 + vec2(-t*0.8, t*0.5));
+  float n2 = fbm2(fp*2.4 + n*1.8 + vec2(-t*0.8, t*0.5));
 
   float inside = 1.0 - smoothstep(-0.004, 0.004, d);
   float depth = clamp(-d*1.8 + (n2 - 0.5)*0.05, 0.0, 1.0);

@@ -154,8 +154,8 @@ export default function Studios() {
           </h3>
           <p className="sc-lede">
             {tech
-              ? 'Landing pages, websites and simple systems — fast, clean and built to be used.'
-              : 'Brand films, product shoots, social and ads — made to be felt, not scrolled past.'}
+              ? 'Landing pages, websites and simple systems, fast, clean and built to be used.'
+              : 'Brand films, product shoots, social and ads, made to be felt, not scrolled past.'}
           </p>
           <ul className="sc-list">
             {list.map((s) => (

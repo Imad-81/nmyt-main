@@ -95,7 +95,7 @@ export default function VelocityMarquee() {
       <div className="wrap vm-meta mono" aria-hidden>
         <span>{'// OUTPUT'}</span>
         <span>16:9 · 9:16 · 1:1 · 4:5</span>
-        <span>CH_02 — END OF REEL_</span>
+        <span>CH_02 / END OF REEL_</span>
       </div>
     </section>
   )

@@ -63,7 +63,7 @@ export default function OriginalsTeaser() {
         </SplitReveal>
         <div className="ot-row">
           <Reveal className="lede max-w-[46ch]">
-            In-house short films — and a real way in for young filmmakers. We produce their work, put it out, and bring them onto paid NMYT shoots so their portfolio grows with us.
+            In-house short films, and a real way in for young filmmakers. We produce their work, put it out, and bring them onto paid NMYT shoots so their portfolio grows with us.
           </Reveal>
           <Reveal delay={0.15}>
             <MagneticButton to="/originals" variant="ghost">

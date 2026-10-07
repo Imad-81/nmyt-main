@@ -257,7 +257,7 @@
     display: none;
   }
   .ch-title {
-    font-size: clamp(50px, 19.5vw, 130px);
+    font-size: clamp(44px, 17vw, 120px);
   }
   .ch-row {
     flex-direction: column;

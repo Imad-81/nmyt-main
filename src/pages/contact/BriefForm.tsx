@@ -17,7 +17,7 @@ const STUDIOS: { k: StudioKey; label: string; sub: string; color: string }[] = [
 const FILMMAKER_OPTS = ['Pitch a short film', 'Crew on commercial shoots', 'Just saying hello']
 
 // TODO(NMYT): confirm currency / ranges before launch.
-const BUDGETS = ['Under $2k', '$2k – $5k', '$5k – $15k', '$15k +', 'Not sure yet']
+const BUDGETS = ['Under $2k', '$2k to $5k', '$5k to $15k', '$15k +', 'Not sure yet']
 const STAGES = ['Just an idea', 'Treatment', 'Script', 'Ready to shoot']
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
@@ -122,20 +122,20 @@ export default function BriefForm() {
       return
     }
     const st = STUDIOS.find((s) => s.k === studio)!
-    const subject = isFilm ? `NMYT Originals — ${fields.name.trim()}` : `Project brief — ${st.label} — ${fields.name.trim()}${fields.company.trim() ? ` (${fields.company.trim()})` : ''}`
+    const subject = isFilm ? `NMYT Originals / ${fields.name.trim()}` : `Project brief / ${st.label} / ${fields.name.trim()}${fields.company.trim() ? ` (${fields.company.trim()})` : ''}`
     const lines = [
       `Studio: ${st.label}`,
-      `${isFilm ? 'Interested in' : 'Services'}: ${services.length ? services.join(', ') : '—'}`,
-      `${isFilm ? 'Stage' : 'Budget'}: ${budget || '—'}`,
+      `${isFilm ? 'Interested in' : 'Services'}: ${services.length ? services.join(', ') : '-'}`,
+      `${isFilm ? 'Stage' : 'Budget'}: ${budget || '-'}`,
       '',
       `Name: ${fields.name.trim()}`,
       `Email: ${fields.email.trim()}`,
-      `${isFilm ? 'Portfolio' : 'Company'}: ${fields.company.trim() || '—'}`,
+      `${isFilm ? 'Portfolio' : 'Company'}: ${fields.company.trim() || '-'}`,
       '',
       isFilm ? 'About me and the film:' : 'About the project:',
       fields.message.trim(),
       '',
-      '— Sent from the brief builder on nmyt.studio',
+      'Sent from the brief builder on the NMYT website',
     ]
     const href = `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\r\n'))}`
     setMailto(href)
@@ -241,7 +241,7 @@ export default function BriefForm() {
                   ))}
                 </div>
               ) : (
-                <p className="bf-hint">Choose a studio first — the options follow.</p>
+                <p className="bf-hint">Choose a studio first, the options follow.</p>
               )}
             </fieldset>
 
@@ -366,7 +366,7 @@ export default function BriefForm() {
                 Thanks, <em className="serif">{fields.name.trim().split(' ')[0] || 'friend'}.</em>
               </h3>
               <p className="bf-done-p">
-                Your mail app should have opened with everything filled in — hit send there and it reaches us. If nothing opened, write to{' '}
+                Your mail app should have opened with everything filled in, hit send there and it reaches us. If nothing opened, write to{' '}
                 <a href={mailto || `mailto:${SITE.email}`} className="bf-link">
                   {SITE.email}
                 </a>

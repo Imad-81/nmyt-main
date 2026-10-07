@@ -24,7 +24,7 @@ export function TechStatement() {
           </span>
         </span>
       </h2>
-      <p className="lede th-state-l th-af">We design, build and look after the web side of your business — so it loads fast, reads clearly and does its job.</p>
+      <p className="lede th-state-l th-af">We design, build and look after the web side of your business, so it loads fast, reads clearly and does its job.</p>
     </div>
   )
 }
@@ -32,6 +32,7 @@ export function TechStatement() {
 export default function TechHero({ reduce }: { reduce: boolean }) {
   const root = useRef<HTMLElement>(null)
   const state = useRef({ intro: 0, scroll: 0 })
+  const drawn = useRef(0)
   const uniforms = useMemo<Record<string, IUniform>>(() => ({ uIntro: { value: 0 }, uScroll: { value: 0 } }), [])
 
   // horizon rises into frame once the loader is gone
@@ -68,15 +69,20 @@ export default function TechHero({ reduce }: { reduce: boolean }) {
   )
 
   const onFrame = (f: ShaderFrame) => {
+    const sc = state.current.scroll
     f.uniforms.uIntro.value = state.current.intro
-    f.uniforms.uScroll.value = state.current.scroll
+    f.uniforms.uScroll.value = sc
+    // once the frame is pure paper there is nothing left to animate: stop drawing
+    const idle = sc >= 0.995 && drawn.current >= 0.995
+    drawn.current = sc
+    return !idle
   }
 
   return (
     <section ref={root} className={`th ${reduce ? 'th--static' : ''}`} aria-label="Tech Studio">
       <div className="th-stick">
         <div className="th-fallback" aria-hidden />
-        <ShaderCanvas fragment={TECH_FRAG} uniforms={uniforms} onFrame={onFrame} dpr={1.5} follow={0.05} />
+        <ShaderCanvas fragment={TECH_FRAG} uniforms={uniforms} onFrame={onFrame} dpr={1.25} follow={0.05} />
         <div className="th-paper" aria-hidden />
 
         <div className="th-frame th-hud" aria-hidden>
@@ -86,7 +92,7 @@ export default function TechHero({ reduce }: { reduce: boolean }) {
         <div className="th-top wrap th-hud">
           <Reveal trigger="intro" className="th-top-in" childSelector=".th-fade" delay={0.5}>
             <div className="th-fade mono th-kicker">
-              <span className="th-br">[</span> 01 — Tech Studio <span className="th-br">]</span>
+              <span className="th-br">[</span> 01 / Tech Studio <span className="th-br">]</span>
             </div>
             <ul className="th-fade th-index mono">
               <li>Landing pages</li>
@@ -106,7 +112,7 @@ export default function TechHero({ reduce }: { reduce: boolean }) {
             </SplitReveal>
           </h1>
           <Reveal trigger="intro" delay={1.05} className="lede th-lede">
-            Landing pages, websites and simple dashboards &amp; systems — for brands, founders and independent businesses.
+            Landing pages, websites and simple dashboards &amp; systems for brands, founders and independent businesses.
           </Reveal>
         </div>
 

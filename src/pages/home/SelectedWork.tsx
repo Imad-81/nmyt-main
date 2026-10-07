@@ -61,7 +61,7 @@ export default function SelectedWork() {
           <div className="sw-bar">
             <i />
           </div>
-          <span className="mono sw-note">Sample projects — replace with live case studies</span>
+          <span className="mono sw-note">Sample projects / illustrative only</span>
         </div>
         {PROJECTS.map((p, i) => (
           <Link to="/work" key={p.slug} className={`sw-card ${i % 2 ? 'sw-card--low' : ''}`} data-cursor="View">

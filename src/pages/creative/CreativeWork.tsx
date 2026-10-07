@@ -132,7 +132,7 @@ export default function CreativeWork() {
           {ITEMS.map((p, i) => (
             <Link key={p.slug} to="/work" className="cw-card" data-cursor="View" draggable={false}>
               <div className="cw-media">
-                <img src={media(p.image)} alt={`${p.name} — ${p.client}`} loading="lazy" decoding="async" draggable={false} />
+                <img src={media(p.image)} alt={`${p.name} / ${p.client}`} loading="lazy" decoding="async" draggable={false} />
               </div>
               <div className="cw-shade" />
               <div className="cw-scan" />

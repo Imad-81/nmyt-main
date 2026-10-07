@@ -15,8 +15,7 @@ export default defineConfig({
       output: {
         manualChunks(id: string) {
           if (id.includes('node_modules/three/')) return 'three'
-          if (id.includes('@react-three')) return 'r3f'
-          if (/node_modules\/(gsap|lenis|motion)\//.test(id)) return 'motion'
+          if (/node_modules\/(gsap|lenis)\//.test(id)) return 'motion'
         },
       },
     },

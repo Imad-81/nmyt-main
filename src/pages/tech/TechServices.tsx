@@ -93,7 +93,7 @@ export default function TechServices() {
               <em className="serif">build.</em>
             </>
           }
-          lede="Five services, one standard. Take one, or let us run the whole thing — design, code, launch and care."
+          lede="Five services, one standard. Take one, or let us run the whole thing, design, code, launch and care."
         />
         <Reveal className="ts-list" childSelector=".ts-row" stagger={0.07} y={30} start="top 85%">
           {TECH_SERVICES.map((s, i) => (

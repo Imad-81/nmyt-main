@@ -1,3 +1,19 @@
+# NMYT website build (unified v1)
+
+Base: the nmyt-studio site. Merged in: the 3D chrome logo, copy and Originals imagery from the earlier nmyt.vercel.app site.
+
+What changed in v1
+- Home hero: the chrome NMYT mark inside a dome of blue and green light rings (`src/gl/domeHero.ts`, plain three.js, adaptive resolution, static poster when WebGL is unavailable).
+- Footer: white NMYT mark with the logo gradient passing through it every 3 seconds.
+- Creative hero: no imagery or streaks. Colour-filled type with an inversion lens.
+- Originals: stage hero image, clapboard still, deep blue and ivory palette.
+- Tech: lighter horizon shader, drawing stops once the frame is white.
+- All shader canvases lower their own resolution on slow GPUs.
+- Security headers (CSP and friends) in `vercel.json`, `robots.txt`.
+- QA: `PORT=5183 node scripts/probe-all.mjs` sweeps every route at five sizes.
+
+---
+
 # NMYT — website
 
 Vite + React 19 + TypeScript · three.js (custom GLSL) · GSAP (ScrollTrigger, SplitText, Flip) · Lenis · Tailwind v4.

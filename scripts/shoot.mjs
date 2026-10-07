@@ -21,7 +21,7 @@ const errors = []
 page.on('pageerror', (e) => errors.push('pageerror: ' + e.message))
 page.on('console', (m) => m.type() === 'error' && errors.push('console: ' + m.text()))
 const q = flag('loader') ? '?motion=full' : '?noloader&motion=full'
-await page.goto(`http://localhost:5173${path}${path.includes('?') ? '&' + q.slice(1) : q}`, { waitUntil: 'networkidle0', timeout: 60000 })
+await page.goto(`http://localhost:${process.env.PORT ?? 5173}${path}${path.includes('?') ? '&' + q.slice(1) : q}`, { waitUntil: 'networkidle0', timeout: 60000 })
 await new Promise((r) => setTimeout(r, +(flag('wait') ?? 2600)))
 
 const list = positions.length ? positions : ['0']

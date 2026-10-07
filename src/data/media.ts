@@ -12,6 +12,8 @@ export const MEDIA = {
   creativeSocial: 'creative-social',
   techPhone: 'tech-phone',
   originalsWide: 'originals-wide',
+  originalsStage: 'originals-stage',
+  originalsClapper: 'originals-clapper',
   creativeBrand: 'creative-brand',
   techDashboard: 'tech-dashboard',
   workCoffee: 'work-coffee',

@@ -45,14 +45,23 @@ export function Manifesto() {
         <p className="display om-text">
           We make our own <em className="serif om-em om-em--a">films.</em> And we make room for <em className="serif om-em om-em--b">new filmmakers.</em>
         </p>
+        <div className="om-split">
+          <figure className="om-fig">
+            <Img src={media('originalsClapper', 'sm')} alt="Hands hold a clapperboard in front of a cinema camera on a blue-lit set" className="om-fig-img" parallax={6} position="50% 50%" />
+            <figcaption className="mono">
+              <span>Slate 01</span>
+              <span>In development</span>
+            </figcaption>
+          </figure>
         <Reveal className="om-cols" childSelector=".om-col" stagger={0.12}>
           <p className="om-col">
-            Originals is NMYT’s in-house slate of short films. It keeps the studio’s eye sharp between commercial jobs — the same crews, the same kit, no brief but the story.
+            Originals is NMYT’s in-house slate of short films. It keeps the studio’s eye sharp between commercial jobs, the same crews, the same kit, no brief but the story.
           </p>
           <p className="om-col">
-            Every film puts new directors, writers, cinematographers and editors on a real set. The ones who fit stay on — on paid commercial productions, growing with the studio.
+            Every film puts new directors, writers, cinematographers and editors on a real set. The ones who fit stay on, on paid commercial productions, growing with the studio.
           </p>
         </Reveal>
+        </div>
       </div>
     </section>
   )
@@ -72,7 +81,7 @@ const STEPS = [
   {
     n: '02',
     title: 'Make',
-    body: 'We back the production — crew, kit, locations and post — with NMYT producers beside you. Your film, your call.',
+    body: 'We back the production, crew, kit, locations and post, with NMYT producers beside you. Your film, your call.',
     tags: ['Crew', 'Kit', 'Post'],
     c: 'var(--sky)',
   },
@@ -86,7 +95,7 @@ const STEPS = [
   {
     n: '04',
     title: 'Work with us',
-    body: 'Paid work on our commercial productions — brand films, ads and content. A portfolio that grows as the studio does.',
+    body: 'Paid work on our commercial productions, brand films, ads and content. A portfolio that grows as the studio does.',
     tags: ['Paid', 'Commercial sets', 'Portfolio'],
     c: 'var(--acid)',
   },
@@ -153,7 +162,7 @@ export function Program() {
               to <em className="serif op-em">paid.</em>
             </SplitReveal>
             <Reveal className="lede op-lede" delay={0.2}>
-              Four steps for filmmakers early in their careers — from a first idea to a finished film and a place on our sets.
+              Four steps for filmmakers early in their careers, from a first idea to a finished film and a place on our sets.
             </Reveal>
           </div>
           {STEPS.map((s) => (
@@ -295,7 +304,7 @@ export function CallForFilmmakers() {
           </Reveal>
           <Reveal className="oc-cta" delay={0.2}>
             <p className="lede">Tell us about you and the film. A few lines is enough to start.</p>
-            <MagneticButton to="/contact?type=filmmaker" variant="acid">
+            <MagneticButton to="/contact?type=filmmaker" variant="light">
               Pitch your film
             </MagneticButton>
           </Reveal>

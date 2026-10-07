@@ -2,6 +2,24 @@
    NMYT Originals — film look: letterbox, anamorphic flares, grain, weave
    ===================================================================== */
 
+/* Palette: deep space blues and ivory. The greens of the other studios stay out of the cinema. */
+.orig {
+  --ivory: #f1ead9;
+  --emerald: var(--ivory);
+  --acid: var(--ivory);
+  --ice: var(--ivory);
+  --fg: #f4efe3;
+  --fg-2: rgba(244, 239, 227, 0.66);
+  --fg-3: rgba(244, 239, 227, 0.4);
+  --void: #02040d;
+  background: var(--void);
+  color: var(--fg);
+}
+.orig ::selection {
+  background: var(--ivory);
+  color: #02040d;
+}
+
 /* ---------------- hero ---------------- */
 .oh {
   /* letterbox bar height for a 2.39:1 frame */
@@ -43,7 +61,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: contrast(1.1) saturate(1.08) brightness(0.84);
+  filter: contrast(1.06) saturate(1.12) brightness(0.9);
+  object-position: 62% 50%;
 }
 .oh-grade {
   position: absolute;
@@ -56,7 +75,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, var(--royal-deep), transparent 55%, rgba(0, 224, 138, 0.35));
+  background: linear-gradient(120deg, var(--royal-deep), transparent 55%, rgba(10, 26, 140, 0.4));
   mix-blend-mode: soft-light;
   opacity: 0.8;
 }
@@ -103,7 +122,7 @@
 .oh-flare--b::after {
   top: -8px;
   bottom: -8px;
-  background: radial-gradient(50% 50% at 50% 50%, rgba(0, 224, 138, 0.3), transparent 70%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(241, 234, 217, 0.28), transparent 70%);
 }
 .oh-flare--sweep {
   top: 48%;
@@ -179,7 +198,7 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(22, 180, 255, 0.35) 30%, rgba(0, 224, 138, 0.3) 70%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(22, 180, 255, 0.35) 30%, rgba(241, 234, 217, 0.3) 70%, transparent);
   opacity: 0;
   transition: opacity 1s 1.8s;
 }
@@ -221,12 +240,6 @@
 }
 .oh-bar--bot .oh-bar-row {
   top: 0;
-}
-/* only show the top-bar caption when the bar is tall enough to clear the nav */
-@media (min-width: 768px) and (min-height: 700px) and (max-aspect-ratio: 16/9) {
-  .oh-bar--top .oh-bar-row {
-    display: flex;
-  }
 }
 .oh-rec {
   display: inline-flex;
@@ -476,12 +489,31 @@
 .om-em--b {
   color: var(--emerald);
 }
+.om-split {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 96px);
+  align-items: end;
+  margin-top: clamp(56px, 8vw, 128px);
+}
+.om-fig {
+  margin: 0;
+}
+.om-fig-img {
+  aspect-ratio: 3 / 2;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.om-fig figcaption {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  color: var(--fg-3);
+}
 .om-cols {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(28px, 4vw, 64px);
-  max-width: 920px;
-  margin: clamp(56px, 8vw, 128px) 0 0 auto;
   padding-top: 28px;
   border-top: 1px solid var(--line);
 }
@@ -490,6 +522,11 @@
   color: var(--fg-2);
   font-size: 16.5px;
   line-height: 1.55;
+}
+@media (max-width: 899px) {
+  .om-split {
+    grid-template-columns: 1fr;
+  }
 }
 @media (max-width: 767px) {
   .om-cols {

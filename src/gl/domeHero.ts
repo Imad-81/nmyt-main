@@ -15,6 +15,7 @@ import { pointer } from '@/lib/hooks'
 import mark from './nmyt-mark.json'
 
 const MARK_W = 6 // world width of the mark
+const ENV_I = 0.6 // the light rig is bright; this keeps the faces inside the tone curve
 
 const DOME_VERT = /* glsl */ `
 varying vec3 vDir;
@@ -156,8 +157,8 @@ function buildEnv(renderer: THREE.WebGLRenderer) {
     env.add(m)
   }
   // space whites
-  strip(0xf2f8ff, 7, [0, 6, 8], [16, 0.5])
-  strip(0xf2f8ff, 5, [7, 3, 6], [0.4, 9])
+  strip(0xdcecff, 6, [0, 6, 8], [16, 0.5])
+  strip(0xdcecff, 4.5, [7, 3, 6], [0.4, 9])
   strip(0xcfefff, 4.5, [-8, -2, 5], [0.5, 10])
   // blues
   strip(0x1638ff, 7, [-9, 3, 1], [9, 3.2])
@@ -166,11 +167,12 @@ function buildEnv(renderer: THREE.WebGLRenderer) {
   strip(0x1638ff, 3, [2, 2, -10], [18, 6])
   // greens
   strip(0x7cff3a, 4.2, [5, -5, 6], [8, 0.5])
+  strip(0x00e08a, 3.4, [9, 0, 8], [1.2, 12])
   strip(0x00e08a, 4.6, [-5, 6, 5], [7, 0.7])
   strip(0x00e08a, 2.4, [10, 5, -3], [5, 5])
   // soft greys: the body of the metal between the bright bands
-  strip(0x3a4c8c, 0.7, [0, 0, 12], [30, 16])
-  strip(0xf2f8ff, 5, [-3, 2, 11], [0.5, 14])
+  strip(0x1230a0, 0.45, [0, 0, 12], [30, 16])
+  strip(0xdcecff, 4, [-3, 2, 11], [0.5, 14])
   strip(0x16b4ff, 4, [3.5, -1, 11], [0.9, 14])
   strip(0x00e08a, 3.2, [7.5, 1, 9.5], [0.6, 12])
   strip(0x5a6480, 0.55, [0, -10, 0], [30, 30])
@@ -189,35 +191,42 @@ function buildMaterial(time: { value: number }) {
     roughness: 0.16,
     clearcoat: 1,
     clearcoatRoughness: 0.04,
-    envMapIntensity: 1.3,
   })
   // The logo's own finish: royal-blue metal that runs to sky, space white and green, with the
   // diagonal light bands of the original artwork travelling slowly across the faces.
   m.onBeforeCompile = (sh) => {
     sh.uniforms.uT = time
     sh.uniforms.uEmis = emis
-    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vMp;').replace('#include <begin_vertex>', '#include <begin_vertex>\nvMp = position;')
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vMp; varying float vFace;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvMp = position; vFace = step(0.9, abs(normal.z));')
     sh.fragmentShader = sh.fragmentShader
-      .replace('#include <common>', '#include <common>\nvarying vec3 vMp; uniform float uT; uniform float uEmis;')
+      .replace('#include <common>', '#include <common>\nvarying vec3 vMp; varying float vFace; uniform float uT; uniform float uEmis;')
       .replace(
         '#include <color_fragment>',
         `#include <color_fragment>
       float gx = clamp(vMp.x / ${MARK_W.toFixed(1)} + 0.5, 0.0, 1.0);
-      vec3 tint = mix(vec3(0.07, 0.2, 1.0), vec3(0.1, 0.62, 1.0), smoothstep(0.0, 0.45, gx));
-      tint = mix(tint, vec3(0.78, 0.9, 1.0), smoothstep(0.42, 0.66, gx));
-      tint = mix(tint, vec3(0.3, 1.0, 0.5), smoothstep(0.68, 1.0, gx));
-      diffuseColor.rgb *= mix(vec3(0.62, 0.66, 0.74), tint, 0.8);`,
+      vec3 tint = mix(vec3(0.05, 0.16, 0.95), vec3(0.06, 0.5, 1.0), smoothstep(0.0, 0.4, gx));
+      tint = mix(tint, vec3(0.72, 0.88, 1.0), smoothstep(0.36, 0.6, gx));
+      tint = mix(tint, vec3(0.2, 0.95, 0.5), smoothstep(0.62, 0.98, gx));
+      diffuseColor.rgb *= mix(vec3(0.5, 0.62, 0.78), tint, 0.82);`,
       )
+      // the big flat faces can only mirror one direction: soften them so they hold a sheen, not a flash
+      .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = mix(roughnessFactor, 0.46, vFace);')
       .replace(
         '#include <emissivemap_fragment>',
         `#include <emissivemap_fragment>
       float bd = vMp.x * 0.9 - vMp.y * 1.5;
-      float b1 = pow(0.5 + 0.5 * sin(bd * 1.55 - uT * 0.55), 14.0);
-      float b2 = pow(0.5 + 0.5 * sin(bd * 0.8 + uT * 0.32 + 2.0), 26.0);
-      float gxe = clamp(vMp.x / ${MARK_W.toFixed(1)} + 0.5, 0.0, 1.0);
-      vec3 bc = mix(vec3(0.25, 0.7, 1.0), vec3(0.85, 0.95, 1.0), b2);
-      bc = mix(bc, vec3(0.55, 1.0, 0.7), smoothstep(0.62, 1.0, gxe) * 0.7);
-      totalEmissiveRadiance += bc * (b1 * 0.55 + b2 * 0.9) * step(0.5, abs(normal.z)) * uEmis;`,
+      float b1 = pow(0.5 + 0.5 * sin(bd * 1.55 - uT * 0.55), 10.0);
+      float b2 = pow(0.5 + 0.5 * sin(bd * 0.8 + uT * 0.32 + 2.0), 22.0);
+      float shade = 0.44 + 0.22 * sin(bd * 0.6 + 1.0) + 0.1 * (vMp.y / ${(MARK_W * 0.183).toFixed(2)});
+      vec3 faceCol = tint * shade + mix(tint, vec3(0.86, 0.95, 1.0), 0.6) * (b1 * 0.5 + b2 * 0.8);
+      totalEmissiveRadiance += faceCol * vFace * uEmis + tint * 0.06 * (1.0 - vFace) * uEmis;`,
+      )
+      .replace(
+        '#include <opaque_fragment>',
+        `outgoingLight = mix(outgoingLight, (outgoingLight - totalEmissiveRadiance) * 0.18 + totalEmissiveRadiance, vFace);
+      #include <opaque_fragment>`,
       )
   }
   return m
@@ -240,8 +249,9 @@ export function createDomeHero(host: HTMLElement, state: DomeState, opts: { redu
   Object.assign(canvas.style, { width: '100%', height: '100%', display: 'block' })
   host.appendChild(canvas)
   renderer.setClearColor(0x030408, 1)
-  renderer.toneMapping = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.05
+  // neutral tone mapping keeps the blues blue (ACES skews saturated blue toward purple)
+  renderer.toneMapping = THREE.NeutralToneMapping
+  renderer.toneMappingExposure = 1.0
 
   const maxPR = Math.min(window.devicePixelRatio || 1, 1.5)
   let pr = maxPR
@@ -354,7 +364,8 @@ export function createDomeHero(host: HTMLElement, state: DomeState, opts: { redu
     rig.rotation.y = mouse.x * 0.3 + Math.sin(t * 0.33) * 0.1 + (1 - e) * -1.1 + s * 0.5
     rig.rotation.x = -mouse.y * 0.16 + Math.sin(t * 0.27) * 0.05 - s * 0.25
     logo.visible = i > 0.002
-    markMat.envMapIntensity = 1.3 * e * (1 - s * 0.7)
+    // (with scene.environment, intensity lives on the scene, not the material)
+    scene.environmentIntensity = ENV_I * e * (1 - s * 0.7)
     emis.value = e * (1 - s * 0.7)
     // the baked light rig turns slowly: highlights sweep across the chrome for free
     scene.environmentRotation.set(Math.sin(t * 0.21) * 0.22, t * 0.2 + mouse.x * 0.5, 0)

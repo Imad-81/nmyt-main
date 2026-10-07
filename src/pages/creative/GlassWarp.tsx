@@ -227,7 +227,7 @@ export default function GlassWarp() {
               <br />
               <em className="serif">Idea to final grade.</em>
             </p>
-            <p className="gw-sub">Fewer hand-offs, one visual language — so the film, the feed and the identity all look like the same brand.</p>
+            <p className="gw-sub">Fewer hand-offs, one visual language, so the film, the feed and the identity all look like the same brand.</p>
           </Reveal>
         </div>
 

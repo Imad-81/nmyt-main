@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, prefersReducedMotion } from '@/lib/smooth'
 import { SplitReveal, Reveal, whenRevealed } from '@/components/Reveal'
@@ -23,69 +23,6 @@ function useTimecode() {
   return ref
 }
 
-/** Clapperboard built in HTML/CSS. Hover to call another take. */
-function ClapperSlate() {
-  const ref = useRef<HTMLDivElement>(null)
-  const tc = useTimecode()
-  const [take, setTake] = useState(1)
-  const busy = useRef(false)
-  const date = new Date()
-  const dateStr = `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${String(date.getFullYear()).slice(2)}`
-
-  const clap = () => {
-    if (busy.current || prefersReducedMotion()) return
-    busy.current = true
-    const stick = ref.current!.querySelector('.os-stick--top')
-    gsap
-      .timeline({ onComplete: () => void (busy.current = false) })
-      .to(stick, { rotate: -26, duration: 0.45, ease: 'power3.out' })
-      .to(stick, { rotate: 0, duration: 0.18, ease: 'power4.in' }, '+=0.15')
-      .add(() => setTake((t) => (t % 99) + 1))
-      .fromTo(ref.current, { y: 0 }, { y: 3, duration: 0.06, yoyo: true, repeat: 1, ease: 'power1.inOut' })
-  }
-
-  return (
-    <div ref={ref} className="os-slate" onPointerEnter={(e) => e.pointerType === 'mouse' && clap()} data-cursor="Action" aria-label="Production slate">
-      <div className="os-sticks" aria-hidden>
-        <div className="os-stick os-stick--top" />
-        <div className="os-stick os-stick--bot" />
-      </div>
-      <div className="os-board mono">
-        <div className="os-row os-prod">
-          <span>Prod.</span>
-          <b>NMYT Originals</b>
-        </div>
-        <div className="os-cells">
-          <div>
-            <span>Roll</span>
-            <b>A001</b>
-          </div>
-          <div>
-            <span>Scene</span>
-            <b>01</b>
-          </div>
-          <div>
-            <span>Take</span>
-            <b className="os-take">{pad(take)}</b>
-          </div>
-        </div>
-        <div className="os-row">
-          <span>Director</span>
-          <b className="serif os-dir">You, next.</b>
-        </div>
-        <div className="os-row os-foot">
-          <span>
-            Date <b>{dateStr}</b>
-          </span>
-          <span>
-            TC <b ref={tc}>00:00:00:00</b>
-          </span>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 export default function OriginalsHero() {
   const root = useRef<HTMLElement>(null)
   const tc = useTimecode()
@@ -96,7 +33,6 @@ export default function OriginalsHero() {
       const q = gsap.utils.selector(el)
       const reduce = prefersReducedMotion()
 
-      gsap.set(q('.os-slate'), { autoAlpha: 0, y: 30 })
       const off = whenRevealed(contextSafe!(() => {
         el.classList.add('is-open')
         const tl = gsap.timeline({ delay: 0.15 })
@@ -110,17 +46,11 @@ export default function OriginalsHero() {
           tl.fromTo(q('.oh-flare--sweep'), { xPercent: -70, autoAlpha: 0 }, { xPercent: 70, autoAlpha: 1, duration: 2.6, ease: 'power2.inOut' }, 0.5)
           tl.to(q('.oh-flare--sweep'), { autoAlpha: 0, duration: 0.8 }, 2.4)
         }
-        tl.to(q('.os-slate'), { autoAlpha: 1, y: 0, duration: 1.1, ease: 'expo.out' }, 1.1)
-        if (!reduce) {
-          tl.fromTo(q('.os-stick--top'), { rotate: 0 }, { rotate: -26, duration: 0.5, ease: 'power3.out' }, 1.5)
-          tl.to(q('.os-stick--top'), { rotate: 0, duration: 0.18, ease: 'power4.in' }, 2.25)
-          tl.fromTo(q('.os-slate'), { y: 0 }, { y: 3, duration: 0.06, yoyo: true, repeat: 1 }, 2.43)
-        }
       }))
 
       if (!reduce) {
         gsap.to(q('.oh-par'), { yPercent: 14, ease: 'none', scrollTrigger: { trigger: el, start: 'top top', end: 'bottom top', scrub: true } })
-        gsap.to(q('.oh-copy, .oh-slate-wrap'), { yPercent: -16, autoAlpha: 0, ease: 'none', scrollTrigger: { trigger: el, start: 'top top', end: 'bottom 20%', scrub: true } })
+        gsap.to(q('.oh-copy'), { yPercent: -16, autoAlpha: 0, ease: 'none', scrollTrigger: { trigger: el, start: 'top top', end: 'bottom 20%', scrub: true } })
         gsap.to(q('.oh-fadeblack'), { autoAlpha: 1, ease: 'none', scrollTrigger: { trigger: el, start: '30% top', end: 'bottom top', scrub: true } })
       }
       return off
@@ -134,7 +64,16 @@ export default function OriginalsHero() {
         <div className="oh-par">
           <div className="oh-weave">
             <div className="oh-push">
-              <img src={media('originalsWide')} alt="A film set at night, lit for a wide shot" className="oh-img" loading="eager" decoding="async" />
+              <img
+                src={media('originalsStage')}
+                srcSet={`${media('originalsStage', 'sm')} 900w, ${media('originalsStage')} 2000w`}
+                sizes="100vw"
+                alt="A lone figure stands in a dark soundstage as a beam of light falls through hanging blue fabric"
+                className="oh-img"
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+              />
             </div>
           </div>
         </div>
@@ -159,12 +98,8 @@ export default function OriginalsHero() {
           </SplitReveal>
         </h1>
         <Reveal trigger="intro" delay={1.4} className="lede oh-lede">
-          Our own short films — and a way in for the filmmakers who make them with us. Made properly, released under our name, and a door to paid work on our productions.
+          Short films, made in-house. And a way in for the filmmakers who make them with us: a real set, a credit, and a door to paid work on our productions.
         </Reveal>
-      </div>
-
-      <div className="oh-slate-wrap">
-        <ClapperSlate />
       </div>
 
       {/* letterbox — opens to 2.39:1 once the loader lifts */}

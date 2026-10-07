@@ -7,7 +7,7 @@ import BriefForm from './contact/BriefForm'
 import './contact/contact.css'
 
 const NEXT = [
-  { n: '01', t: 'We read your brief and reply — usually with a few questions.' },
+  { n: '01', t: 'We read your brief and reply, usually with a few questions.' },
   { n: '02', t: 'A short call to understand the goal, the audience and the deadline.' },
   { n: '03', t: 'A plan, a timeline and an honest quote.' },
 ]
@@ -44,7 +44,7 @@ export default function Contact() {
               </SplitReveal>
             </h1>
             <Reveal trigger="intro" delay={0.8} className="lede ct-lede">
-              A website, a system, a film, a campaign — or all of it. Tell us what you’re making and we’ll tell you how we’d make it.
+              A website, a system, a film, a campaign, or all of it. Tell us what you’re making and we’ll tell you how we’d make it.
             </Reveal>
 
             <Reveal trigger="intro" delay={1} className="ct-mail">

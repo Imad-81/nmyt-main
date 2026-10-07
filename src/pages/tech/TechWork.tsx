@@ -48,14 +48,14 @@ export default function TechWork({ reduce }: { reduce: boolean }) {
               <em className="serif">tech</em> work.
             </>
           }
-          lede="Websites, launch pages and systems — built to do one job well."
+          lede="Websites, launch pages and systems, built to do one job well."
         />
 
         <div className="tw-grid">
           {TECH_WORK.map((p, i) => (
             <Link key={p.slug} to="/work" className="tw-card" data-cursor="View">
               <MediaFrame className="tw-media" label={p.name}>
-                <Img src={media(p.image)} alt={`${p.name} — ${p.client}`} className="tf-img h-full w-full" tint="#16b4ff" tintOpacity={0.14} parallax={6} />
+                <Img src={media(p.image)} alt={`${p.name} / ${p.client}`} className="tf-img h-full w-full" tint="#16b4ff" tintOpacity={0.14} parallax={6} />
               </MediaFrame>
               <Reveal className="tw-meta" childSelector=".tw-in" stagger={0.06} y={24}>
                 <div className="tw-row mono tw-in">
@@ -81,7 +81,7 @@ export default function TechWork({ reduce }: { reduce: boolean }) {
         <div className="tw-studio">
           <Reveal className="tk-head-row">
             <span className="mono tk-label">
-              <b>—</b> From the studio
+              <b>/</b> From the studio
             </span>
             <span className="tk-rule" />
           </Reveal>

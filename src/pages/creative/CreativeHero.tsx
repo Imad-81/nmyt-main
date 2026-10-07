@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useGSAP } from '@gsap/react'
-import { gsap, getLenis, isTouch, prefersReducedMotion } from '@/lib/smooth'
+import { gsap, getLenis, prefersReducedMotion } from '@/lib/smooth'
 import { Reveal, whenRevealed } from '@/components/Reveal'
 import { MagneticButton } from '@/components/MagneticButton'
 import { Scramble } from './fx'
@@ -36,7 +36,7 @@ function Copy({ ghost = false, onWork, tc }: { ghost?: boolean; onWork?: () => v
       <div className="ch-row ch-in">
         <div className="ch-left">
           <p className="lede ch-lede">
-            <span className="ch-strong">Brand films, product shoots, social, ads and identity.</span> Concept to final grade, made under one roof — built to stop the scroll.
+            <span className="ch-strong">Brand films, product shoots, social, ads and identity.</span> Concept to final grade, made under one roof and built to stop the scroll.
           </p>
           <div className="ch-ctas">
             <MagneticButton to="/contact?studio=creative" variant="acid">
@@ -65,7 +65,6 @@ export default function CreativeHero() {
   useEffect(() => {
     const el = root.current!
     const reduce = prefersReducedMotion()
-    const touch = isTouch()
     const cur = { x: 0, y: 0, r: 0 }
     const to = { x: 0, y: 0, r: 0 }
     let on = false
@@ -73,22 +72,30 @@ export default function CreativeHero() {
     let raf = 0
     let w = 1
     let h = 1
+    // the headline's box inside the hero: the idle lens stays on the type, off the body copy
+    const tb = { cy: 0, h: 1 }
     const measure = () => {
       const r = el.getBoundingClientRect()
       w = r.width
       h = r.height
+      const t = el.querySelector('.ch-title')?.getBoundingClientRect()
+      if (t) {
+        tb.cy = t.top - r.top + t.height * 0.46
+        tb.h = t.height
+      }
     }
     measure()
-    const radius = () => Math.max(110, Math.min(w, h) * (touch ? 0.26 : 0.2))
+    const radius = () => Math.max(110, Math.min(w, h) * 0.2)
+    const idleR = () => Math.min(radius(), tb.h * 0.5)
     cur.x = to.x = w * 0.72
-    cur.y = to.y = h * 0.6
+    cur.y = to.y = tb.cy
     const apply = () => {
       el.style.setProperty('--lx', `${cur.x.toFixed(1)}px`)
       el.style.setProperty('--ly', `${cur.y.toFixed(1)}px`)
       el.style.setProperty('--lr', `${Math.max(0, cur.r).toFixed(1)}px`)
     }
     if (reduce) {
-      cur.r = radius()
+      cur.r = idleR()
       apply()
       return
     }
@@ -100,8 +107,8 @@ export default function CreativeHero() {
         // idle drift across the headline
         const t = (now - t0) / 1000
         to.x = w * (0.5 + 0.34 * Math.sin(t * 0.42))
-        to.y = h * (0.62 + 0.13 * Math.sin(t * 0.67 + 1.2))
-        to.r = radius() * (touch ? 1 : 0.8)
+        to.y = tb.cy + tb.h * 0.1 * Math.sin(t * 0.67 + 1.2)
+        to.r = idleR()
       }
       cur.x += (to.x - cur.x) * 0.09
       cur.y += (to.y - cur.y) * 0.09
@@ -191,7 +198,7 @@ export default function CreativeHero() {
         <Reveal trigger="intro" className="ch-top-inner" childSelector=".ch-fade" delay={0.4}>
           <div className="ch-fade mono ch-kicker">
             <Scramble text="//CREATIVE_STUDIO" trigger="intro" delay={0.5} className="ch-acid" hover />
-            <span className="ch-sub">NMYT — Channel 02</span>
+            <span className="ch-sub">NMYT / Channel 02</span>
           </div>
           <ul className="ch-fade mono ch-sys">
             <li>

@@ -31,7 +31,7 @@ const A2: Clip[] = [{ a: 0, b: 1, name: 'MUSIC_BED_V3' }]
 const STAGES = [
   { k: 'Concept', at: 0, body: 'Idea, script and boards. The feeling is decided before the camera comes out.' },
   { k: 'Shoot', at: 0.18, body: 'Studio or location, directed by the same team that will cut it.' },
-  { k: 'Edit', at: 0.42, body: 'Story first. Cut for the screen it lives on — 16:9, 9:16, 1:1.' },
+  { k: 'Edit', at: 0.42, body: 'Story first. Cut for the screen it lives on, 16:9, 9:16, 1:1.' },
   { k: 'Grade', at: 0.64, body: 'Colour that makes every frame look like the same brand.' },
   { k: 'Sound', at: 0.84, body: 'Music, mix and design. Half of what the audience feels.' },
 ]
@@ -206,7 +206,7 @@ export default function Timeline() {
             <div ref={board} className="tl-board" aria-hidden>
               <div className="tl-board-grid" />
               <div className="mono tl-board-txt">
-                <span>SC_01 — OPEN ON PRODUCT.</span>
+                <span>SC_01 / OPEN ON PRODUCT.</span>
                 <span>SLOW PUSH-IN. HARD LIGHT, DEEP SHADOW.</span>
                 <span>CUT ON THE BEAT.</span>
               </div>
@@ -215,7 +215,7 @@ export default function Timeline() {
             <Brackets color="rgba(124,255,58,.7)" size={18} inset={14} />
             <div className="tl-hud mono" aria-hidden>
               <span className="tl-hud-tl">
-                <i className="tl-rec" /> PGM — {V1[clip].name}
+                <i className="tl-rec" /> PGM / {V1[clip].name}
               </span>
               <span className="tl-hud-tr">
                 <b className={stage >= 3 ? '' : 'is-on'}>LOG</b>

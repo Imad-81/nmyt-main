@@ -26,7 +26,7 @@ const STEPS = [
   {
     n: '04',
     t: 'Launch & care',
-    b: 'We ship, measure and keep improving. Hosting, updates and monthly iteration — so it gets better, not older.',
+    b: 'We ship, measure and keep improving. Hosting, updates and monthly iteration, so it gets better, not older.',
     l: ['Launch', 'Analytics', 'Monthly care'],
   },
 ]
