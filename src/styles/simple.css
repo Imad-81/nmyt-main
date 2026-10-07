@@ -36,6 +36,10 @@
   position: relative;
   padding-top: 34px;
 }
+/* the travelling light must never widen the page */
+.sx {
+  overflow-x: clip;
+}
 .sx-steps::before,
 .sx-steps::after {
   content: '';
