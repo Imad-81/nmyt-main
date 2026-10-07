@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import { media, type MediaKey } from '@/data/media'
+import { whenRevealed } from './Reveal'
 
 /**
  * Short looping motion clips for the large visuals. A clip is used only when its file is
  * listed here; otherwise the still image shows. Files live in /public/media/video.
  */
 export const CLIPS: Partial<Record<MediaKey, string>> = {
-  // filled in as clips are produced, e.g. studioTeam: '/media/video/studio-team.mp4'
+  originalsStage: '/media/video/originals-stage.mp4',
+  studioTeam: '/media/video/studio-team.mp4',
+  creativeCommercial: '/media/video/creative-commercial.mp4',
 }
 
 type Props = {
@@ -29,7 +32,14 @@ export default function Motion({ k, alt = '', className = '', once = false, prio
   const vid = useRef<HTMLVideoElement>(null)
   const [ready, setReady] = useState(false)
   const [near, setNear] = useState(priority)
+  const [revealed, setRevealed] = useState(false)
   const clip = CLIPS[k]
+
+  // a one-shot clip waits for the intro loader to lift, so nobody misses the move
+  useEffect(() => (once ? whenRevealed(() => setRevealed(true)) : undefined), [once])
+  useEffect(() => {
+    if (once && revealed && ready) vid.current?.play().catch(() => {})
+  }, [once, revealed, ready])
 
   useEffect(() => {
     const el = ref.current
@@ -39,6 +49,7 @@ export default function Motion({ k, alt = '', className = '', once = false, prio
         if (e.isIntersecting) setNear(true)
         const v = vid.current
         if (!v) return
+        if (once) return
         if (e.isIntersecting) v.play().catch(() => {})
         else v.pause()
       },
@@ -46,7 +57,7 @@ export default function Motion({ k, alt = '', className = '', once = false, prio
     )
     io.observe(el)
     return () => io.disconnect()
-  }, [clip])
+  }, [clip, once])
 
   return (
     <div ref={ref} className={`mo ${className}`}>
@@ -66,7 +77,7 @@ export default function Motion({ k, alt = '', className = '', once = false, prio
           src={clip}
           muted
           playsInline
-          autoPlay
+          autoPlay={!once}
           loop={!once}
           preload="auto"
           disablePictureInPicture

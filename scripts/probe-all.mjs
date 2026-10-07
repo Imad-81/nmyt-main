@@ -18,7 +18,7 @@ for (const [w, h] of sizes) {
     const errs = []
     page.on('pageerror', (e) => errs.push('pageerror: ' + e.message))
     page.on('console', (m) => m.type() === 'error' && errs.push('console: ' + m.text()))
-    page.on('requestfailed', (q) => errs.push('failed: ' + q.url()))
+    page.on('requestfailed', (q) => !q.url().endsWith('.mp4') && errs.push('failed: ' + q.url())) // video range requests are aborted when a clip scrolls away
     page.on('response', (s) => s.status() >= 400 && errs.push(`${s.status()}: ${s.url()}`))
     await page.goto(`${base}${r}?noloader&motion=full`, { waitUntil: 'networkidle0', timeout: 60000 })
     await new Promise((x) => setTimeout(x, 1200))
