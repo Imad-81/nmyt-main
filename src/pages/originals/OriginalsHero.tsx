@@ -25,9 +25,6 @@ export default function OriginalsHero() {
           // slow dolly push-in
           tl.fromTo(q('.oh-push'), { scale: 1.24 }, { scale: 1.06, duration: 12, ease: 'power2.out' }, 0)
           tl.fromTo(q('.oh-push'), { autoAlpha: 0.2 }, { autoAlpha: 1, duration: 1.6, ease: 'power1.out' }, 0)
-          // anamorphic sweep as the gate opens
-          tl.fromTo(q('.oh-flare--sweep'), { xPercent: -70, autoAlpha: 0 }, { xPercent: 70, autoAlpha: 1, duration: 2.6, ease: 'power2.inOut' }, 0.5)
-          tl.to(q('.oh-flare--sweep'), { autoAlpha: 0, duration: 0.8 }, 2.4)
         }
       }))
 
@@ -52,9 +49,6 @@ export default function OriginalsHero() {
           </div>
         </div>
         <div className="oh-grade" />
-        <div className="oh-flare oh-flare--a" aria-hidden />
-        <div className="oh-flare oh-flare--b" aria-hidden />
-        <div className="oh-flare oh-flare--sweep" aria-hidden />
         <div className="oh-grain" aria-hidden />
         <div className="oh-vignette" />
       </div>

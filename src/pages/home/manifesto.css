@@ -4,7 +4,7 @@
 }
 .mf-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr);
   gap: clamp(24px, 4vw, 72px);
   align-items: center;
 }
@@ -27,7 +27,7 @@
 /* the hologram: no frame, no grid, just the figure in the dark */
 .mf-stage {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 10.5;
   width: 100%;
 }
 .mf-stage-cap {
@@ -44,7 +44,7 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px;
-  margin-top: clamp(48px, 6vw, 96px);
+  margin-top: clamp(34px, 4.2vw, 67px);
 }
 .mf-fact {
   display: flex;

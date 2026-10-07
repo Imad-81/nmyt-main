@@ -6,13 +6,13 @@ import { SCOPE_LOOP } from './scopeMeta'
 
 // three colours per form: logo, website, dashboard, viewfinder, aperture, social, reel
 const PAL = [
-  ['#2150ff', '#1aa7ff', '#9af0f0'],
-  ['#1aa7ff', '#e8f4ff', '#9af0f0'],
-  ['#2150ff', '#1aa7ff', '#ffffff'],
-  ['#22e36a', '#9af0f0', '#ffffff'],
-  ['#22e36a', '#b6f23a', '#1aa7ff'],
-  ['#22e36a', '#2150ff', '#b6f23a'],
-  ['#f2e9dc', '#1aa7ff', '#22e36a'],
+  ['#2f6bff', '#19c2ff', '#8dfbff'],
+  ['#19b4ff', '#ffffff', '#4dffa6'],
+  ['#2f6bff', '#19c2ff', '#8cff3a'],
+  ['#22ff7a', '#19c2ff', '#ffffff'],
+  ['#22ff7a', '#d0ff3a', '#19b4ff'],
+  ['#22ff7a', '#3f7bff', '#d0ff3a'],
+  ['#ffe2b0', '#19b4ff', '#22ff7a'],
 ]
 
 const VERT = /* glsl */ `
@@ -57,9 +57,9 @@ void main(){
   gl_PointSize = sz * uPR * (12.5 / -mv.z);
   int ci = int(aRand.x * 2.999);
   vec3 ca = uPal[A * 3 + ci]; vec3 cb = uPal[B * 3 + ci];
-  vCol = mix(ca, cb, tt) * (0.65 + aRand.z * 0.7);
+  vCol = mix(ca, cb, tt) * (0.85 + aRand.z * 0.75);
   float tw = 0.72 + 0.28 * sin(uTime * (1.2 + aRand.w * 2.0) + aRand.x * 30.0);
-  vAlpha = uOpacity * tw * (0.55 + 0.45 * aRand.z) * (1.0 - mid * 0.25);
+  vAlpha = min(1.0, uOpacity * tw * (0.8 + 0.6 * aRand.z) * (1.0 - mid * 0.2) * 1.35);
 }`
 
 const FRAG = /* glsl */ `
@@ -84,7 +84,7 @@ export default function ScopeMorph({ onStage, className }: { onStage?: (i: numbe
   useEffect(() => {
     const el = host.current!
     const mobile = window.matchMedia('(max-width: 767px)').matches
-    const count = mobile ? 12000 : 30000
+    const count = mobile ? 16000 : 42000
     let renderer: THREE.WebGLRenderer
     try {
       renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' })
@@ -112,7 +112,7 @@ export default function ScopeMorph({ onStage, className }: { onStage?: (i: numbe
     const uniforms = {
       uTime: { value: 0 },
       uChapter: { value: 0 },
-      uSize: { value: mobile ? 2.0 : 2.2 },
+      uSize: { value: mobile ? 2.7 : 3.1 },
       uPR: { value: pr },
       uOpacity: { value: 0 },
       uMouse: { value: new THREE.Vector2(99, 99) },

@@ -8,7 +8,6 @@ import { whenRevealed } from './Reveal'
  */
 export const CLIPS: Partial<Record<MediaKey, string>> = {
   originalsStage: '/media/video/originals-stage.mp4',
-  studioTeam: '/media/video/studio-team.mp4',
 }
 
 type Props = {

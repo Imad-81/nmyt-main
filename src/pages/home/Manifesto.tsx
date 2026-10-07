@@ -7,7 +7,7 @@ import './manifesto.css'
 const ScopeMorph = lazy(() => import('@/gl/ScopeMorph'))
 
 const TEXT =
-  'NMYT is a small studio with big standards. Two teams, one roof: a Tech Studio that builds websites, landing pages and simple systems, and a Creative Studio that shoots films, products and content. Most businesses juggle five vendors to get there. You get one team, one standard, one story.'
+  'NMYT is a creative tech studio with big standards. Two teams, one roof: a Tech Studio that builds websites, landing pages and simple systems, and a Creative Studio that shoots films, products and content. Most businesses juggle five vendors to get there. You get one team, one standard, one story.'
 
 export default function Manifesto() {
   const root = useRef<HTMLElement>(null)

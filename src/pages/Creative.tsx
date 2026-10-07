@@ -27,7 +27,9 @@ export default function Creative() {
   return (
     <div className="cr">
       <CreativeHero />
-      <GlassWarp />
+      <div className="ch-under">
+        <GlassWarp />
+      </div>
       <CreativeServices />
       <Catalogue id="cr-work" eyebrow="What we make" title="The catalogue." lede="The kinds of pieces the studio produces. Client work will be shown on the Work page once it is released." items={[...MAKES]} note="Studio look development frames, shown as examples." />
       <Steps eyebrow="How a film gets made" title="From idea to final mix." lede="One team carries the piece the whole way, so nothing is lost between hands." items={STAGES} accent="var(--acid)" />

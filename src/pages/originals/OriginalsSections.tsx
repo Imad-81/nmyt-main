@@ -2,11 +2,11 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, SplitText, prefersReducedMotion } from '@/lib/smooth'
 import { Reveal, SplitReveal } from '@/components/Reveal'
-import { MonoLabel, SectionHead, Marquee } from '@/components/ui'
+import { MonoLabel, Marquee } from '@/components/ui'
 import { Steps } from '@/components/Simple'
 import { MagneticButton } from '@/components/MagneticButton'
 import Img from '@/components/Img'
-import { media, type MediaKey } from '@/data/media'
+import { media } from '@/data/media'
 
 /* ------------------------------------------------------------------ */
 /* 01 — Manifesto: words light up as you read                          */
@@ -120,62 +120,21 @@ export function Program() {
 /* ------------------------------------------------------------------ */
 /* 03 — The slate: films in development                                */
 /* ------------------------------------------------------------------ */
-const FILMS: { code: string; img: MediaKey; kind: string; pos?: string }[] = [
-  { code: '01', img: 'originalsDirector', kind: 'Short film' },
-  { code: '02', img: 'originalsMonitor', kind: 'Short film' },
-  { code: '03', img: 'heroFilmset', kind: 'Short film', pos: 'center 40%' },
-]
-
 export function FilmSlate() {
   return (
     <section className="ofs section">
-      <div className="wrap">
-        <SectionHead
-          index="03"
-          label="The slate"
-          accent="var(--emerald)"
-          title={
-            <>
-              In <em className="serif ofs-em">development</em>
-            </>
-          }
-          lede="The first NMYT Originals are being written and prepped now. Titles, crews and dates are announced on release."
-          aside={
-            <span className="mono hidden md:inline" style={{ color: 'var(--fg-3)' }}>
-              03 titles
+      <div className="wrap ofs-soon">
+        <Reveal className="eyebrow ofs-eyebrow">In development</Reveal>
+        <Reveal y={24}>
+          <p className="ofs-line">
+            <span className="ofs-steam" aria-hidden>
+              <i />
+              <i />
+              <i />
             </span>
-          }
-        />
-        <div className="ofs-grid">
-          {FILMS.map((f, i) => (
-            <Reveal key={f.code} className={`ofs-cell ofs-cell--${i + 1}`} y={60}>
-              <article className="ofs-card" data-cursor="Soon">
-                <div className="ofs-media">
-                  <Img src={media(f.img)} alt="" className="ofs-img" parallax={10} position={f.pos} tint="#04123F" tintOpacity={0.3} />
-                </div>
-                <div className="ofs-shade" />
-                <div className="ofs-top">
-                  <span className="pill ofs-pill ofs-pill--live">
-                    <i /> In development
-                  </span>
-                  <span className="pill ofs-pill">ORIG / {f.code}</span>
-                </div>
-                <div className="ofs-bot">
-                  <div className="mono ofs-kind">
-                    {f.kind} · Working title
-                  </div>
-                  <h3 className="display ofs-title">
-                    Untitled <em className="serif">No. {f.code}</em>
-                  </h3>
-                  <div className="ofs-redact" role="img" aria-label="Logline under wraps">
-                    <span />
-                    <span />
-                  </div>
-                </div>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+            Cooking some content, <span className="ofs-line-b">shall be served soon.</span>
+          </p>
+        </Reveal>
       </div>
     </section>
   )

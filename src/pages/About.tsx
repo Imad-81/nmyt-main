@@ -21,7 +21,7 @@ export default function About() {
           About NMYT
         </Reveal>
         <SplitReveal as="h1" className="display ab-title" trigger="intro" delay={0.2}>
-          A small studio with big standards.
+          A creative tech studio with big standards.
         </SplitReveal>
         <div className="ab-cols">
           <Reveal trigger="intro" delay={0.5} className="ab-p">

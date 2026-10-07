@@ -1,5 +1,7 @@
 /* /work: white words on the plain page, one broad pass of light every 4 seconds. Prefix: wip */
 .wip {
+  position: relative;
+  overflow: hidden;
   min-height: 100svh;
   display: grid;
   place-items: center;
@@ -7,6 +9,8 @@
   background: var(--void);
 }
 .wip-title {
+  position: relative;
+  z-index: 1;
   margin: 0;
   text-align: center;
   font-family: var(--font-display);
@@ -33,5 +37,69 @@
   70%,
   100% {
     background-position: -70% 0;
+  }
+}
+
+/* a gyroscope of four thin rings, each turning on its own axis in real 3D */
+.wip-gyro {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(92vw, 86vh, 900px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -46%);
+  perspective: 1400px;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+.wip-gyro i {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(120, 200, 255, 0.5);
+  box-shadow: 0 0 34px -6px rgba(22, 140, 255, 0.55), inset 0 0 34px -10px rgba(22, 140, 255, 0.45);
+  animation: wip-spin-a 16s linear infinite;
+  will-change: transform;
+}
+.wip-gyro i:nth-child(2) {
+  inset: 9%;
+  border-color: rgba(0, 224, 138, 0.5);
+  box-shadow: 0 0 34px -6px rgba(0, 224, 138, 0.5), inset 0 0 34px -10px rgba(0, 224, 138, 0.4);
+  animation: wip-spin-b 21s linear infinite;
+}
+.wip-gyro i:nth-child(3) {
+  inset: 19%;
+  border-color: rgba(207, 239, 255, 0.4);
+  box-shadow: none;
+  animation: wip-spin-c 27s linear infinite;
+}
+.wip-gyro i:nth-child(4) {
+  inset: 30%;
+  border-color: rgba(22, 56, 255, 0.7);
+  box-shadow: 0 0 40px -4px rgba(22, 56, 255, 0.7);
+  animation: wip-spin-a 12s linear infinite reverse;
+}
+@keyframes wip-spin-a {
+  from {
+    transform: rotateX(68deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(68deg) rotateZ(360deg);
+  }
+}
+@keyframes wip-spin-b {
+  from {
+    transform: rotateY(64deg) rotateX(18deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateY(64deg) rotateX(18deg) rotateZ(-360deg);
+  }
+}
+@keyframes wip-spin-c {
+  from {
+    transform: rotateX(34deg) rotateY(-52deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(34deg) rotateY(-52deg) rotateZ(360deg);
   }
 }

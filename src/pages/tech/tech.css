@@ -207,11 +207,11 @@
 /* reduced motion: the statement becomes its own section after a gradient bridge */
 .th-static {
   background: var(--paper);
-  padding-bottom: clamp(58px, 7.2vw, 115px);
+  padding-bottom: clamp(41px, 5.04vw, 80px);
 }
 .th-bridge {
   height: 45vh;
-  margin-bottom: clamp(43px, 5.76vw, 86px);
+  margin-bottom: clamp(30px, 4.03vw, 60px);
   background: linear-gradient(180deg, var(--void) 0%, var(--navy) 22%, var(--royal) 46%, var(--sky) 66%, var(--ice) 84%, var(--paper) 100%);
 }
 
@@ -244,16 +244,16 @@
 }
 .tk-section {
   position: relative;
-  padding-block: clamp(69px, 8.64vw, 144px);
+  padding-block: clamp(48px, 6.05vw, 101px);
 }
 .tk-head {
-  margin-bottom: clamp(40px, 5.04vw, 79px);
+  margin-bottom: clamp(28px, 3.53vw, 55px);
 }
 .tk-head-row {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: clamp(36px, 4.5vw, 64px);
+  margin-bottom: clamp(25px, 3.15vw, 45px);
 }
 .tk-label {
   color: var(--paper-ink-2);
@@ -290,7 +290,7 @@
    Strip
    --------------------------------------------------------------------- */
 .tsx {
-  padding-block: clamp(26px, 3.6vw, 52px);
+  padding-block: clamp(18px, 2.52vw, 36px);
   border-bottom: 1px solid var(--paper-line);
   background: var(--paper);
 }
@@ -1221,10 +1221,10 @@
 
 /* vertical (mobile / tablet / reduced) */
 .tpr--v {
-  padding-block: clamp(69px, 8.64vw, 144px);
+  padding-block: clamp(48px, 6.05vw, 101px);
 }
 .tpr--v .tpr-top {
-  margin-bottom: clamp(29px, 4.32vw, 58px);
+  margin-bottom: clamp(20px, 3.02vw, 41px);
 }
 .tpr--v .tpr-node,
 .tpr--v .tpr-bar-fill {
@@ -1237,7 +1237,7 @@
   padding-inline: var(--gutter);
 }
 .tpr--v .tpr-intro {
-  margin-bottom: clamp(35px, 5.04vw, 69px);
+  margin-bottom: clamp(24px, 3.53vw, 48px);
 }
 .tpr--v .tpr-steps {
   position: relative;
@@ -1292,7 +1292,7 @@
   color: inherit;
 }
 .tw-card:nth-child(2) {
-  margin-top: clamp(43px, 7.2vw, 130px);
+  margin-top: clamp(30px, 5.04vw, 91px);
 }
 .tf {
   position: relative;
@@ -1386,7 +1386,7 @@
   gap: 8px;
 }
 .tw-studio {
-  margin-top: clamp(72px, 8.64vw, 144px);
+  margin-top: clamp(50px, 6.05vw, 101px);
 }
 .tw-gal {
   display: grid;

@@ -9,7 +9,7 @@
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   gap: clamp(29px, 4.32vw, 86px);
   padding-top: calc(var(--nav-h) + clamp(29px, 5.76vh, 69px));
-  padding-bottom: clamp(69px, 8.64vw, 130px);
+  padding-bottom: clamp(48px, 6.05vw, 91px);
 }
 .ct-sticky {
   position: sticky;
@@ -37,7 +37,7 @@
   margin-bottom: 12px;
 }
 .ct-mail {
-  margin-top: clamp(32px, 5vh, 56px);
+  margin-top: clamp(22px, 3.5vh, 39px);
 }
 .ct-mail-row {
   display: flex;
@@ -79,7 +79,7 @@
   display: grid;
   grid-template-columns: 1fr 1.3fr;
   gap: 32px;
-  margin-top: clamp(32px, 5vh, 56px);
+  margin-top: clamp(22px, 3.5vh, 39px);
   padding-top: 28px;
   border-top: 1px solid var(--line);
 }

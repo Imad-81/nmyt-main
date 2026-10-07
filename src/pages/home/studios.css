@@ -3,7 +3,7 @@
 }
 .sc-row {
   position: relative;
-  margin-top: clamp(35px, 4.32vw, 63px);
+  margin-top: clamp(24px, 3.02vw, 44px);
   display: flex;
   gap: 18px;
   height: min(86vh, 820px);

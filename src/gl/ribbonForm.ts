@@ -98,11 +98,35 @@ export function createRibbonForm(host: HTMLElement, state: RibbonState): RibbonF
   }
   geo.setAttribute('color', new THREE.BufferAttribute(col, 3))
   const mat = new THREE.MeshPhysicalMaterial({ vertexColors: true, metalness: 1, roughness: 0.16, clearcoat: 1, clearcoatRoughness: 0.06 })
+  // a pulse of light keeps running through the ribbon, in the ribbon's own colour
+  const pulse = { value: 0 }
+  mat.onBeforeCompile = (sh) => {
+    sh.uniforms.uT = pulse
+    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying float vU;').replace('#include <begin_vertex>', '#include <begin_vertex>\nvU = uv.x;')
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\nvarying float vU; uniform float uT;')
+      .replace(
+        '#include <emissivemap_fragment>',
+        `#include <emissivemap_fragment>
+      float pl = pow(0.5 + 0.5 * sin(vU * 12.5664 - uT * 1.5), 9.0);
+      totalEmissiveRadiance += vColor.rgb * pl * 1.5 + vec3(0.85, 1.0, 0.96) * pow(pl, 5.0) * 0.7;`,
+      )
+  }
   const knot = new THREE.Mesh(geo, mat)
   knot.scale.set(1, 1, 0.62) // flatten the tube toward a band
   const rig = new THREE.Group()
   rig.add(knot)
   scene.add(rig)
+
+  // three small chrome beads in orbit, each on its own tilted path
+  const beadGeo = new THREE.SphereGeometry(0.1, 24, 16)
+  const beads = [0x1638ff, 0x00d98a, 0xf2f6fb].map((hex, i) => {
+    const bm = new THREE.MeshPhysicalMaterial({ color: hex, metalness: 1, roughness: 0.12, clearcoat: 1, emissive: hex, emissiveIntensity: 0.35 })
+    const mesh = new THREE.Mesh(beadGeo, bm)
+    mesh.scale.setScalar(i === 2 ? 0.7 : 1)
+    rig.add(mesh)
+    return { mesh, bm, r: 2.15 + i * 0.22, speed: 0.55 + i * 0.21, tilt: 0.5 + i * 0.9, phase: i * 2.1 }
+  })
 
   const size = { w: 1, h: 1 }
   let fit = 1
@@ -120,7 +144,7 @@ export function createRibbonForm(host: HTMLElement, state: RibbonState): RibbonF
     const vw = vh * camera.aspect
     const land = camera.aspect > 1.05
     // right of the headline on wide screens, above it on tall ones
-    fit = Math.min((vw * (land ? 0.36 : 0.62)) / 3.6, (vh * (land ? 0.62 : 0.34)) / 3.6)
+    fit = Math.min((vw * (land ? 0.4 : 0.8)) / 4.6, (vh * (land ? 0.74 : 0.4)) / 4.6) * 1.18
     px = land ? vw * 0.2 : 0
     py = land ? vh * 0.02 : vh * 0.17
   }
@@ -168,6 +192,14 @@ export function createRibbonForm(host: HTMLElement, state: RibbonState): RibbonF
     rig.rotation.y = t * 0.28 + m.x * 0.9 + (1 - e) * -2.2 + s * 2.4
     rig.rotation.x = 0.35 + Math.sin(t * 0.23) * 0.18 - m.y * 0.6 + s * 0.8
     rig.rotation.z = Math.sin(t * 0.17) * 0.12
+    pulse.value = t
+    for (const bd of beads) {
+      const a2 = t * bd.speed + bd.phase
+      const x = Math.cos(a2) * bd.r
+      const z = Math.sin(a2) * bd.r
+      bd.mesh.position.set(x, Math.sin(bd.tilt) * z, Math.cos(bd.tilt) * z)
+      bd.mesh.visible = state.intro > 0.3
+    }
     knot.visible = state.intro > 0.002
     scene.environmentRotation.set(0, t * 0.12 + m.x * 0.4, 0)
     renderer.render(scene, camera)
@@ -181,6 +213,8 @@ export function createRibbonForm(host: HTMLElement, state: RibbonState): RibbonF
       io.disconnect()
       geo.dispose()
       mat.dispose()
+      beadGeo.dispose()
+      beads.forEach((b) => b.bm.dispose())
       envTex.dispose()
       renderer.dispose()
       canvas.remove()

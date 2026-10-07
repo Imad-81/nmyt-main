@@ -144,7 +144,7 @@ button {
 }
 .section {
   position: relative;
-  padding-block: clamp(64px, 9vw, 150px);
+  padding-block: clamp(45px, 6.3vw, 105px);
 }
 
 /* ---------- utilities ---------- */

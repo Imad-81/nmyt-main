@@ -2,7 +2,7 @@
   padding-bottom: 0;
 }
 .ap-list {
-  margin-top: clamp(40px, 5vw, 72px);
+  margin-top: clamp(28px, 3.5vw, 50px);
   border-top: 1px solid var(--line);
 }
 .ap-row {
@@ -54,7 +54,7 @@
   color: var(--fg-3);
 }
 .ap-proc {
-  margin-top: clamp(58px, 7.2vw, 108px);
+  margin-top: clamp(41px, 5.04vw, 76px);
 }
 .ap-steps {
   position: relative;
@@ -111,7 +111,7 @@
   max-width: 30ch;
 }
 .ap-mq {
-  margin-top: clamp(69px, 8.64vw, 130px);
+  margin-top: clamp(48px, 6.05vw, 91px);
   padding-block: 28px;
   border-top: 1px solid var(--line);
 }
@@ -147,4 +147,8 @@
   .ap-line {
     display: none;
   }
+}
+
+.ap--line {
+  padding-block: clamp(8px, 1.4vw, 20px);
 }

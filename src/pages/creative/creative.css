@@ -48,14 +48,24 @@
 }
 .chw {
   position: relative;
+  z-index: 1;
   height: 185svh;
-  background: var(--void);
+  pointer-events: none;
+}
+/* the next section waits directly underneath the last screen of the hero */
+.ch-under {
+  position: relative;
+  z-index: 0;
+  margin-top: -100svh;
+}
+.ch-under .gw {
+  min-height: 100svh;
 }
 .ch {
   position: sticky;
   top: 0;
   height: 100svh;
-  min-height: 600px;
+  pointer-events: auto;
   overflow: hidden;
   isolation: isolate;
   color: #06080d;
@@ -71,6 +81,32 @@
   position: absolute;
   inset: 0;
   z-index: 2;
+}
+/* the object's own light on the wall: blue and green, breathing */
+.ch-halo {
+  position: absolute;
+  z-index: 0;
+  left: 70%;
+  top: 48%;
+  width: min(54vw, 800px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background:
+    radial-gradient(closest-side at 40% 45%, rgba(22, 86, 255, 0.34), rgba(22, 86, 255, 0) 70%),
+    radial-gradient(closest-side at 64% 58%, rgba(0, 214, 130, 0.32), rgba(0, 214, 130, 0) 70%);
+  filter: blur(30px);
+  animation: ch-halo 6s ease-in-out infinite;
+}
+@keyframes ch-halo {
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: translate(-50%, -50%) scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.06);
+  }
 }
 /* soft contact shadow on the wall behind the object */
 .ch-shadow {
@@ -90,10 +126,15 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: radial-gradient(circle at 60% 50%, #0a1b4a 0%, var(--void) 60%);
+  background: var(--void);
   clip-path: circle(var(--fr) at 62% 50%);
 }
 @media (max-width: 767px), (max-aspect-ratio: 1/1) {
+  .ch-halo {
+    left: 50%;
+    top: 33%;
+    width: 96vw;
+  }
   .ch-shadow {
     left: 50%;
     top: 40%;
@@ -128,23 +169,62 @@
 .ch-title {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(42px, min(7.6vw, 14vh), 132px);
-  letter-spacing: -0.055em;
+  font-weight: 800;
+  font-size: clamp(42px, min(7.4vw, 13.6vh), 128px);
+  letter-spacing: -0.06em;
   line-height: 0.98;
   text-transform: none;
 }
 .ch-line {
   display: block;
   white-space: nowrap;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
 }
+/* the heavy words carry the studio's colours, always moving; ink passes through them */
+@property --c1 {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+.ch-fill {
+  --c1: 0%;
+  padding: 0.04em 0.05em 0.16em 0;
+  margin-bottom: -0.16em;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-image:
+    linear-gradient(100deg, rgba(6, 8, 13, 0) calc(var(--c1) - 16%), #06080d calc(var(--c1) - 4%), #06080d calc(var(--c1) + 4%), rgba(6, 8, 13, 0) calc(var(--c1) + 16%)),
+    linear-gradient(100deg, #1232e6 0%, #0a8fe8 30%, #00b06a 55%, #49c400 72%, #0a8fe8 88%, #1232e6 100%);
+  background-size: 100% 100%, 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: ch-flow 9s linear infinite, ch-ink 5.5s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+}
+@keyframes ch-flow {
+  from {
+    background-position: 0 0, 0% 0;
+  }
+  to {
+    background-position: 0 0, 150% 0;
+  }
+}
+@keyframes ch-ink {
+  0% {
+    --c1: -20%;
+  }
+  60%,
+  100% {
+    --c1: 120%;
+  }
+}
+/* the light partner: a plain Helvetica-style voice against the heavy one */
 .ch-title em {
-  font-family: 'Instrument Serif', 'Times New Roman', serif;
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.03em;
-  font-size: 1.08em;
-  padding-right: 0.06em;
+  font-family: 'Helvetica Neue', Helvetica, 'Inter Variable', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  letter-spacing: -0.045em;
+  color: #06080d;
 }
 .ch-lede {
   max-width: 40ch;
@@ -184,7 +264,7 @@
   overflow: hidden;
   isolation: isolate;
   background: var(--void);
-  padding-block: clamp(69px, 7.2vw, 115px) clamp(46px, 5.04vw, 79px);
+  padding-block: clamp(48px, 5.04vw, 80px) clamp(32px, 3.53vw, 55px);
 }
 .gw-shade {
   position: absolute;
@@ -201,7 +281,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: clamp(36px, 5vw, 72px);
+  margin-bottom: clamp(25px, 3.5vw, 50px);
 }
 .gw-head-r {
   color: var(--fg-3);
@@ -390,7 +470,7 @@
   font-size: 16px;
 }
 .gw-bottom {
-  margin-top: clamp(32px, 4vw, 56px);
+  margin-top: clamp(22px, 2.8vw, 39px);
   text-align: center;
   color: var(--fg-3);
   letter-spacing: 0.22em;
@@ -690,10 +770,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-top: clamp(40px, 6vh, 72px);
+  padding-top: clamp(28px, 4.2vh, 50px);
 }
 .cw.is-free {
-  padding-block: clamp(69px, 10.08vw, 130px);
+  padding-block: clamp(48px, 7.06vw, 91px);
 }
 .cw-bg {
   position: absolute;
@@ -1036,7 +1116,7 @@
   overflow: hidden;
 }
 .tl:not(.is-pinned) {
-  padding-block: clamp(69px, 8.64vw, 130px);
+  padding-block: clamp(48px, 6.05vw, 91px);
 }
 .tl-inner {
   height: 100%;
@@ -1045,7 +1125,7 @@
   gap: clamp(16px, 2.4vh, 28px);
 }
 .tl.is-pinned .tl-inner {
-  padding-top: clamp(36px, 6vh, 72px);
+  padding-top: clamp(25px, 4.2vh, 50px);
   padding-bottom: clamp(20px, 3.6vh, 40px);
 }
 .tl-head-row {
@@ -1498,7 +1578,7 @@
   overflow: hidden;
   background: var(--void);
   border-top: 1px solid var(--line);
-  padding-block: clamp(58px, 7.2vw, 115px) clamp(40px, 5.04vw, 79px);
+  padding-block: clamp(41px, 5.04vw, 80px) clamp(28px, 3.53vw, 55px);
 }
 .vm::before {
   content: '';
@@ -1571,7 +1651,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 12px 24px;
-  margin-top: clamp(35px, 5.04vw, 72px);
+  margin-top: clamp(24px, 3.53vw, 50px);
   color: var(--fg-3);
 }
 .vm-meta span:first-child {
@@ -1635,16 +1715,17 @@
 }
 .gw-say-a {
   font-family: var(--font-display);
-  font-weight: 300;
+  font-weight: 800;
   font-size: clamp(40px, 7.4vw, 128px);
   letter-spacing: -0.055em;
 }
 .gw-say-b {
-  font-family: 'Instrument Serif', 'Times New Roman', serif;
-  font-style: italic;
-  font-size: clamp(46px, 8.6vw, 150px);
-  letter-spacing: -0.03em;
-  color: var(--acid);
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 300;
+  font-size: clamp(36px, 6.6vw, 116px);
+  letter-spacing: -0.055em;
+  color: var(--fg);
   padding-bottom: 0.14em;
 }
 /* the last word: four takes, one after another */
@@ -1693,4 +1774,16 @@
   max-width: 44ch;
   font-size: clamp(15px, 1.15vw, 18px);
   color: var(--fg-2);
+}
+
+@media (max-width: 767px) {
+  .ch-under .gw {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .gw-stage {
+    min-height: 0;
+  }
 }

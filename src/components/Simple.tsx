@@ -54,7 +54,7 @@ export function Steps({
         <Head eyebrow={eyebrow} title={title} lede={lede} />
         <Reveal className={`sx-steps sx-steps--${Math.min(items.length, 5)}`} childSelector=".sx-step" stagger={0.08} y={28}>
           {items.map((s, i) => (
-            <article key={s.title} className="sx-step">
+            <article key={s.title} className="sx-step" style={{ ['--i' as string]: i, ['--n' as string]: items.length }}>
               <span className="sx-step-n">{s.n ?? String(i + 1).padStart(2, '0')}</span>
               <h3 className="sx-step-t">{s.title}</h3>
               <p className="sx-step-b">{s.body}</p>
