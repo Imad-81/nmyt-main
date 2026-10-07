@@ -1,0 +1,53 @@
+:root {
+  /* surfaces */
+  --void: #030408;
+  --ink-900: #07090f;
+  --ink-800: #0c0f18;
+  --ink-700: #141826;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.18);
+
+  /* text */
+  --fg: #f4f6fb;
+  --fg-2: rgba(244, 246, 251, 0.64);
+  --fg-3: rgba(244, 246, 251, 0.38);
+
+  /* NMYT master — sampled from the logo metal + creative green */
+  --royal: #1638ff;
+  --royal-deep: #0a1a8c;
+  --sky: #16b4ff;
+  --ice: #cfefff;
+  --acid: #7cff3a;
+  --emerald: #00e08a;
+  --navy: #04123f;
+
+  /* light (Tech Studio) */
+  --paper: #f6f9ff;
+  --paper-ink: #050a18;
+  --paper-ink-2: rgba(5, 10, 24, 0.62);
+  --paper-line: rgba(5, 10, 24, 0.1);
+
+  /* glows */
+  --glow-tech: radial-gradient(120% 70% at 50% 110%, rgba(22, 180, 255, 0.95) 0%, rgba(22, 56, 255, 0.55) 32%, rgba(4, 18, 63, 0) 70%);
+  --glow-creative: radial-gradient(120% 70% at 50% 110%, rgba(124, 255, 58, 0.95) 0%, rgba(0, 224, 138, 0.5) 34%, rgba(4, 18, 63, 0) 72%);
+  --glow-master: radial-gradient(120% 70% at 50% 110%, rgba(22, 56, 255, 0.95) 0%, rgba(22, 180, 255, 0.45) 36%, rgba(3, 4, 8, 0) 72%);
+  --grad-master: linear-gradient(100deg, var(--royal) 0%, var(--sky) 48%, var(--acid) 100%);
+
+  /* type */
+  --font-display: 'Archivo Variable', 'Archivo', 'Arial Narrow', sans-serif;
+  --font-serif: 'Instrument Serif', 'Times New Roman', serif;
+  --font-sans: 'Geist Variable', 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
+
+  /* layout */
+  --gutter: clamp(16px, 2.2vw, 32px);
+  --maxw: 1680px;
+  --nav-h: 72px;
+  --radius: 22px;
+  --radius-lg: 32px;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-io: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-expo: cubic-bezier(0.87, 0, 0.13, 1);
+}

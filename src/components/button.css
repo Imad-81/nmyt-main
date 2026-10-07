@@ -1,0 +1,137 @@
+.mb {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 54px;
+  padding: 0 8px 0 26px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  isolation: isolate;
+  overflow: hidden;
+  will-change: transform;
+}
+.mb--sm {
+  height: 42px;
+  padding: 0 6px 0 18px;
+  font-size: 13.5px;
+  gap: 10px;
+}
+.mb::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  transform: translateY(101%);
+  transition: transform 0.6s var(--ease-out);
+}
+.mb:hover::before {
+  transform: translateY(0);
+}
+.mb-label {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  height: 1.3em;
+  line-height: 1.3em;
+}
+.mb-roll {
+  display: inline-block;
+  transition: transform 0.55s var(--ease-out);
+}
+.mb-roll::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 100%;
+}
+.mb:hover .mb-roll {
+  transform: translateY(-100%);
+}
+.mb-arrow {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: transform 0.6s var(--ease-out), background 0.4s, color 0.4s;
+}
+.mb--sm .mb-arrow {
+  width: 30px;
+  height: 30px;
+}
+.mb:hover .mb-arrow {
+  transform: rotate(45deg);
+}
+
+/* variants */
+.mb--light {
+  background: var(--fg);
+  color: var(--void);
+}
+.mb--light::before {
+  background: var(--sky);
+}
+.mb--light .mb-arrow {
+  background: var(--void);
+  color: var(--fg);
+}
+.mb--ghost {
+  color: var(--fg);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(10px);
+}
+.mb--ghost::before {
+  background: var(--fg);
+}
+.mb--ghost:hover {
+  color: var(--void);
+}
+.mb--ghost .mb-arrow {
+  background: rgba(255, 255, 255, 0.08);
+}
+.mb--ghost:hover .mb-arrow {
+  background: var(--void);
+  color: var(--fg);
+}
+.mb--sky {
+  background: var(--sky);
+  color: #021027;
+}
+.mb--sky::before {
+  background: var(--fg);
+}
+.mb--sky .mb-arrow {
+  background: #021027;
+  color: var(--sky);
+}
+.mb--acid {
+  background: var(--acid);
+  color: #041200;
+}
+.mb--acid::before {
+  background: var(--fg);
+}
+.mb--acid .mb-arrow {
+  background: #041200;
+  color: var(--acid);
+}
+.mb--dark {
+  background: var(--paper-ink);
+  color: var(--paper);
+}
+.mb--dark::before {
+  background: var(--sky);
+}
+.mb--dark:hover {
+  color: #021027;
+}
+.mb--dark .mb-arrow {
+  background: var(--paper);
+  color: var(--paper-ink);
+}
