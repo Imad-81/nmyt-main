@@ -1,16 +1,19 @@
-# NMYT website build (unified v1)
+# NMYT website build
 
-Base: the nmyt-studio site. Merged in: the 3D chrome logo, copy and Originals imagery from the earlier nmyt.vercel.app site.
+The unified NMYT agency site. Live at https://nmyt-website-build.vercel.app
 
-What changed in v1
-- Home hero: the chrome NMYT mark inside a dome of blue and green light rings (`src/gl/domeHero.ts`, plain three.js, adaptive resolution, static poster when WebGL is unavailable).
-- Footer: white NMYT mark with the logo gradient passing through it every 3 seconds.
-- Creative hero: no imagery or streaks. Colour-filled type with an inversion lens.
-- Originals: stage hero image, clapboard still, deep blue and ivory palette.
-- Tech: lighter horizon shader, drawing stops once the frame is white.
-- All shader canvases lower their own resolution on slow GPUs.
-- Security headers (CSP and friends) in `vercel.json`, `robots.txt`.
-- QA: `PORT=5183 node scripts/probe-all.mjs` sweeps every route at five sizes.
+- Start with `HANDOFF.md`: context, the owner's rules, architecture, checks, open items.
+- `DESIGN.md`: the current design system. `CLAUDE.md`: standing rules for Claude Code threads.
+
+```bash
+npm install
+npm run dev -- --port 5183 --strictPort
+npm run build
+```
+
+Pushing `main` to https://github.com/gitnityanth-code/nmyt-website-build deploys to Vercel.
+
+The notes below this line are from the original base project and are partly out of date.
 
 ---
 

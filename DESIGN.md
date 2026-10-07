@@ -1,91 +1,75 @@
-# NMYT — Design System & Build Brief
+# NMYT design system (current, 2026-10-07)
 
-Single source of truth for everyone building this site. Read fully before writing code.
+The owner's rules are in `HANDOFF.md` section 5. This file is the working reference for values.
 
-## 1. Who NMYT is
-A small, new-generation digital studio with high standards. Two studios under one roof:
-- **Tech Studio** — landing pages, websites, simple dashboards & internal systems.
-- **Creative Studio** — digital & social media marketing, brand commercials, brand design,
-  product shoots, ads, custom cinematics, and in-house short films (**NMYT Originals**) that give
-  young filmmakers paid work, a portfolio and a platform.
-Clients: brands, mid-sized firms, founder/owner-run businesses, independent service providers.
+## Who NMYT is
+A creative tech studio from Hyderabad, India, founded 2026. Two studios under one roof:
+- **Tech Studio**: landing pages, websites, simple dashboards and systems, hosting and upkeep.
+- **Creative Studio**: brand commercials, product shoots, social and digital marketing, ads, brand
+  design, custom cinematics.
+- **NMYT Originals**: in-house short films made with new filmmakers.
 
-Voice: confident, precise, short sentences. **No overselling, no fake stats, no invented awards
-or client logos.** Say what we do, show it beautifully. Think Apple keynote captions, SpaceX
-launch overlays, Blacklead Studio, Aeos Labs.
+Voice: plain, confident, short sentences. No overselling, no invented clients or numbers, no
+dashes in visible copy.
 
-## 2. Colour (saturated, never washed out)
-Defined as CSS custom properties in `src/styles/tokens.css`. Use the variables, not raw hex.
+## Colour (`src/styles/tokens.css`)
 
-| token | hex | use |
+| token | value | use |
 |---|---|---|
 | `--void` | `#030408` | page background |
-| `--ink-900` | `#07090F` | raised surface |
-| `--ink-800` | `#0C0F18` | cards |
-| `--ink-700` | `#141826` | borders on dark / hover surface |
-| `--line` | `rgba(255,255,255,.10)` | hairlines |
-| `--fg` | `#F4F6FB` | primary text |
-| `--fg-2` | `rgba(244,246,251,.64)` | secondary text |
-| `--fg-3` | `rgba(244,246,251,.38)` | tertiary / labels |
-| **NMYT master (logo)** | | |
-| `--royal` | `#1638FF` | logo royal blue, primary brand |
-| `--royal-deep` | `#0A1A8C` | deep ultramarine |
-| `--sky` | `#16B4FF` | deep sky blue (Tech) |
-| `--ice` | `#CFEFFF` | tech highlight |
-| `--acid` | `#7CFF3A` | acid / neon green (Creative) |
-| `--emerald` | `#00E08A` | emerald green (Creative secondary) |
-| `--navy` | `#04123F` | creative deep blue |
+| `--ink-900 / 800 / 700` | `#07090f / #0c0f18 / #141826` | raised surfaces |
+| `--fg` | `#f4f6fb` | primary text |
+| `--fg-2` | `rgba(244,246,251,.76)` | secondary text |
+| `--fg-3` | `rgba(244,246,251,.56)` | tertiary text, eyebrows |
+| `--royal` | `#1638ff` | logo blue |
+| `--royal-deep` | `#0a1a8c` | deep blue |
+| `--sky` | `#16b4ff` | Tech accent on dark |
+| `--ice` | `#cfefff` | highlights |
+| `--acid` | `#7cff3a` | Creative accent |
+| `--emerald` | `#00e08a` | Creative secondary |
+| `--paper` / `--paper-ink` | `#f6f9ff` / `#050a18` | Tech light sections |
+| `--paper-ink-2` | `rgba(5,10,24,.72)` | secondary text on paper |
 
-Themes:
-- **NMYT master** (home, work, contact): void black + all three hues — royal, sky, acid/emerald —
-  exactly like the logo's metal (royal body, cyan highlights) plus the green of Creative.
-- **Tech Studio** (`/tech`): white + deep sky blue. Minimal. Dark hero that blooms into a
-  sky-blue light orb, then large white/ice sections (`#F6F9FF` bg, `#050A18` text, `--sky` accents).
-  Blurred light gradients (Sui / Clustr / "Beside" references), glass stat panels.
-- **Creative Studio** (`/creative`): greens + deep blues. Hyper-stylised. Acid green on black and
-  navy, glitch/scanline type, terminal labels `//LIKE_THIS`, warped blurred giant type behind
-  frosted glass cards, glowing light-streak ribbons.
+Per page
+- **Home, Work, About, Contact**: void with blue, teal and green.
+- **Tech**: dark hero that floods to paper white; small blue text on paper uses `#0a5fe0`.
+- **Creative**: hero on a white studio wall (`#eef0f2` to `#e3e6e9`, ink `#06080d`), dark below
+  with acid green.
+- **Originals**: `.orig` redefines the palette to deep blue (`#02040d`) and ivory (`#f1ead9`).
+  No green.
 
-Glows: hue at the bottom edge of cards (reference: bifurcation cards) — use
-`--glow-tech`, `--glow-creative`, `--glow-master` gradients.
+## Type (`src/index.css`)
+- Everything is **Inter Variable** (optical size axis). `-apple-system` and SF Pro are the fallbacks.
+- `.display`: weight 700, sentence case, letter-spacing -0.04em, line-height 1.04.
+- `.h-section`: `clamp(34px, min(5.4vw, 10vh), 92px)`. `.h-sub`: `clamp(28px, 3.8vw, 64px)`.
+- `.lede`: `clamp(16px, 1.25vw, 20px)`. `.eyebrow`: 14px, weight 500.
+- `.serif` and `.mono` are kept as class names but resolve to the same family.
+- Hero-only second voices: Instrument Serif italic (home hero phrase, Originals "shall be served
+  soon"), a light Helvetica-style stack (Creative "twice.").
 
-## 3. Typography
-All self-hosted via @fontsource (already installed):
-- **Display — "Archivo" variable** (`--font-display`): heavy semi-condensed grotesque standing in
-  for Gothif (commercial). Always UPPERCASE, `font-weight: 900`, `font-stretch: 78%`
-  (use class `.display`), tight tracking `-0.02em`, line-height `.86`. Hero sizes via clamp up to
-  ~14vw. Gothif can later replace it by changing `--font-display` only.
-- **Elegant accent — "Instrument Serif"** (`--font-serif`): italic, used for 1–3 contrasting words
-  inside display headlines ("Where code *meets* cinema"), pull quotes and big numbers. Mixed case.
-- **Text — "Geist" variable** (`--font-sans`): all body copy, nav, buttons. 15–18px body,
-  `letter-spacing: -0.01em`, weights 400/500.
-- **Mono — "Geist Mono" variable** (`--font-mono`): labels, indices, metadata:
-  `01 / ABOUT`, `[ TECH STUDIO ]`, `SYS_01`, 11–12px uppercase, tracking `.08em`.
+## Layout and rhythm
+- `.wrap`: max 1680px, gutter `clamp(16px, 2.2vw, 32px)`.
+- `.section`: `padding-block: clamp(45px, 6.3vw, 105px)`.
+- Building blocks in `src/components/Simple.tsx`: `Head`, `Steps`, `Catalogue`, `Pillars`,
+  `SlideMarquee`. Prefer these for new sections.
+- Open layouts. No boxes around content, no hairline rules between sections.
 
-## 4. Layout & motion
-- 12-col grid, `--gutter: clamp(16px, 2.2vw, 32px)`, max content width 1680px. Hairline rules
-  (`--line`) separate sections like Aiera/Blacklead. Section index labels top-left in mono.
-- Smooth scroll: Lenis (global, in `src/lib/smooth.ts`), GSAP ScrollTrigger synced to it.
-- Motion language: slow, expensive, deliberate. Easing `--ease-out: cubic-bezier(.16,1,.3,1)`,
-  `--ease-io: cubic-bezier(.76,0,.24,1)`. Text reveals = line mask slide-up (`<Reveal>`),
-  headline chars stagger (`<SplitReveal>`), images = clip-path wipe + scale 1.15→1.
-- Cursor: custom dot + ring (`<Cursor>`), grows over links and shows labels (`data-cursor="View"`).
-- Film grain overlay (`<Grain>`) sits over the entire site at 6–8% opacity.
-- Respect `prefers-reduced-motion`: disable scroll-scrubbing, keep fades.
-- Mobile: must work at 375px. No horizontal overflow. WebGL downgrades DPR on mobile.
+## Motion
+- Lenis smooth scroll + GSAP ScrollTrigger. Eases: `expo.out` for reveals, `--ease-out`
+  `cubic-bezier(.16,1,.3,1)` in CSS.
+- `<Reveal>`: fade and rise. `<SplitReveal>`: lines fade and rise. No clipping masks.
+- Scroll-scrubbed: only the Tech and Creative heroes and the hero copy fade-outs.
+- Self-running accents: footer logo pass (3 s), Work text sweep (4 s), Steps rail light, hologram
+  loop (18 s), Originals bubble beam, ribbon pulse.
+- Animate opacity and transform. Never font-weight, width or height on large elements.
 
-## 5. Components (src/components) — reuse, don't re-invent
-`Nav`, `Footer`, `Loader`, `Cursor`, `Grain`, `Reveal`, `SplitReveal`, `MonoLabel`,
-`MagneticButton`, `GlowCard`, `Marquee`, `SectionHead`, `Img` (lazy + wipe-in),
-`PageTransition`. WebGL scenes live in `src/gl/`.
+## Logo
+- `public/brand/nmyt-logo-hq.webp`: the colour artwork, background removed. Use as is.
+- `public/brand/nmyt-mask-hq.webp` / `nmyt-mask-sm.webp`: white silhouette cut from it. Used as a
+  CSS mask for the nav mark, loader, footer and page-transition curtain.
+- `src/gl/nmyt-mark.json`: smooth vector outline for the 3D logo and the hologram.
 
-## 6. Imagery
-Photographic, never glossy-AI. Film grain, real light, deep blacks. Stored in
-`public/media/` (see `public/media/manifest.json` for names and intended use).
-Treat every image with a subtle grade: slight crush of blacks + hue-tinted overlay matching the
-page theme.
-
-## 7. Logo
-`public/brand/nmyt-logo.png` — the exact client-supplied 3D metallic mark, background removed.
-**Never recolour, stretch, crop, rotate or apply filters that alter it.** Allowed: opacity,
-uniform scale, drop-glow behind it, mask-based shine sweep in the loader.
+## Imagery
+Photographic, dark, real light. All still images are generated look-development frames, not
+client work, and are labelled that way where they act as examples. Add images with
+`scripts/media.py` and register them in `src/data/media.ts`.
