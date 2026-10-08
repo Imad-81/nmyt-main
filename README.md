@@ -1,66 +1,87 @@
-# NMYT website build
+# NMYT website
 
-The unified NMYT agency site. Live at https://nmyt-website-build.vercel.app
+The NMYT agency site. Live at https://nmyt-website-build.vercel.app
 
-- Start with `HANDOFF.md`: context, the owner's rules, architecture, checks, open items.
-- `DESIGN.md`: the current design system. `CLAUDE.md`: standing rules for Claude Code threads.
+Vite + React 19 + TypeScript, three.js with custom shaders, GSAP (ScrollTrigger, SplitText) and
+Lenis, plain CSS with a little Tailwind v4. It is a static single-page app: no backend, no
+database, no environment variables.
 
-```bash
-npm install
-npm run dev -- --port 5183 --strictPort
-npm run build
-```
+## Read these first
 
-Pushing `main` to https://github.com/gitnityanth-code/nmyt-website-build deploys to Vercel.
+| File | What it holds |
+|---|---|
+| `HANDOFF.md` | Full context: where things are, architecture, the owner's rules, history of each round, known surprises, open items |
+| `DESIGN.md` | Colours, type, layout and motion values |
+| `CLAUDE.md` | Short standing rules (written for Claude Code sessions, useful to anyone) |
 
-The notes below this line are from the original base project and are partly out of date.
+The owner's rules in `HANDOFF.md` section 5 are firm. Check any change against them.
 
----
+## Run it
 
-# NMYT — website
-
-Vite + React 19 + TypeScript · three.js (custom GLSL) · GSAP (ScrollTrigger, SplitText, Flip) · Lenis · Tailwind v4.
-Design system and build rules: see [DESIGN.md](DESIGN.md).
-
-## Run
+Needs Node 20 or newer (built on Node 24, npm 11).
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173
-npm run build      # production build → dist/
-npm run preview    # serve dist/
+npm run dev -- --port 5183 --strictPort     # http://localhost:5183   (?noloader skips the intro)
+npm run build                               # type-check + production build into dist/
+npm run preview                             # serve dist/
 ```
 
-Dev helpers: `?noloader` skips the intro, `?motion=full` forces full motion even when the OS asks for reduced motion.
+## What is in this folder
+
+```
+src/            the site's source (pages, components, WebGL scenes, styles, data)
+public/         files served as they are: brand marks, photography, Earth maps, one video
+media-src/      original, full-size sources that are not deployed
+  raw/            photography (PNG) that public/media was made from
+  hf/             stills used to make video clips
+  earth/          NASA Blue Marble maps the About globe was made from
+  brand/          the owner's original logo files
+scripts/        checks (errors, overflow, gaps, contrast, smoothness) and image conversion
+previews/       screenshots of each round
+index.html, vite.config.ts, tsconfig*.json, package.json, vercel.json     build and deploy config
+```
+
+`node_modules/` and `dist/` are not included: `npm install` and `npm run build` recreate them.
 
 ## Deploy
 
-Static SPA. Any static host works (Vercel / Netlify / Cloudflare Pages). Add an SPA fallback so deep links
-(`/tech`, `/creative`, …) resolve to `index.html` — e.g. Netlify `_redirects`: `/* /index.html 200`,
-Vercel: rewrites `{ "source": "/(.*)", "destination": "/" }`.
+The site is on Vercel (project `nmyt-website-build`), connected to the private GitHub repository
+https://github.com/gitnityanth-code/nmyt-website-build. Pushing `main` deploys.
+`vercel.json` holds the single-page rewrite, cache headers and security headers (including a
+strict Content Security Policy: a new outside script, font or embed needs an entry there).
 
-## Pages
+To take over you need, from the owner:
+- collaborator access to the GitHub repository (or push this code to your own)
+- access to the Vercel project (or connect your own Vercel, Netlify or Cloudflare Pages project;
+  any static host works if deep links fall back to `index.html`)
+- the domain's DNS, when `nmyt.in` is pointed at the site
 
-| route | what |
-|---|---|
-| `/` | Loader (logo shines through its colours) → WebGL "Convergence" hero → reel → manifesto + particle morph (wireframe → lens → NMYT mark) → studio cards → selected work → Originals → who we work with / process → footer |
-| `/tech` | Tech Studio — white & deep sky blue |
-| `/creative` | Creative Studio — greens & deep blues, hyper-stylised |
-| `/originals` | NMYT Originals — in-house films & filmmaker program |
-| `/work` | Work index with filters, grid/list |
-| `/contact` | Brief builder (opens the visitor's mail app — no backend) |
+## Checks
 
-## Before launch — replace these
+The scripts in `scripts/` drive a local Chrome through `puppeteer-core`. They expect Chrome at
+`C:/Program Files/Google/Chrome/Application/chrome.exe` and a dev server on the port in `PORT`.
+Change the path at the top of each script on another machine.
 
-- `src/data/site.ts` — email, socials, optional phone/location (marked `TODO`).
-- `src/data/work.ts` — the six projects are **samples** to show the layout; swap for real case studies.
-- `src/pages/contact/BriefForm.tsx` — budget ranges (`BUDGETS`, currently USD placeholders).
-- Photography in `media-src/raw/` was generated for this site; replace any with real shoot stills
-  when available, then run `python scripts/media.py` to rebuild the optimised `.webp` files.
-- Display font is **Archivo** (open licence) standing in for Gothif (commercial). If you license Gothif,
-  add the font files and change `--font-display` in `src/styles/tokens.css`.
+```bash
+export MSYS_NO_PATHCONV=1 PORT=5183        # Git Bash on Windows
+node scripts/probe-all.mjs      # every route at five sizes: console errors, failed requests, sideways overflow
+node scripts/gaps.mjs 0.22      # empty vertical stretches
+node scripts/perf.mjs           # scroll smoothness, three runs per route
+node scripts/contrast.mjs       # text contrast
+node scripts/walk.mjs / out/home 1366 650 && python scripts/walk-sheet.py out/home out/home.jpg 4 470   # contact sheet
+```
 
-## Logo
+`python scripts/media.py` converts photography in `media-src/raw/` to the `.webp` files in
+`public/media/` (needs Pillow). Register new images in `src/data/media.ts`.
 
-`public/brand/nmyt-logo.png|webp` is the client mark with only the white background removed (no recolouring).
-`nmyt-mark.svg` / `src/gl/markPath.ts` are a traced silhouette used for outline and particle graphics only.
+## Before a real launch
+
+These are placeholders or not done yet (details in `HANDOFF.md` section 10):
+- Contact form has no backend: it opens the visitor's email app. Budget ranges are placeholders.
+- Social links in `src/data/site.ts` are placeholders; phone is empty.
+- No sitemap, one global meta description, no share image. Custom domain not set.
+- No client work is shown anywhere; `/work` is a "Work in progress" page by the owner's choice.
+- The site ignores the visitor's reduced-motion setting unless the address has `?motion=reduce`.
+  This was the owner's decision and is an accessibility trade-off to revisit.
+- Not yet tested on physical phones by the people who built it.
