@@ -56,9 +56,9 @@ export default function TechHero({ reduce }: { reduce: boolean }) {
       })
       tl.to(state.current, { scroll: 1, duration: 1 }, 0)
         .to('.th-copy', { yPercent: -22, autoAlpha: 0, duration: 0.28, ease: 'power1.in' }, 0.02)
-        .fromTo('.th-sl', { yPercent: 118 }, { yPercent: 0, duration: 0.14, stagger: 0.035, ease: 'power3.out' }, 0.74)
-        .fromTo('.th-af', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.12, stagger: 0.03, ease: 'power2.out' }, 0.8)
-        .to('.th-paper', { autoAlpha: 1, duration: 0.06 }, 0.86)
+        .fromTo('.th-sl', { yPercent: 118 }, { yPercent: 0, duration: 0.14, stagger: 0.035, ease: 'power3.out' }, 0.55)
+        .fromTo('.th-af', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.12, stagger: 0.03, ease: 'power2.out' }, 0.62)
+        .to('.th-paper', { autoAlpha: 1, duration: 0.06 }, 0.8)
     },
     { scope: root, dependencies: [reduce] },
   )

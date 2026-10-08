@@ -292,32 +292,15 @@ const KIT = [
 ]
 
 /* ------------------------------------------------------------------ */
-export default function TechKit({ reduce }: { reduce: boolean }) {
-  const ref = useRef<HTMLElement>(null)
-  useGSAP(
-    () => {
-      if (reduce) return
-      gsap.utils.toArray<HTMLElement>('.tk-orb', ref.current).forEach((o, i) => {
-        gsap.fromTo(o, { yPercent: -20 + i * 10 }, { yPercent: 30 - i * 25, ease: 'none', scrollTrigger: { trigger: ref.current, start: 'top bottom', end: 'bottom top', scrub: true } })
-      })
-    },
-    { scope: ref, dependencies: [reduce] },
-  )
+export default function TechKit() {
   return (
-    <section ref={ref} className="tk tk-section">
-      <div className="tk-orbs" aria-hidden>
-        <i className="tk-orb tk-orb--1" />
-        <i className="tk-orb tk-orb--2" />
-        <i className="tk-orb tk-orb--3" />
-      </div>
+    <section className="tk tk-section">
       <div className="wrap relative">
         <TechHead
           label="What you get"
           title={
             <>
-              Built
-              <br />
-              <em className="serif">properly.</em>
+              Built <em className="serif">properly.</em>
             </>
           }
           lede="No mystery deliverables. Every project ships fast, clean and yours to run. Here is what that looks like."

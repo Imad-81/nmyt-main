@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import Footer from '@/components/Footer'
 import { Reveal, SplitReveal } from '@/components/Reveal'
 import { Steps } from '@/components/Simple'
@@ -12,11 +13,31 @@ const FACTS = [
   { n: '0', l: 'Templates' },
 ]
 
+/** The Earth, seen from orbit, turning round India. Loads beside the page, never in front of it. */
+function Earth() {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    let globe: { dispose: () => void } | null = null
+    let gone = false
+    import('@/gl/globe')
+      .then(({ createGlobe }) => {
+        if (!gone && ref.current) globe = createGlobe(ref.current)
+      })
+      .catch(() => {})
+    return () => {
+      gone = true
+      globe?.dispose()
+    }
+  }, [])
+  return <div ref={ref} className="ab-earth" aria-hidden />
+}
+
 /** /about: who NMYT is, in plain words. */
 export default function About() {
   return (
     <div className="ab">
       <section className="ab-hero wrap">
+        <Earth />
         <Reveal trigger="intro" delay={0.1} className="eyebrow ab-eyebrow">
           About NMYT
         </Reveal>

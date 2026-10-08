@@ -50,6 +50,9 @@ Checks (Git Bash, dev server running):
 export MSYS_NO_PATHCONV=1 PORT=5183
 node scripts/probe-all.mjs                         # every route x 5 sizes: errors, failed requests, overflow
 node scripts/gaps.mjs 0.22                         # empty vertical stretches per route and size (sticky heroes show up; that is their scroll room)
+node scripts/perf.mjs                              # smoothness: every route scrolls itself, three runs each
+node scripts/ab.mjs / 1366 650 5 "as is=" "no cards=.sc-row{display:none!important}"   # compare variants for scroll stalls, median of runs
+node scripts/still.mjs / 1366 650 0 2184           # frame rate while holding still at given positions
 node scripts/contrast.mjs                          # text contrast per route (see section 8 for how to read it)
 node scripts/shoot.mjs /creative out/prefix 1366 650 0 300 600 --wait=4500   # screenshots at scroll positions
 node scripts/walk.mjs / out/home 1366 650          # one screenshot per screen, top to bottom
@@ -104,25 +107,25 @@ scripts/                   QA scripts above, media.py (PNG to WebP)
 ```
 
 ### The three WebGL pieces
-- **Home hero (`domeHero.ts`)**: one background sphere shader (near-black with a breath of blue
-  and teal), the logo extruded from `nmyt-mark.json`, and about 1,200 embers in three streams
-  (white from the upper left, blue rising, green from the right). The logo's flat faces are shaded
-  procedurally (royal blue, navy troughs, sky and ice streaks) because a flat face can only mirror
-  one direction; bevels use a baked environment. Environment strength is set with
-  `scene.environmentIntensity` (the material's `envMapIntensity` does nothing when the map comes
-  from `scene.environment`). Tone mapping is Neutral: ACES turns saturated blue purple.
+- **Home hero (`domeHero.ts`)**: no footage, everything is drawn live. The logo's face is the
+  real artwork (`public/brand/nmyt-logo-hq.webp`) on a plane, untouched, with a light that
+  travels across it and a second light that follows the pointer; a navy body extruded from
+  `nmyt-mark.json` sits behind it for depth. Below it a field of about 15,000 square pixels rolls
+  to a horizon: waves pass through it, the pointer presses a ripple into it (on touch the ripple
+  wanders by itself), and a click or tap sends a pulse out from under the logo. The field is
+  dimmed where the words sit. Loose pixels drift in the air.
 - **Creative hero (`ribbonForm.ts`)**: torus knot flattened to a band, vertex colours blue to
   green, bright studio environment with black flags, emissive pulse along the length, three
   orbiting beads. Scroll state pulls it to the centre and scales it up.
 - **Hologram (`ScopeMorph.tsx`)**: runs on its own clock. Scroll never drives it.
 
-- **The volume wall (inside `domeHero.ts`)**: `public/media/video/home-volume.mp4` plays on a
-  curved wall (150 degree arc) behind the logo. It is never shown as a rectangle: the edges
-  dissolve, a pool of shadow sits behind the mark, the grade is pulled dark and toward teal so
-  the logo stays the brightest blue, and the same footage is sampled in the logo's material so
-  the chrome is lit by the wall. Two copies of the clip run half a loop apart and cross-dissolve,
-  so the 4 second loop has no visible jump. Until the clip plays the wall adds nothing. The
-  camera drifts slightly with the pointer so the wall sits at a real distance.
+- **Globe (`globe.ts`, /about)**: NASA Blue Marble day map plus a helper map (red = city lights,
+  green = water) on a sphere, with an atmosphere rim, a halo shell and glimmering points. It is
+  framed by pixels: on desktop the planet sits off the right edge so about half is in view, on
+  tablets and phones its top shows as a horizon band between the words and the facts. India
+  faces the viewer at the edge of night, with a small beacon on Hyderabad. The halo and points
+  use blending that adds light without making the canvas opaque, so there is no box round it.
+  Source maps are in `media-src/earth/` (from the three-globe package's example images).
 
 All three lower their own resolution when frames run slow, pause off-screen, and fall back
 quietly if WebGL is missing (the home hero shows a poster of the real logo).
@@ -135,6 +138,8 @@ quietly if WebGL is missing (the home hero shows a poster of the real logo).
   switches between ink and white through `html[data-navtone]`.
 
 These two are the only pinned sections. The owner approved both. Do not add others.
+The Tech statement now arrives at 55 percent of the hero's scroll (it was 74), because the
+screen stood blank white between the flood and the words.
 
 ## 5. The owner's rules (follow these without being asked)
 
@@ -165,6 +170,10 @@ Look
   deep blue and ivory instead of green.
 
 Behaviour
+- Cards are wanted in exactly one place: the two studios on the home page ("real cool stylized
+  cards", minimal, motion-graphics feel). Elsewhere the open, no-box layout stands.
+- No video in the home hero. It must be code: pixels, light, gradient, interactive.
+- The logo is the real artwork with its own colours and gradient. Do not re-shade it.
 - No pinned sections (other than the two approved heroes) and no sideways scrolling or scrubbing.
   Animated visuals run on their own clock.
 - No hover pop-up previews. Marquees are a simple sideways slide.
@@ -200,6 +209,13 @@ How he likes to work
   rebuilt as open type with no cards, rules or numbers, section spacing tied to screen height,
   `scripts/gaps.mjs` added.
 
+- **v5 (2026-10-08, same day)**: the owner rejected the v4 video wall ("not a mp4 file done
+  dirtily") and the open-type Studios. Home hero rebuilt in code with the real logo artwork and
+  an interactive pixel field; home Studios are now two cards with moving pictures (layered build,
+  camera lens); /about has the globe; Tech lost its marquee strip and orbs, uses one section
+  head style on one left axis, and each section rises into focus and falls back with the scroll.
+  `scripts/perf.mjs`, `scripts/ab.mjs` and `scripts/still.mjs` added.
+
 ## 7. Things that will surprise you
 
 - **Reduced motion is ignored on purpose.** The owner's laptop has Windows animation effects
@@ -216,6 +232,13 @@ How he likes to work
 - **Animating `font-weight` on large type** froze the headless browser. Use opacity and transform.
 - **`scripts/shoot.mjs` reuses a Chrome profile.** If a run dies, kill leftover headless Chrome
   processes before the next one or navigation times out.
+- **Measuring smoothness**: one run proves nothing on this machine. The same page gave a worst
+  frame of 8 ms and of 400 ms in back-to-back runs, and driving the scroll from the test script
+  (one call per step) adds stalls of its own. Use `perf.mjs` / `ab.mjs`, which scroll from inside
+  the page and repeat. Real costs found that way: blurred box-shadows on 3D-tilted elements and
+  gradient paint on dashed SVG strokes.
+- **Tech sections fade with the scroll**, so `contrast.mjs` reads the lower Tech sections as
+  low contrast (they are transparent until scrolled to). The colours themselves did not change.
 - **CSP** in `vercel.json` is strict (`script-src 'self'`, `media-src 'self'`). A new third-party
   script, font or embed needs a CSP entry or it will be blocked only in production.
 
@@ -231,7 +254,8 @@ Creative list a few rows of those kinds. One real small failure is left: the 10p
 
 - **Higgsfield** (account in the owner's Chrome, Seedance 2.0): 4-second, 720p, audio-off clips
   cost 18 credits each. 72 credits spent so far: three clips on 2026-10-07 (only
-  `originals-stage.mp4` is still used) and `home-volume.mp4` on 2026-10-08. His cap for the
+  `originals-stage.mp4` is still used) and one on 2026-10-08 for a home hero wall that he
+  rejected and that has been removed. He does not want video in the home hero. His cap for the
   site is 170 to 200 credits. The Higgsfield page froze repeatedly when typing prompts through
   automation, so later hero work was done in code instead.
 - **ChatGPT image generation**: he suggested it for replacing out-of-place images. Not done yet.

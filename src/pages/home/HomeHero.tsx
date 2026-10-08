@@ -20,7 +20,7 @@ export default function HomeHero() {
     import('@/gl/domeHero')
       .then(({ createDomeHero }) => {
         if (gone) return
-        dome = createDomeHero(stage.current!, state.current, { onLost: () => setPoster(true), volume: '/media/video/home-volume.mp4' })
+        dome = createDomeHero(stage.current!, state.current, { onLost: () => setPoster(true) })
         if (!dome) setPoster(true)
       })
       .catch(() => setPoster(true))

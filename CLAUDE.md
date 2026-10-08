@@ -15,4 +15,8 @@ Standing rules
   work is shown anywhere.
 - No new pinned or sideways-scrolling sections, no mono label font, no HUD decorations, no lens
   flares, no custom cursor, no clipped text. Keep sizes and gaps modest.
+- The home hero is code only (no video), and its logo face is the real artwork file. Cards are
+  used only for the two studios on the home page.
+- He expects everything checked before it is shown: run `scripts/perf.mjs` and `scripts/gaps.mjs`
+  as well as the sweep, and look at phone, tablet and desktop sheets.
 - Never distort or recolour the logo artwork. The white mark comes from `public/brand/nmyt-mask-hq.webp`.

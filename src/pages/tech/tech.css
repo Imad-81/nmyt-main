@@ -220,7 +220,9 @@
    --------------------------------------------------------------------- */
 .tp-light {
   position: relative;
-  background: var(--paper);
+  /* one continuous wash down the page: no section has an edge */
+  background-color: var(--paper);
+  background-image: linear-gradient(180deg, var(--paper) 0%, #edf4ff 24%, #e4eeff 46%, #edf4ff 70%, var(--paper) 92%);
   color: var(--paper-ink);
 }
 .tp-light ::selection {
@@ -247,82 +249,31 @@
   padding-block: clamp(45px, min(6.05vw, 9.5vh), 101px);
 }
 .tk-head {
-  margin-bottom: clamp(28px, 3.53vw, 55px);
+  max-width: 880px;
+  margin-bottom: clamp(28px, 3.6vw, 56px);
 }
-.tk-head-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: clamp(25px, 3.15vw, 45px);
-}
-.tk-label {
+.tk-eyebrow {
+  margin-bottom: 14px;
   color: var(--paper-ink-2);
-}
-.tk-label b {
-  color: var(--sky);
-  font-weight: 500;
-}
-.tk-rule {
-  flex: 1;
-  height: 1px;
-  background: var(--paper-line);
-}
-.tk-aside {
-  color: var(--paper-ink-2);
-}
-.tk-head-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 40px;
-  align-items: end;
 }
 .tk-title {
   margin: 0;
-  font-size: clamp(34px, 5.4vw, 101px);
+  font-size: clamp(34px, min(4.8vw, 9.5vh), 80px);
   color: var(--paper-ink);
 }
 .tk-lede {
-  max-width: 34ch;
-  padding-bottom: 0.5em;
-}
-
-/* ---------------------------------------------------------------------
-   Strip
-   --------------------------------------------------------------------- */
-.tsx {
-  padding-block: clamp(18px, 2.52vw, 36px);
-  background: var(--paper);
-}
-.tsx-item {
-  display: inline-flex;
-  align-items: center;
-  gap: clamp(20px, 3vw, 48px);
-  padding-right: clamp(20px, 3vw, 48px);
-  font-size: clamp(26px, 4.2vw, 72px);
-  line-height: 1;
-  white-space: nowrap;
-  color: var(--paper-ink);
-}
-.tsx-item:nth-child(even) {
-  color: rgba(5, 10, 24, 0.4);
-}
-.tsx-star {
-  width: 0.42em;
-  height: 0.42em;
-  flex: none;
-  fill: var(--sky);
-  animation: tp-spin 9s linear infinite;
-}
-@keyframes tp-spin {
-  to {
-    transform: rotate(360deg);
-  }
+  margin-top: clamp(14px, 1.5vw, 20px);
+  max-width: 46ch;
 }
 
 /* ---------------------------------------------------------------------
    Services: five names on the left, the one in focus explained on the right.
    Open type, no rows or rules. Prefix: tv
    --------------------------------------------------------------------- */
+/* the hero ends on its statement with room beneath it: the first section starts inside that room */
+.tv {
+  margin-top: -14svh;
+}
 .tv-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
@@ -558,46 +509,6 @@
   .ck {
     grid-template-columns: 1fr;
   }
-}
-
-/* ---------------------------------------------------------------------
-   What you get — glass on light
-   --------------------------------------------------------------------- */
-.tk {
-  overflow: clip;
-  background: linear-gradient(180deg, var(--paper) 0%, #eaf3ff 50%, var(--paper) 100%);
-}
-.tk-orbs {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-.tk-orb {
-  position: absolute;
-  border-radius: 50%;
-  will-change: transform;
-}
-.tk-orb--1 {
-  width: 56vw;
-  height: 56vw;
-  left: -14vw;
-  top: 26%;
-  background: radial-gradient(circle, rgba(22, 180, 255, 0.55) 0%, rgba(22, 180, 255, 0.18) 38%, rgba(22, 180, 255, 0) 66%);
-}
-.tk-orb--2 {
-  width: 50vw;
-  height: 50vw;
-  right: -12vw;
-  top: 44%;
-  background: radial-gradient(circle, rgba(22, 56, 255, 0.42) 0%, rgba(22, 56, 255, 0.12) 40%, rgba(22, 56, 255, 0) 66%);
-}
-.tk-orb--3 {
-  width: 36vw;
-  height: 36vw;
-  left: 34%;
-  bottom: -6%;
-  background: radial-gradient(circle, rgba(207, 239, 255, 0.95) 0%, rgba(207, 239, 255, 0) 64%);
 }
 
 /* perf ring */
@@ -1228,9 +1139,7 @@
 /* ---------------------------------------------------------------------
    Work
    --------------------------------------------------------------------- */
-.tw {
-  background: var(--paper);
-}
+
 .tw-all {
   display: inline-flex;
   gap: 6px;
@@ -1359,6 +1268,8 @@
 }
 .tw-g figcaption {
   margin-top: 12px;
+  font-size: 15px;
+  font-weight: 500;
   color: var(--paper-ink-2);
 }
 
@@ -1424,15 +1335,8 @@
     font-size: clamp(31px, 9vw, 66px);
   }
 
-  .tk-head-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
-  }
   .tk-title {
     font-size: clamp(31px, 9vw, 58px);
-  }
-  .tk-aside {
-    display: none;
   }
 
   .bb-links {

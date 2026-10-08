@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { TECH_SERVICES } from '@/data/site'
 import { Reveal } from '@/components/Reveal'
-import { Marquee } from '@/components/ui'
 import { TechHead } from './shared'
 
 /* Line-art icons. Every stroke uses pathLength=1 so CSS can draw it on (dashoffset 1 → 0). */
@@ -59,24 +58,6 @@ const ICONS: Record<string, ReactNode> = {
   ),
 }
 
-/** Oversized service names running between hero and services. */
-export function TechStrip() {
-  return (
-    <div className="tsx" aria-hidden>
-      <Marquee speed={46}>
-        {TECH_SERVICES.map((s) => (
-          <span key={s.n} className="tsx-item display">
-            {s.title}
-            <svg className="tsx-star" viewBox="0 0 24 24">
-              <path d="M12 0c.8 6.4 5.6 11.2 12 12-6.4.8-11.2 5.6-12 12-.8-6.4-5.6-11.2-12-12C6.4 11.2 11.2 6.4 12 0z" />
-            </svg>
-          </span>
-        ))}
-      </Marquee>
-    </div>
-  )
-}
-
 export default function TechServices() {
   const root = useRef<HTMLElement>(null)
   const [active, setActive] = useState(0)
@@ -102,9 +83,7 @@ export default function TechServices() {
           label="Services"
           title={
             <>
-              What we
-              <br />
-              <em className="serif">build.</em>
+              What we <em className="serif">build.</em>
             </>
           }
           lede="Five services, one standard. Take one, or let us run the whole thing: design, code, launch and care."

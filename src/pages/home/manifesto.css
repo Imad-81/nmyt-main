@@ -1,5 +1,6 @@
 .mf {
   position: relative;
+  padding-top: clamp(28px, min(4vw, 6vh), 64px);
   background: radial-gradient(60% 40% at 75% 40%, rgba(22, 56, 255, 0.1), transparent 70%), var(--void);
 }
 .mf-grid {

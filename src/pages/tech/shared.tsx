@@ -1,21 +1,21 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Reveal, SplitReveal } from '@/components/Reveal'
 
-/** Light-theme section head: `01 / SERVICES` rule, display title, optional lede to the right. */
-export function TechHead({ label, title, lede, className = '' }: { index?: string; label: string; title: ReactNode; lede?: ReactNode; aside?: ReactNode; className?: string }) {
+/** Section head on the light page: eyebrow, one-line title, lede beneath. One left axis for the whole page. */
+export function TechHead({ label, title, lede, className = '' }: { label: string; title: ReactNode; lede?: ReactNode; className?: string }) {
   return (
     <div className={`tk-head ${className}`}>
-      <Reveal className="eyebrow tk-eyebrow">{label}</Reveal>
-      <div className="tk-head-grid">
-        <SplitReveal as="h2" className="display tk-title">
-          {title}
-        </SplitReveal>
-        {lede && (
-          <Reveal className="lede tk-lede" delay={0.15}>
-            {lede}
-          </Reveal>
-        )}
-      </div>
+      <Reveal className="eyebrow tk-eyebrow" y={16}>
+        {label}
+      </Reveal>
+      <SplitReveal as="h2" className="display tk-title">
+        {title}
+      </SplitReveal>
+      {lede && (
+        <Reveal className="lede tk-lede" delay={0.1} y={20}>
+          {lede}
+        </Reveal>
+      )}
     </div>
   )
 }

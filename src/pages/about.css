@@ -3,8 +3,28 @@
   background: radial-gradient(60% 40% at 80% 0%, rgba(0, 90, 110, 0.28), transparent 70%), var(--void);
 }
 .ab-hero {
-  padding-top: calc(var(--nav-h) + clamp(56px, 10vh, 120px));
+  position: relative;
+  padding-top: calc(var(--nav-h) + clamp(48px, 9vh, 110px));
   padding-bottom: clamp(28px, 4.2vw, 67px);
+}
+.ab-hero > :not(.ab-earth) {
+  position: relative;
+  z-index: 1;
+}
+/* The planet lives in the empty right half. Its panel runs off the page's right edge and is
+   dissolved on the left and at the bottom, so it never has an edge against the words. */
+.ab-earth {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: clamp(130px, 15vw, 260px);
+  left: 44%;
+  right: calc((100vw - 100%) / -2);
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%), linear-gradient(180deg, #000 62%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 22%), linear-gradient(180deg, #000 62%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
 }
 .ab-eyebrow {
   color: var(--fg-3);
@@ -12,19 +32,19 @@
 }
 .ab-title {
   margin: 0;
-  max-width: 14ch;
-  font-size: clamp(38px, min(6.4vw, 12vh), 108px);
+  max-width: 11.5ch;
+  font-size: clamp(38px, min(5.6vw, 11vh), 96px);
 }
 .ab-cols {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(20px, 3vw, 56px);
-  max-width: 1040px;
-  margin-top: clamp(22px, 3.5vw, 50px);
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(14px, 1.4vw, 22px);
+  max-width: min(44%, 600px);
+  margin-top: clamp(22px, 3vw, 44px);
 }
 .ab-p {
   margin: 0;
-  font-size: clamp(17px, 1.35vw, 21px);
+  font-size: clamp(16.5px, 1.25vw, 20px);
   line-height: 1.5;
   color: var(--fg-2);
 }
@@ -82,5 +102,32 @@
   .ab-facts {
     grid-template-columns: 1fr 1fr;
     row-gap: 32px;
+  }
+}
+
+/* tablets and phones: no empty right half, so the planet becomes a horizon between the words
+   and the facts */
+@media (max-width: 1023px) {
+  .ab-hero {
+    display: flex;
+    flex-direction: column;
+  }
+  .ab-cols {
+    max-width: 640px;
+  }
+  .ab-earth {
+    position: relative;
+    order: 5;
+    inset: auto;
+    width: 100vw;
+    margin-left: calc((100vw - 100%) / -2);
+    height: clamp(200px, 56vw, 420px);
+    margin-top: clamp(20px, 5vw, 44px);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 58%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 58%, transparent 100%);
+  }
+  .ab-facts {
+    order: 6;
+    margin-top: 8px;
   }
 }

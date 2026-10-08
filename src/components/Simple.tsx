@@ -38,10 +38,13 @@ export function Steps({
   items,
   accent = 'var(--sky)',
   id,
+  head,
   children,
 }: {
   eyebrow?: string
-  title: ReactNode
+  title?: ReactNode
+  /** a page's own section head, used instead of the default one */
+  head?: ReactNode
   lede?: ReactNode
   items: { n?: string; title: string; body: string; tags?: string[] }[]
   accent?: string
@@ -51,7 +54,7 @@ export function Steps({
   return (
     <section className="sx section" id={id} style={{ ['--sx-accent' as string]: accent }}>
       <div className="wrap">
-        <Head eyebrow={eyebrow} title={title} lede={lede} />
+        {head ?? <Head eyebrow={eyebrow} title={title} lede={lede} />}
         <Reveal className={`sx-steps sx-steps--${Math.min(items.length, 5)}`} childSelector=".sx-step" stagger={0.08} y={28}>
           {items.map((s, i) => (
             <article key={s.title} className="sx-step" style={{ ['--i' as string]: i, ['--n' as string]: items.length }}>
