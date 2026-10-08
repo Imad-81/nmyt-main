@@ -3,7 +3,7 @@
   overflow: hidden;
   background: var(--void);
   border-top: 1px solid var(--line);
-  padding-top: clamp(48px, 6.05vw, 91px);
+  padding-top: clamp(45px, min(6.05vw, 9.5vh), 91px);
 }
 .ft-glow {
   position: absolute;

@@ -51,6 +51,44 @@ void main(){
   gl_FragColor = vec4(col, 1.0);
 }`
 
+// The volume: a curved wall behind the mark, like the LED stage a film crew shoots against.
+// It plays a clip, but never as a rectangle: the picture is bent round the arc, its edges
+// dissolve into the dark, and two copies half a loop apart cross-dissolve so it never jumps.
+const WALL_R = 26
+const WALL_ARC = (150 * Math.PI) / 180
+const WALL_H = 34
+
+const WALL_VERT = /* glsl */ `
+varying vec2 vUv;
+void main(){
+  vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}`
+
+const WALL_FRAG = /* glsl */ `
+precision highp float;
+varying vec2 vUv;
+uniform sampler2D uVidA; uniform sampler2D uVidB;
+uniform float uMix; uniform float uVol; uniform float uIntro; uniform float uScroll; uniform float uTime;
+float hash2(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+void main(){
+  // seen from inside the arc, so u runs right to left
+  vec2 uv = vec2(1.0 - vUv.x, vUv.y);
+  vec3 col = mix(texture2D(uVidB, uv).rgb, texture2D(uVidA, uv).rgb, uMix);
+  // settle the footage into the scene's own blacks and blues
+  float l = dot(col, vec3(0.299, 0.587, 0.114));
+  col = mix(vec3(l), col, 1.1);
+  // deep and low: the wall is the room, not the subject. Its blue leans to teal and indigo so
+  // the mark's royal blue stays the brightest, purest colour in the frame.
+  col = pow(max(col - 0.03, 0.0), vec3(1.55)) * vec3(0.25, 0.53, 0.64);
+  float m = smoothstep(0.0, 0.3, uv.x) * smoothstep(1.0, 0.7, uv.x) * smoothstep(0.0, 0.3, uv.y) * smoothstep(1.0, 0.66, uv.y);
+  // a pool of shadow where the mark stands
+  m *= mix(0.3, 1.0, smoothstep(0.05, 0.42, length((uv - vec2(0.5, 0.54)) * vec2(1.5, 2.3))));
+  col *= m * uVol * uIntro * (1.0 - uScroll * 0.75);
+  col += (hash2(gl_FragCoord.xy + fract(uTime) * 37.0) - 0.5) / 255.0;
+  gl_FragColor = vec4(col, 1.0);
+}`
+
 const EMBER_VERT = /* glsl */ `
 attribute vec4 aRand;
 uniform float uTime; uniform float uPR; uniform float uIntro; uniform float uScroll;
@@ -178,7 +216,9 @@ function buildEnv(renderer: THREE.WebGLRenderer) {
   return tex
 }
 
-function buildMaterial(time: { value: number }) {
+type VolumeUniforms = { uVidA: { value: THREE.Texture | null }; uVidB: { value: THREE.Texture | null }; uMix: { value: number }; uVol: { value: number } }
+
+function buildMaterial(time: { value: number }, vol: VolumeUniforms) {
   const m = new THREE.MeshPhysicalMaterial({
     color: 0xffffff,
     metalness: 1,
@@ -191,11 +231,15 @@ function buildMaterial(time: { value: number }) {
   m.onBeforeCompile = (sh) => {
     sh.uniforms.uT = time
     sh.uniforms.uEmis = emis
+    sh.uniforms.uVidA = vol.uVidA
+    sh.uniforms.uVidB = vol.uVidB
+    sh.uniforms.uMix = vol.uMix
+    sh.uniforms.uVol = vol.uVol
     sh.vertexShader = sh.vertexShader
       .replace('#include <common>', '#include <common>\nvarying vec3 vMp; varying float vFace;')
       .replace('#include <begin_vertex>', '#include <begin_vertex>\nvMp = position; vFace = step(0.9, abs(normal.z));')
     sh.fragmentShader = sh.fragmentShader
-      .replace('#include <common>', '#include <common>\nvarying vec3 vMp; varying float vFace; uniform float uT; uniform float uEmis;')
+      .replace('#include <common>', '#include <common>\nvarying vec3 vMp; varying float vFace; uniform float uT; uniform float uEmis;\nuniform sampler2D uVidA; uniform sampler2D uVidB; uniform float uMix; uniform float uVol;')
       .replace(
         '#include <color_fragment>',
         `#include <color_fragment>
@@ -222,6 +266,11 @@ function buildMaterial(time: { value: number }) {
       .replace(
         '#include <opaque_fragment>',
         `outgoingLight = mix(outgoingLight, (outgoingLight - totalEmissiveRadiance) * 0.18 + totalEmissiveRadiance, vFace);
+      // the volume lights the metal: the wall's picture wraps the stage and shows in the chrome
+      vec3 vr = inverseTransformDirection(reflect(-normalize(vViewPosition), normal), viewMatrix);
+      vec2 vuv = vec2(abs(atan(vr.x, vr.z)) / 3.14159, clamp(0.5 + vr.y * 0.6, 0.0, 1.0));
+      vec3 vcol = pow(mix(texture2D(uVidB, vuv).rgb, texture2D(uVidA, vuv).rgb, uMix), vec3(2.2));
+      outgoingLight += vcol * vec3(0.5, 0.9, 1.1) * uVol * uEmis * mix(0.9, 0.03, vFace);
       #include <opaque_fragment>`,
       )
   }
@@ -234,7 +283,7 @@ export type DomeState = { intro: number; scroll: number }
 export type DomeHero = { dispose: () => void }
 
 /** Returns null when WebGL is unavailable — the caller shows the static poster instead. */
-export function createDomeHero(host: HTMLElement, state: DomeState, opts: { reduce?: boolean; onLost?: () => void } = {}): DomeHero | null {
+export function createDomeHero(host: HTMLElement, state: DomeState, opts: { reduce?: boolean; onLost?: () => void; volume?: string } = {}): DomeHero | null {
   let renderer: THREE.WebGLRenderer
   try {
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance', stencil: false })
@@ -290,10 +339,70 @@ export function createDomeHero(host: HTMLElement, state: DomeState, opts: { redu
   embers.frustumCulled = false
   scene.add(embers)
 
+  // the volume wall. Until its clip is playing the wall adds nothing, and the scene looks as it did.
+  const black = new THREE.DataTexture(new Uint8Array([0, 0, 0, 255]), 1, 1)
+  black.needsUpdate = true
+  const volU: VolumeUniforms = { uVidA: { value: black }, uVidB: { value: black }, uMix: { value: 1 }, uVol: { value: 0 } }
+  const wallGeo = new THREE.CylinderGeometry(WALL_R, WALL_R, WALL_H, 64, 1, true, Math.PI - WALL_ARC / 2, WALL_ARC)
+  const wallMat = new THREE.ShaderMaterial({
+    vertexShader: WALL_VERT,
+    fragmentShader: WALL_FRAG,
+    uniforms: { ...volU, uIntro: uniforms.uIntro, uScroll: uniforms.uScroll, uTime: uniforms.uTime },
+    side: THREE.BackSide,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    toneMapped: false,
+  })
+  const wall = new THREE.Mesh(wallGeo, wallMat)
+  wall.position.set(0, 1.2, 4)
+  wall.frustumCulled = false
+  wall.renderOrder = -0.5
+  scene.add(wall)
+
+  const vids: HTMLVideoElement[] = []
+  const vidTex: THREE.VideoTexture[] = []
+  let volOn = 0
+  if (opts.volume) {
+    for (let k = 0; k < 2; k++) {
+      const v = document.createElement('video')
+      v.src = opts.volume
+      v.muted = true
+      v.loop = true
+      v.playsInline = true
+      v.preload = 'auto'
+      v.setAttribute('aria-hidden', 'true')
+      vids.push(v)
+    }
+    const [a, b] = vids
+    const start = () => {
+      if (vidTex.length || !a.duration || !b.duration) return
+      // the second copy runs half a loop ahead, so one is always mid-clip while the other wraps
+      b.currentTime = a.duration / 2
+      Promise.all([a.play(), b.play()])
+        .then(() => {
+          for (const v of vids) {
+            const t = new THREE.VideoTexture(v)
+            t.minFilter = THREE.LinearFilter
+            t.generateMipmaps = false
+            vidTex.push(t)
+          }
+          volU.uVidA.value = vidTex[0]
+          volU.uVidB.value = vidTex[1]
+          volOn = 1
+        })
+        .catch(() => {})
+    }
+    a.addEventListener('loadeddata', start)
+    b.addEventListener('loadeddata', start)
+    a.load()
+    b.load()
+  }
+
   const envTex = buildEnv(renderer)
   scene.environment = envTex
   const markGeo = buildMark()
-  const markMat = buildMaterial(uniforms.uTime)
+  const markMat = buildMaterial(uniforms.uTime, volU)
   const logo = new THREE.Mesh(markGeo, markMat)
   const rig = new THREE.Group()
   rig.add(logo)
@@ -391,6 +500,21 @@ export function createDomeHero(host: HTMLElement, state: DomeState, opts: { redu
     scene.environmentRotation.set(Math.sin(t * 0.21) * 0.22, t * 0.2 + mouse.x * 0.5, 0)
     dome.rotation.set(mouse.y * 0.03, -mouse.x * 0.045, Math.sin(t * 0.05) * 0.06)
 
+    // the volume: ease it in once the clip plays, cross-dissolve the two copies around each wrap,
+    // and let the camera drift a little so the wall sits at a real distance behind the mark
+    volU.uVol.value += (volOn - volU.uVol.value) * Math.min(1, dt * 0.9)
+    if (volOn) {
+      const [a, b] = vids
+      const d = a.duration || 1
+      const wa = Math.min(a.currentTime, d - a.currentTime)
+      const wb = Math.min(b.currentTime, d - b.currentTime)
+      const m = wa / Math.max(wa + wb, 1e-4)
+      volU.uMix.value = m * m * (3 - 2 * m)
+    }
+    camera.position.x = mouse.x * 0.5 + Math.sin(t * 0.11) * 0.18
+    camera.position.y = mouse.y * 0.22
+    camera.lookAt(0, 0, -6)
+
     renderer.render(scene, camera)
   }
   raf = requestAnimationFrame(loop)
@@ -408,6 +532,15 @@ export function createDomeHero(host: HTMLElement, state: DomeState, opts: { redu
       markGeo.dispose()
       markMat.dispose()
       envTex.dispose()
+      wallGeo.dispose()
+      wallMat.dispose()
+      black.dispose()
+      vidTex.forEach((t) => t.dispose())
+      vids.forEach((v) => {
+        v.pause()
+        v.removeAttribute('src')
+        v.load()
+      })
       renderer.dispose()
       canvas.remove()
     },

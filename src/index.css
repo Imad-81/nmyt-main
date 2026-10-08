@@ -144,7 +144,8 @@ button {
 }
 .section {
   position: relative;
-  padding-block: clamp(45px, 6.3vw, 105px);
+  /* tied to the screen's height as well as its width, so short laptop screens do not get tall gaps */
+  padding-block: clamp(45px, min(6.3vw, 9.5vh), 105px);
 }
 
 /* ---------- utilities ---------- */

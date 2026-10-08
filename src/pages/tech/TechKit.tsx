@@ -1,25 +1,8 @@
-import { useRef, type ReactNode } from 'react'
+import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/smooth'
 import { Reveal } from '@/components/Reveal'
 import { TechHead } from './shared'
-
-/* ------------------------------------------------------------------ */
-/* Panel shell — glass on light, sky glow at the bottom edge           */
-/* ------------------------------------------------------------------ */
-function Panel({ k, title, body, className = '', ill = true, children }: { k: string; title: string; body?: string; className?: string; ill?: boolean; children: ReactNode }) {
-  return (
-    <article className={`tk-p ${className}`}>
-      <div className="tk-p-vis">{children}</div>
-      <div className="tk-p-copy">
-        <div className="mono tk-p-k">{k}</div>
-        <h3 className="tk-p-t">{title}</h3>
-        {body && <p className="tk-p-b">{body}</p>}
-      </div>
-      {ill && <span className="mono tk-p-ill">Illustrative UI</span>}
-    </article>
-  )
-}
 
 /* ------------------------------------------------------------------ */
 /* 01 — performance ring, counts to 100 on enter                       */
@@ -271,7 +254,7 @@ function MiniDash() {
 /* ------------------------------------------------------------------ */
 /* 04 — what ships with every build                                     */
 /* ------------------------------------------------------------------ */
-const INCLUDED = ['Mobile-first, responsive layouts', 'A CMS you can edit yourself', 'SEO foundations & metadata', 'Analytics from day one', 'Accessibility checks', 'Hosting, backups & updates']
+const INCLUDED = ['Mobile-first, responsive layouts', 'A CMS you can edit yourself', 'SEO foundations and metadata', 'Analytics from day one', 'Accessibility checks', 'Hosting, backups and updates']
 
 function Checklist() {
   const ref = useRef<HTMLUListElement>(null)
@@ -289,19 +272,24 @@ function Checklist() {
   )
   return (
     <ul ref={ref} className="ck">
-      {INCLUDED.map((t, i) => (
+      {INCLUDED.map((t) => (
         <li key={t} className="ck-li">
-          <span className="mono ck-n">{String(i + 1).padStart(2, '0')}</span>
-          <span className="ck-t">{t}</span>
           <svg viewBox="0 0 20 20" className="ck-ic" aria-hidden>
-            <circle cx="10" cy="10" r="9" />
+            <circle cx="10" cy="10" r="10" />
             <path className="ck-tick" d="M5.8 10.4l2.8 2.8 5.6-6.2" pathLength={1} />
           </svg>
+          <span className="ck-t">{t}</span>
         </li>
       ))}
     </ul>
   )
 }
+
+const KIT = [
+  { title: 'Fast by default.', body: 'Every build is audited for speed, accessibility and SEO before it goes live.', vis: <PerfRing /> },
+  { title: 'Designed and built end to end.', body: 'From first wireframe to live site. One team, no hand-offs.', vis: <BrowserBuild /> },
+  { title: 'Tools your team will actually use.', body: 'Dashboards, booking flows and admin panels that replace spreadsheets and busywork.', vis: <MiniDash /> },
+]
 
 /* ------------------------------------------------------------------ */
 export default function TechKit({ reduce }: { reduce: boolean }) {
@@ -324,7 +312,6 @@ export default function TechKit({ reduce }: { reduce: boolean }) {
       </div>
       <div className="wrap relative">
         <TechHead
-          index="02"
           label="What you get"
           title={
             <>
@@ -333,22 +320,24 @@ export default function TechKit({ reduce }: { reduce: boolean }) {
               <em className="serif">properly.</em>
             </>
           }
-          lede="No mystery deliverables. Every project ships fast, clean and yours to run, here’s what that looks like."
+          lede="No mystery deliverables. Every project ships fast, clean and yours to run. Here is what that looks like."
         />
-        <Reveal className="tk-grid" childSelector=".tk-p" stagger={0.1} y={50} start="top 85%">
-          <Panel className="tk-p--perf" k="01 / Speed" title="Fast by default." body="Every build is audited for speed, accessibility and SEO before it goes live.">
-            <PerfRing />
-          </Panel>
-          <Panel className="tk-p--build" k="02 / Build" title="Designed and built end to end." body="From first wireframe to live site, one team, no hand-offs.">
-            <BrowserBuild />
-          </Panel>
-          <Panel className="tk-p--dash" k="03 / Systems" title="Tools your team will actually use." body="Dashboards, booking flows and admin panels that replace spreadsheets and busywork.">
-            <MiniDash />
-          </Panel>
-          <Panel className="tk-p--list" k="04 / Included" title="In every build." ill={false}>
-            <Checklist />
-          </Panel>
+        <Reveal className="tq-grid" childSelector=".tq" stagger={0.1} y={40} start="top 85%">
+          {KIT.map((k) => (
+            <article key={k.title} className="tq">
+              <div className="tq-vis">{k.vis}</div>
+              <h3 className="tq-t">{k.title}</h3>
+              <p className="tq-b">{k.body}</p>
+            </article>
+          ))}
         </Reveal>
+        <div className="tq-inc">
+          <Reveal as="h3" className="tq-t" y={20}>
+            In every build.
+          </Reveal>
+          <Checklist />
+        </div>
+        <p className="tq-note">Interface sketches, shown as examples.</p>
       </div>
     </section>
   )

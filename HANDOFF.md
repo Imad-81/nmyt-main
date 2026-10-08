@@ -49,6 +49,7 @@ Checks (Git Bash, dev server running):
 ```bash
 export MSYS_NO_PATHCONV=1 PORT=5183
 node scripts/probe-all.mjs                         # every route x 5 sizes: errors, failed requests, overflow
+node scripts/gaps.mjs 0.22                         # empty vertical stretches per route and size (sticky heroes show up; that is their scroll room)
 node scripts/contrast.mjs                          # text contrast per route (see section 8 for how to read it)
 node scripts/shoot.mjs /creative out/prefix 1366 650 0 300 600 --wait=4500   # screenshots at scroll positions
 node scripts/walk.mjs / out/home 1366 650          # one screenshot per screen, top to bottom
@@ -114,6 +115,14 @@ scripts/                   QA scripts above, media.py (PNG to WebP)
   green, bright studio environment with black flags, emissive pulse along the length, three
   orbiting beads. Scroll state pulls it to the centre and scales it up.
 - **Hologram (`ScopeMorph.tsx`)**: runs on its own clock. Scroll never drives it.
+
+- **The volume wall (inside `domeHero.ts`)**: `public/media/video/home-volume.mp4` plays on a
+  curved wall (150 degree arc) behind the logo. It is never shown as a rectangle: the edges
+  dissolve, a pool of shadow sits behind the mark, the grade is pulled dark and toward teal so
+  the logo stays the brightest blue, and the same footage is sampled in the logo's material so
+  the chrome is lit by the wall. Two copies of the clip run half a loop apart and cross-dissolve,
+  so the 4 second loop has no visible jump. Until the clip plays the wall adds nothing. The
+  camera drifts slightly with the pointer so the wall sits at a real distance.
 
 All three lower their own resolution when frames run slow, pause off-screen, and fall back
 quietly if WebGL is missing (the home hero shows a poster of the real logo).
@@ -186,6 +195,11 @@ How he likes to work
   beads, "One team" restyled, Originals flares removed, manifesto paragraphs stacked, animated
   Steps, "Cooking some content" line, Work gyroscope, large spacing cut by 30 percent.
 
+- **v4 (2026-10-08)**: home hero volume stage (a Higgsfield clip on a curved wall inside the 3D
+  scene, see section 4), home Studios, Tech services, Tech "What you get" and Creative services
+  rebuilt as open type with no cards, rules or numbers, section spacing tied to screen height,
+  `scripts/gaps.mjs` added.
+
 ## 7. Things that will surprise you
 
 - **Reduced motion is ignored on purpose.** The owner's laptop has Windows animation effects
@@ -216,8 +230,8 @@ Creative list a few rows of those kinds. One real small failure is left: the 10p
 ## 9. Assets made outside the repo
 
 - **Higgsfield** (account in the owner's Chrome, Seedance 2.0): 4-second, 720p, audio-off clips
-  cost 18 credits each. 54 credits were spent on three clips; only `originals-stage.mp4` is still
-  used (the studio desk and night runner clips were removed at his request). His cap for the
+  cost 18 credits each. 72 credits spent so far: three clips on 2026-10-07 (only
+  `originals-stage.mp4` is still used) and `home-volume.mp4` on 2026-10-08. His cap for the
   site is 170 to 200 credits. The Higgsfield page froze repeatedly when typing prompts through
   automation, so later hero work was done in code instead.
 - **ChatGPT image generation**: he suggested it for replacing out-of-place images. Not done yet.
@@ -226,14 +240,9 @@ Creative list a few rows of those kinds. One real small failure is left: the 10p
 
 ## 10. Open items
 
-Asked for, not done
-1. A section-by-section, device-by-device hunt for leftover empty gaps. Only the global 30 percent
-   cut was applied.
-2. Replacing out-of-place photographs with ChatGPT-generated images.
-3. A Higgsfield-made element for the home hero. Note that Higgsfield makes video, not anything
-   interactive, and a 4-second loop shows a jump; the interactive hero is code.
-4. The older card-and-divider styling in the lower sections (Tech "What you get" panels, Creative
-   services list, home Studios cards) had labels removed but was never redesigned.
+Done on 2026-10-08: the gap hunt (measured with `scripts/gaps.mjs`), the Higgsfield element for
+the home hero, and the redesign of the lower sections. He decided not to replace photographs
+with ChatGPT images for now.
 
 Before a real launch
 5. Contact form has no backend: it opens the visitor's email app. Budget ranges in

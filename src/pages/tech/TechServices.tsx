@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { TECH_SERVICES } from '@/data/site'
 import { Reveal } from '@/components/Reveal'
 import { Marquee } from '@/components/ui'
@@ -78,14 +78,28 @@ export function TechStrip() {
 }
 
 export default function TechServices() {
+  const root = useRef<HTMLElement>(null)
   const [active, setActive] = useState(0)
+  const [held, setHeld] = useState(false)
+
+  // the list turns over on its own clock while it is on screen; a pointer or focus holds it
+  useEffect(() => {
+    if (held) return
+    let on = false
+    const io = new IntersectionObserver(([e]) => (on = e.isIntersecting), { threshold: 0.35 })
+    io.observe(root.current!)
+    const id = window.setInterval(() => on && setActive((a) => (a + 1) % TECH_SERVICES.length), 4200)
+    return () => {
+      window.clearInterval(id)
+      io.disconnect()
+    }
+  }, [held])
+
   return (
-    <section className="ts tk-section" id="services">
+    <section ref={root} className="tv tk-section" id="services">
       <div className="wrap">
         <TechHead
-          index="01"
           label="Services"
-          aside="05 disciplines"
           title={
             <>
               What we
@@ -93,28 +107,47 @@ export default function TechServices() {
               <em className="serif">build.</em>
             </>
           }
-          lede="Five services, one standard. Take one, or let us run the whole thing, design, code, launch and care."
+          lede="Five services, one standard. Take one, or let us run the whole thing: design, code, launch and care."
         />
-        <Reveal className="ts-list" childSelector=".ts-row" stagger={0.07} y={30} start="top 85%">
-          {TECH_SERVICES.map((s, i) => (
-            <div
-              key={s.n}
-              className={`ts-row ${active === i ? 'is-active' : ''}`}
-              onPointerEnter={(e) => e.pointerType === 'mouse' && setActive(i)}
-              onClick={() => setActive(i)}
-              data-cursor-hover
-            >
-              <span className="mono ts-n">{s.n}</span>
-              <h3 className="display ts-t">
-                <span className="ts-t-in">{s.title}</span>
-              </h3>
-              <p className="ts-b">{s.body}</p>
-              <span className="ts-ic" aria-hidden>
-                <svg viewBox="0 0 64 64">{ICONS[s.n]}</svg>
-              </span>
+        <div className="tv-grid">
+          <Reveal className="tv-list" childSelector=".tv-it" stagger={0.07} y={26} start="top 85%">
+            <div onPointerLeave={() => setHeld(false)}>
+              {TECH_SERVICES.map((s, i) => (
+                <div key={s.n} className={`tv-it ${active === i ? 'is-active' : ''}`}>
+                  <button
+                    type="button"
+                    className="display tv-t"
+                    aria-pressed={active === i}
+                    onPointerEnter={(e) => {
+                      if (e.pointerType !== 'mouse') return
+                      setActive(i)
+                      setHeld(true)
+                    }}
+                    onFocus={() => {
+                      setActive(i)
+                      setHeld(true)
+                    }}
+                    onBlur={() => setHeld(false)}
+                    onClick={() => setActive(i)}
+                  >
+                    {s.title}
+                  </button>
+                  <p className="tv-b tv-b--inline">{s.body}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </Reveal>
+          </Reveal>
+          <Reveal className="tv-stage" y={26} start="top 85%">
+            {TECH_SERVICES.map((s, i) => (
+              <div key={s.n} className={`tv-pane ${active === i ? 'is-active' : ''}`} aria-hidden={active !== i}>
+                <span className="tv-ic" aria-hidden>
+                  <svg viewBox="0 0 64 64">{ICONS[s.n]}</svg>
+                </span>
+                <p className="tv-b">{s.body}</p>
+              </div>
+            ))}
+          </Reveal>
+        </div>
       </div>
     </section>
   )
