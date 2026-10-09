@@ -85,3 +85,5 @@ These are placeholders or not done yet (details in `HANDOFF.md` section 10):
 - The site ignores the visitor's reduced-motion setting unless the address has `?motion=reduce`.
   This was the owner's decision and is an accessibility trade-off to revisit.
 - Not yet tested on physical phones by the people who built it.
+
+<!-- updated for deployment verification -->
