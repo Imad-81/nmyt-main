@@ -1,89 +1,183 @@
-# NMYT website
+# NMYT Website
 
-The NMYT agency site. Live at https://nmyt-website-build.vercel.app
+The official website for **NMYT**, a creative tech studio.
 
-Vite + React 19 + TypeScript, three.js with custom shaders, GSAP (ScrollTrigger, SplitText) and
-Lenis, plain CSS with a little Tailwind v4. It is a static single-page app: no backend, no
-database, no environment variables.
+- **Live URL:** [nmyt-website-build.vercel.app](https://nmyt-website-build.vercel.app)
+- **Repository:** [github.com/Imad-81/nmyt-main](https://github.com/Imad-81/nmyt-main)
 
-## Read these first
+A static single-page web experience built with Vite, React 19, TypeScript, custom WebGL/Three.js shaders, GSAP motion, Lenis smooth scrolling, and a custom CSS design system complemented by Tailwind CSS v4. Completely static client-side application: zero backend dependencies, no database, and no required environment variables.
 
-| File | What it holds |
+---
+
+## Documentation Quick Links
+
+Before making substantial design or architectural changes, consult the companion documents:
+
+| File | Overview |
 |---|---|
-| `HANDOFF.md` | Full context: where things are, architecture, the owner's rules, history of each round, known surprises, open items |
-| `DESIGN.md` | Colours, type, layout and motion values |
-| `CLAUDE.md` | Short standing rules (written for Claude Code sessions, useful to anyone) |
+| [`HANDOFF.md`](./HANDOFF.md) | Full architectural context, evolution history, owner rules, known constraints, and open items |
+| [`DESIGN.md`](./DESIGN.md) | Design tokens, color palette, typography hierarchy, spacing rules, and motion parameters |
+| [`CLAUDE.md`](./CLAUDE.md) | Development rules, copy guidelines, QA sweep standards, and commit conventions |
 
-The owner's rules in `HANDOFF.md` section 5 are firm. Check any change against them.
+> **Important:** The studio owner rules detailed in [`HANDOFF.md`](./HANDOFF.md) section 5 are strict. Always verify changes against them.
 
-## Run it
+---
 
-Needs Node 20 or newer (built on Node 24, npm 11).
+## Tech Stack
+
+- **Framework & Core:** React 19, TypeScript (~6.0), Vite 8
+- **Graphics & 3D:** Three.js (~0.186) with custom GLSL shaders (interactive pixel field hero, dynamic logo face, 3D volume stage, About globe)
+- **Animation & Scroll:** GSAP (ScrollTrigger, SplitText), `@gsap/react`, Lenis smooth scrolling
+- **Styling:** Custom CSS design system (`src/styles/`), supplemented with Tailwind CSS v4
+- **Typography:** Instrument Serif, Inter, Archivo, Geist, Geist Mono (via Fontsource)
+- **Linting & Code Quality:** Oxlint, TypeScript strict project references
+- **Automated Verification:** Custom Puppeteer test suite (`scripts/`)
+- **Package Management:** Supports `npm` and `bun` (`bun.lock` included)
+
+---
+
+## Route Overview
+
+The site features 8 client-side routes managed by React Router:
+
+| Route | Page | Key Features |
+|---|---|---|
+| `/` | **Home** | Custom Three.js interactive pixel field, real brand mark artwork, volume stage, studio cards |
+| `/tech` | **Tech Studio** | Interactive engineering capabilities kit, system architecture breakdown |
+| `/creative` | **Creative Studio** | Interactive ribbon deformation, brand showcase |
+| `/originals` | **Originals** | Media motion slots and creative concepts |
+| `/work` | **Work** | Gyroscope visual effect, current status overview |
+| `/about` | **About** | Interactive 3D Earth globe with NASA Blue Marble surface textures |
+| `/contact` | **Contact** | Direct client inquiry flow opening default email client |
+| `*` | **404** | Minimalist fallback route with navigation recovery |
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20 or newer (built on Node 24, npm 11) or Bun
+
+### Installation
 
 ```bash
+# Using npm
 npm install
-npm run dev -- --port 5183 --strictPort     # http://localhost:5183   (?noloader skips the intro)
-npm run build                               # type-check + production build into dist/
-npm run preview                             # serve dist/
+
+# Or using bun
+bun install
 ```
 
-## What is in this folder
+### Local Development
 
-```
-src/            the site's source (pages, components, WebGL scenes, styles, data)
-public/         files served as they are: brand marks, photography, Earth maps, one video
-media-src/      original, full-size sources that are not deployed
-  raw/            photography (PNG) that public/media was made from
-  hf/             stills used to make video clips
-  earth/          NASA Blue Marble maps the About globe was made from
-  brand/          the owner's original logo files
-scripts/        checks (errors, overflow, gaps, contrast, smoothness) and image conversion
-previews/       screenshots of each round
-index.html, vite.config.ts, tsconfig*.json, package.json, vercel.json     build and deploy config
-```
-
-`node_modules/` and `dist/` are not included: `npm install` and `npm run build` recreate them.
-
-## Deploy
-
-The site is on Vercel (project `nmyt-website-build`), connected to the private GitHub repository
-https://github.com/gitnityanth-code/nmyt-website-build. Pushing `main` deploys.
-`vercel.json` holds the single-page rewrite, cache headers and security headers (including a
-strict Content Security Policy: a new outside script, font or embed needs an entry there).
-
-To take over you need, from the owner:
-- collaborator access to the GitHub repository (or push this code to your own)
-- access to the Vercel project (or connect your own Vercel, Netlify or Cloudflare Pages project;
-  any static host works if deep links fall back to `index.html`)
-- the domain's DNS, when `nmyt.in` is pointed at the site
-
-## Checks
-
-The scripts in `scripts/` drive a local Chrome through `puppeteer-core`. They expect Chrome at
-`C:/Program Files/Google/Chrome/Application/chrome.exe` and a dev server on the port in `PORT`.
-Change the path at the top of each script on another machine.
+Start the development server (configured for port `5183` to match QA test scripts):
 
 ```bash
-export MSYS_NO_PATHCONV=1 PORT=5183        # Git Bash on Windows
-node scripts/probe-all.mjs      # every route at five sizes: console errors, failed requests, sideways overflow
-node scripts/gaps.mjs 0.22      # empty vertical stretches
-node scripts/perf.mjs           # scroll smoothness, three runs per route
-node scripts/contrast.mjs       # text contrast
-node scripts/walk.mjs / out/home 1366 650 && python scripts/walk-sheet.py out/home out/home.jpg 4 470   # contact sheet
+npm run dev -- --port 5183 --strictPort
 ```
 
-`python scripts/media.py` converts photography in `media-src/raw/` to the `.webp` files in
-`public/media/` (needs Pillow). Register new images in `src/data/media.ts`.
+Navigate to `http://localhost:5183`.
 
-## Before a real launch
+#### Useful Query Flags
 
-These are placeholders or not done yet (details in `HANDOFF.md` section 10):
-- Contact form has no backend: it opens the visitor's email app. Budget ranges are placeholders.
-- Social links in `src/data/site.ts` are placeholders; phone is empty.
-- No sitemap, one global meta description, no share image. Custom domain not set.
-- No client work is shown anywhere; `/work` is a "Work in progress" page by the owner's choice.
-- The site ignores the visitor's reduced-motion setting unless the address has `?motion=reduce`.
-  This was the owner's decision and is an accessibility trade-off to revisit.
-- Not yet tested on physical phones by the people who built it.
+- `?noloader`: Skips the initial loading intro animation for faster iteration.
+- `?motion=reduce`: Forces reduced-motion mode across WebGL scenes and GSAP timelines.
 
-<!-- updated for deployment verification -->
+### Production Build & Preview
+
+```bash
+# Type-check and produce optimized bundle in dist/
+npm run build
+
+# Preview production build locally
+npm run preview
+
+# Run fast linter checks
+npm run lint
+```
+
+---
+
+## Project Structure
+
+```
+├── public/                 # Static assets deployed directly
+│   ├── brand/              # Brand marks and vector masks (e.g. nmyt-mask-hq.webp)
+│   ├── media/              # Optimized photography & video WebP/MP4 assets
+│   └── earth/              # Earth texture maps for About globe
+├── media-src/              # Original, uncompressed source files (not deployed)
+│   ├── raw/                # High-res raw photography (PNG)
+│   ├── hf/                 # Source stills for video clips
+│   ├── earth/              # Source NASA Blue Marble maps
+│   └── brand/              # Original vector / master logo assets
+├── scripts/                # Puppeteer QA automation, image conversion, and perf tools
+│   ├── probe-all.mjs       # Verifies all routes across 5 viewport sizes
+│   ├── gaps.mjs            # Audits vertical spacing and layout gaps
+│   ├── perf.mjs            # Benchmarks scroll performance & frame drops
+│   ├── contrast.mjs        # WCAG text contrast validation
+│   ├── shoot.mjs           # Viewport screenshot capture tool
+│   ├── walk.mjs            # Full page screenshot sequences
+│   └── media.py            # Converts raw assets to optimized WebP
+├── src/
+│   ├── components/         # Reusable UI components (Nav, Footer, ScopeMorph, etc.)
+│   ├── data/               # Static site content, copy, metadata, and media registries
+│   ├── gl/                 # Three.js canvases, custom GLSL shaders, 3D meshes
+│   ├── hooks/              # Custom React hooks (breakpoints, motion, scroll)
+│   ├── pages/              # Route components (Home, Tech, Creative, About, Contact, etc.)
+│   └── styles/             # Global CSS, typography, tokens, animations
+├── vercel.json             # SPA rewrites, caching rules, Content Security Policy
+└── vite.config.ts          # Vite build configuration
+```
+
+---
+
+## Automated QA & Verification
+
+The suite in `scripts/` drives headless Chrome via `puppeteer-core` against a running dev server:
+
+```bash
+# 1. Start the dev server in one terminal
+npm run dev -- --port 5183 --strictPort
+
+# 2. Run the full verification suite in another terminal
+PORT=5183 node scripts/probe-all.mjs      # Checks every route at 5 screen sizes for errors & overflow
+PORT=5183 node scripts/gaps.mjs 0.22      # Flags unexpected empty vertical gaps
+PORT=5183 node scripts/perf.mjs           # Benchmarks scroll smoothness (3 passes per route)
+PORT=5183 node scripts/contrast.mjs       # Inspects text contrast ratios
+```
+
+> **Platform Note:** The scripts specify the Chrome binary location at the top of each script. Adjust the path if running outside standard install locations:
+> - **macOS:** `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`
+> - **Windows:** `C:/Program Files/Google/Chrome/Application/chrome.exe`
+> - **Linux:** `/usr/bin/google-chrome`
+
+### Asset Processing
+
+To convert newly added photography in `media-src/raw/` to compressed `.webp` in `public/media/`:
+
+```bash
+python scripts/media.py
+```
+
+*Requires Python with Pillow (`pip install Pillow`). Register new media in `src/data/media.ts`.*
+
+---
+
+## Deployment
+
+The application is deployed on [Vercel](https://vercel.com) (project `nmyt-website-build`) connected to the `main` branch of this repository.
+
+- **Automated CI/CD:** Pushing commits to `main` triggers an automatic production build and deployment.
+- **Security & Headers:** `vercel.json` defines SPA routing fallback to `index.html`, aggressive cache headers for immutable assets, and a strict Content Security Policy (CSP). External resources (scripts, fonts, media) must be permitted in `vercel.json`.
+
+---
+
+## Pre-Launch Considerations
+
+Key items tracked before production rollout to custom domain (`nmyt.in`):
+
+1. **Contact Backend:** Form currently triggers client mailto to `contact@nmyt.in`. Can connect to an API endpoint or email service provider.
+2. **Metadata & SEO:** Configure domain-specific sitemap, OpenGraph social share previews, and canonical URLs.
+3. **Domain & DNS:** Point apex domain and `www` DNS records for `nmyt.in` to Vercel.
+4. **Physical Device Testing:** Validate touch feel, gesture latency, and thermal performance across target mobile hardware.
