@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import type { DomeHero } from '@/gl/domeHero'
 import { gsap } from '@/lib/smooth'
-import { Reveal, whenRevealed } from '@/components/Reveal'
+import { Reveal } from '@/components/Reveal'
+import { whenRevealed } from '@/lib/reveal'
 import { MagneticButton } from '@/components/MagneticButton'
 import './hero.css'
 
@@ -16,21 +17,22 @@ export default function HomeHero() {
   useEffect(() => {
     let dome: DomeHero | null = null
     let gone = false
+    const stateObj = state.current
     // three.js loads beside the page, never in front of it
     import('@/gl/domeHero')
       .then(({ createDomeHero }) => {
         if (gone) return
-        dome = createDomeHero(stage.current!, state.current, { onLost: () => setPoster(true) })
+        dome = createDomeHero(stage.current!, stateObj, { onLost: () => setPoster(true) })
         if (!dome) setPoster(true)
       })
       .catch(() => setPoster(true))
     const off = whenRevealed(() => {
-      gsap.to(state.current, { intro: 1, duration: 3, ease: 'power2.out', delay: 0.1 })
+      gsap.to(stateObj, { intro: 1, duration: 3, ease: 'power2.out', delay: 0.1 })
     })
     return () => {
       gone = true
       off()
-      gsap.killTweensOf(state.current)
+      gsap.killTweensOf(stateObj)
       dome?.dispose()
       dome = null
     }

@@ -79,7 +79,9 @@ void main(){
 export default function ScopeMorph({ onStage, className }: { onStage?: (i: number) => void; className?: string }) {
   const host = useRef<HTMLDivElement>(null)
   const cb = useRef(onStage)
-  cb.current = onStage
+  useEffect(() => {
+    cb.current = onStage
+  }, [onStage])
 
   useEffect(() => {
     const el = host.current!

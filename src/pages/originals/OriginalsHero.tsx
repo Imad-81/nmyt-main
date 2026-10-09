@@ -1,8 +1,10 @@
 import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap, prefersReducedMotion } from '@/lib/smooth'
-import { SplitReveal, Reveal, whenRevealed } from '@/components/Reveal'
-import Motion, { CLIPS } from '@/components/Motion'
+import { SplitReveal, Reveal } from '@/components/Reveal'
+import { whenRevealed } from '@/lib/reveal'
+import Motion from '@/components/Motion'
+import { CLIPS } from '@/data/media'
 
 // with the dolly clip in place, the title waits for the camera to settle
 const HOLD = CLIPS.originalsStage ? 2.6 : 0

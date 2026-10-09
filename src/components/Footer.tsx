@@ -5,8 +5,10 @@ import { MagneticButton } from './MagneticButton'
 import { SplitReveal } from './Reveal'
 import './footer.css'
 
+const CURRENT_YEAR = new Date().getFullYear()
+
 export default function Footer({ accent = 'master' }: { accent?: 'master' | 'tech' | 'creative' }) {
-  const year = new Date().getFullYear()
+  const year = CURRENT_YEAR
   return (
     <footer className={`ft ft--${accent}`}>
       <div className="ft-glow" />

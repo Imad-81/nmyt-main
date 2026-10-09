@@ -1,6 +1,6 @@
 import { useEffect, useRef, type ElementType, type CSSProperties } from 'react'
 import { prefersReducedMotion } from '@/lib/smooth'
-import { whenRevealed } from '@/components/Reveal'
+import { whenRevealed } from '@/lib/reveal'
 
 const GLYPHS = '#$%&*+<>/\\[]{}=_-01ABCDEFXYZ▮▯'
 

@@ -1,14 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { media, type MediaKey } from '@/data/media'
-import { whenRevealed } from './Reveal'
-
-/**
- * Short looping motion clips for the large visuals. A clip is used only when its file is
- * listed here; otherwise the still image shows. Files live in /public/media/video.
- */
-export const CLIPS: Partial<Record<MediaKey, string>> = {
-  originalsStage: '/media/video/originals-stage.mp4',
-}
+import { media, CLIPS, type MediaKey } from '@/data/media'
+import { whenRevealed } from '@/lib/reveal'
 
 type Props = {
   k: MediaKey

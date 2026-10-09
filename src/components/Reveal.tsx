@@ -2,17 +2,7 @@ import { useRef, type ElementType, type ReactNode, type CSSProperties } from 're
 import { useGSAP } from '@gsap/react'
 import { gsap, SplitText, prefersReducedMotion } from '@/lib/smooth'
 
-/** Resolves when the intro loader has finished (or immediately if it already has). */
-export function whenRevealed(cb: () => void) {
-  const w = window as unknown as { __nmytRevealed?: boolean }
-  if (w.__nmytRevealed) {
-    cb()
-    return () => {}
-  }
-  const h = () => cb()
-  window.addEventListener('nmyt:revealed', h, { once: true })
-  return () => window.removeEventListener('nmyt:revealed', h)
-}
+import { whenRevealed } from '@/lib/reveal'
 
 type SplitProps = {
   children: ReactNode

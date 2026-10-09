@@ -12,7 +12,8 @@ export default function Grain({ strength = 0.032 }: { strength?: number }) {
   useEffect(() => {
     const c = document.createElement('canvas')
     c.width = c.height = TILE
-    const ctx = c.getContext('2d')!
+    const ctx = c.getContext('2d')
+    if (!ctx) return
     const img = ctx.createImageData(TILE, TILE)
     for (let i = 0; i < img.data.length; i += 4) {
       const light = Math.random() > 0.5
@@ -21,7 +22,9 @@ export default function Grain({ strength = 0.032 }: { strength?: number }) {
       img.data[i + 3] = Math.random() * 255 * strength * (light ? 0.9 : 1.2)
     }
     ctx.putImageData(img, 0, 0)
-    setUrl(c.toDataURL('image/png'))
+    const data = c.toDataURL('image/png')
+    const id = requestAnimationFrame(() => setUrl(data))
+    return () => cancelAnimationFrame(id)
   }, [strength])
   if (!url) return null
   return (

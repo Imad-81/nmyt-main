@@ -4,7 +4,8 @@ import { useGSAP } from '@gsap/react'
 import ShaderCanvas, { type ShaderFrame } from '@/gl/ShaderCanvas'
 import { TECH_FRAG } from '@/gl/techShader'
 import { gsap } from '@/lib/smooth'
-import { SplitReveal, Reveal, whenRevealed } from '@/components/Reveal'
+import { SplitReveal, Reveal } from '@/components/Reveal'
+import { whenRevealed } from '@/lib/reveal'
 
 /** The statement the light resolves into. Lives inside the sticky hero (scrubbed) or as its own section (reduced motion). */
 export function TechStatement() {

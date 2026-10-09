@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import type { RibbonForm } from '@/gl/ribbonForm'
 import { gsap, getLenis } from '@/lib/smooth'
-import { whenRevealed } from '@/components/Reveal'
+import { whenRevealed } from '@/lib/reveal'
 import { MagneticButton } from '@/components/MagneticButton'
 
 /**
@@ -20,17 +20,18 @@ export default function CreativeHero() {
   useEffect(() => {
     let form: RibbonForm | null = null
     let gone = false
+    const stateObj = state.current
     import('@/gl/ribbonForm')
       .then(({ createRibbonForm }) => {
         if (gone) return
-        form = createRibbonForm(stage.current!, state.current)
+        form = createRibbonForm(stage.current!, stateObj)
       })
       .catch(() => {})
-    const off = whenRevealed(() => gsap.to(state.current, { intro: 1, duration: 2.6, ease: 'power2.out', delay: 0.1 }))
+    const off = whenRevealed(() => gsap.to(stateObj, { intro: 1, duration: 2.6, ease: 'power2.out', delay: 0.1 }))
     return () => {
       gone = true
       off()
-      gsap.killTweensOf(state.current)
+      gsap.killTweensOf(stateObj)
       form?.dispose()
       document.documentElement.dataset.navtone = ''
     }

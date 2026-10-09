@@ -5,7 +5,7 @@ import { MagneticButton } from './MagneticButton'
 import { SITE } from '@/data/site'
 import './nav.css'
 
-export const NAV_LINKS = [
+const NAV_LINKS = [
   { to: '/tech', label: 'Tech Studio', tag: '01' },
   { to: '/creative', label: 'Creative Studio', tag: '02' },
   { to: '/originals', label: 'Originals', tag: '03' },
@@ -21,7 +21,11 @@ export default function Nav() {
   const menu = useRef<HTMLDivElement>(null)
   const loc = useLocation()
 
-  useEffect(() => setOpen(false), [loc.pathname])
+  const [prevPath, setPrevPath] = useState(loc.pathname)
+  if (prevPath !== loc.pathname) {
+    setPrevPath(loc.pathname)
+    setOpen(false)
+  }
 
   useEffect(() => {
     let last = 0
